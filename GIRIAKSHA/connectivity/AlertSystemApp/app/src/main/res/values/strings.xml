@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Alert System</string>
+    
+    <!-- Main Activity -->
+    <string name="role_selection_title">Select Your Role</string>
+    <string name="role_worker">Worker (Band)</string>
+    <string name="role_siren">Siren</string>
+    <string name="role_dashboard">Dashboard</string>
+    <string name="server_ip_hint">192.168.43.1:3000</string>
+    <string name="server_ip_label">Server IP:Port</string>
+    <string name="zones_hint">Unit-1,Unit-2,Unit-3</string>
+    <string name="zones_label">Zones (comma-separated)</string>
+    <string name="worker_id_hint">worker1</string>
+    <string name="worker_id_label">Worker ID</string>
+    <string name="enable_audio_label">Enable Audio</string>
+    <string name="connect_button">Connect</string>
+    <string name="help_find_ip">How to find server IP</string>
+    <string name="help_find_ip_message">On your laptop:\n\nmacOS: Open Terminal → ifconfig | grep inet\nWindows: Open CMD → ipconfig\n\nLook for the IP address of your WiFi hotspot (usually 192.168.x.x or 10.x.x.x)\n\nMake sure all devices are connected to the same hotspot!</string>
+    
+    <!-- Worker Activity -->
+    <string name="worker_title">Worker Band</string>
+    <string name="status_connected">🟢 Connected</string>
+    <string name="status_disconnected">🔴 Disconnected</string>
+    <string name="status_connecting">🟡 Connecting…</string>
+    <string name="status_error">⚠️ Error</string>
+    <string name="subscribed_zones">Zones: %s</string>
+    <string name="alert_card_title">⚠️ ALERT: %s</string>
+    <string name="alert_severity">Severity %d</string>
+    <string name="alert_id">Alert ID: %s</string>
+    <string name="ack_countdown">ACK in %ds</string>
+    <string name="ack_button">ACKNOWLEDGE</string>
+    <string name="alert_log_title">Alert Log</string>
+    <string name="alert_acked">ACKed</string>
+    <string name="alert_escalated">Escalated</string>
+    <string name="no_vibrator_warning">⚠️ Vibration not supported on this device</string>
+    <string name="lora_transmission">LoRa 9600 baud</string>
+    <string name="transmission_meta">Sensor data via LoRa @ 9600 baud</string>
+    
+    <!-- Siren Activity -->
+    <string name="siren_title">Siren</string>
+    <string name="enable_audio_button">Enable Audio</string>
+    <string name="test_alarm_button">Test Alarm</string>
+    <string name="volume_warning">⚠️ Set phone volume to HIGH</string>
+    <string name="siren_active_title">🚨 SIREN ACTIVE</string>
+    <string name="siren_zone">Zone: %s</string>
+    <string name="siren_started_at">Started: %s</string>
+    <string name="stop_button">STOP</string>
+    <string name="audio_not_enabled">Press \"Enable Audio\" first</string>
+    <string name="audio_enabled">✓ Audio Enabled</string>
+    
+    <!-- Dashboard Activity -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="create_alert_button">Create Alert</string>
+    <string name="create_scenario_button">Create Scenario</string>
+    <string name="server_logs_title">Server Logs</string>
+    <string name="active_alerts_title">Active Alerts</string>
+    <string name="create_alert_dialog_title">Create Alert</string>
+    <string name="create_scenario_dialog_title">Create Scenario</string>
+    <string name="zone_label">Zone</string>
+    <string name="epicenter_zone_label">Epicenter Zone</string>
+    <string name="magnitude_label">Magnitude</string>
+    <string name="create_button">Create</string>
+    <string name="cancel_button">Cancel</string>
+    
+    <!-- Common -->
+    <string name="server_label">Server: %s</string>
+    <string name="error_invalid_ip">Please enter a valid server IP:Port</string>
+    <string name="error_no_zones">Please enter at least one zone</string>
+    <string name="error_no_worker_id">Please enter a Worker ID</string>
+    <string name="error_connection_failed">Connection failed. Check:\n• Hotspot connection\n• Server IP: %s\n• Server running on port 3000\n• Firewall settings</string>
+    <string name="notification_title">Alert System Connected</string>
+    <string name="notification_text">Connected to %s</string>
+</resources>

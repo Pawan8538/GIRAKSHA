@@ -1,0 +1,13 @@
+{
+    "name": "alert-system-server",
+    "version": "1.0.0",
+    "description": "Node.js server for earthquake alert system demo",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "socket.io": "^4.6.1"
+    }
+}

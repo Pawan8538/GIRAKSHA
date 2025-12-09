@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: sih-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generate: true
+      - key: ML_SERVICE_URL
+        value: http://localhost:8000 # Update if ML service is deployed separately

@@ -1,0 +1,72 @@
+:root {
+  /* Brand Colors */
+  --color-primary: #3b82f6;      /* Blue - Primary actions */
+  --color-primary-dark: #2563eb; /* Hover states */
+  --color-primary-light: #60a5fa;
+  
+  /* Accent Colors */
+  --color-accent: #8b5cf6;       /* Purple - Highlights */
+  --color-accent-dark: #7c3aed;
+  
+  /* Neutral Colors */
+  --color-background: #f8fafc;   /* Light background */
+  --color-surface: #ffffff;      /* Cards, panels */
+  --color-border: #e2e8f0;       /* Borders, dividers */
+  
+  /* Text Colors */
+  --color-text-primary: #1e293b;    /* Main text - BLACK */
+  --color-text-secondary: #64748b;  /* Secondary text */
+  --color-text-tertiary: #94a3b8;   /* Tertiary text */
+  
+  /* Risk Level Colors */
+  --color-risk-low: #10b981;        /* Green */
+  --color-risk-medium: #f59e0b;     /* Amber */
+  --color-risk-high: #ef4444;       /* Red */
+  --color-risk-imminent: #7f1d1d;   /* Dark Red */
+  
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Dark Mode (Optional) */
+  --color-dark-bg: #0f172a;
+  --color-dark-surface: #1e293b;
+  --color-dark-border: #334155;
+  --color-dark-text: #f1f5f9;
+
+  /* Spacing System */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-full: 9999px;  /* Fully rounded */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+/* Dark Mode Override */
+[data-theme="dark"] {
+  --color-background: var(--color-dark-bg);
+  --color-surface: var(--color-dark-surface);
+  --color-border: var(--color-dark-border);
+  --color-text-primary: var(--color-dark-text);
+  --color-text-secondary: #cbd5e1;
+}

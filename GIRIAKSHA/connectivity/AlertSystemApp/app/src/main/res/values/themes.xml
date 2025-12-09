@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme -->
+    <style name="Base.Theme.AlertSystem" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+    </style>
+
+    <style name="Theme.AlertSystem" parent="Base.Theme.AlertSystem" />
+
+    <!-- Button Styles -->
+    <style name="Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:layout_height">56dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_on_primary</item>
+        <item name="backgroundTint">@color/button_primary</item>
+    </style>
+
+    <style name="Button.ACK" parent="Widget.Material3.Button">
+        <item name="android:layout_height">80dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_on_primary</item>
+        <item name="backgroundTint">@color/button_ack</item>
+    </style>
+
+    <style name="Button.Danger" parent="Widget.Material3.Button">
+        <item name="android:layout_height">64dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_on_primary</item>
+        <item name="backgroundTint">@color/button_danger</item>
+    </style>
+
+    <!-- Text Styles -->
+    <style name="Text.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="Text.Header" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="Text.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="Text.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Card Styles -->
+    <style name="Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="contentPadding">16dp</item>
+        <item name="cardBackgroundColor">@color/background_card</item>
+    </style>
+
+    <style name="Card.Alert" parent="Card">
+        <item name="cardBackgroundColor">@color/background_alert</item>
+        <item name="cardElevation">8dp</item>
+    </style>
+</resources>

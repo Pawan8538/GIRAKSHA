@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "GeoGuard",
+    "slug": "geoguard-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1b1e"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.geoguard.mobile"
+    },
+    "android": {
+      "package": "com.geoguard.mobile",
+      "versionCode": 1
+    },
+    "web": {},
+    "extra": {
+      "eas": {
+        "projectId": "954122f3-d9a7-42d3-871c-ab55753d57c0"
+      }
+    }
+  }
+}

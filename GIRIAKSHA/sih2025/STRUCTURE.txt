@@ -1,0 +1,231 @@
+📁 /project-root
+/project-root
+│
+├── web-app/                 # Next.js Web Dashboard
+├── mobile-app/              # React Native + Expo App
+├── backend/                 # Node.js Backend (Vanilla JS)
+├── ml-service/              # Python FastAPI ML Service
+├── database/                # SQL schema + migrations
+├── docs/                    # Documentation + Diagrams
+└── README.md
+
+🟦 1. /web-app — TRUE Next.js Structure
+
+Not Express-like.
+Not React-like.
+This is correct Next.js 14 structure using /app folder.
+
+/web-app
+│
+├── app/
+│   ├── layout.js
+│   ├── page.js
+│   │
+│   ├── dashboard/
+│   │   ├── page.js
+│   │   ├── AlertsPanel.js
+│   │   ├── CameraFeed.js
+│   │   ├── MapView.js
+│   │   └── SensorCharts.js
+│   │
+│   ├── auth/
+│   │   ├── login/page.js
+│   │   └── register/page.js
+│   │
+│   ├── govt/
+│   │   ├── page.js
+│   │   └── AdvisoryView.js
+│   │
+│   ├── admin/
+│   │   ├── page.js
+│   │   ├── UserManagement.js
+│   │   ├── SensorManagement.js
+│   │   └── SlopeManagement.js
+│   │
+│   └── api/                 # (Optional Next.js server APIs)
+│       └── hello/route.js
+│
+├── components/
+│   ├── Navbar.js
+│   ├── Sidebar.js
+│   ├── RiskIndicator.js
+│   └── MapLegend.js
+│
+├── services/
+│   ├── api.js               # axios wrapper
+│   ├── auth.js
+│   ├── sensors.js
+│   └── alerts.js
+│
+├── hooks/
+│   ├── useAuth.js
+│   ├── useSensors.js
+│   └── useWebSocket.js
+│
+├── public/
+│   ├── logo.png
+│   └── icons/
+│
+├── styles/
+│   ├── globals.css
+│   └── dashboard.css
+│
+├── package.json
+└── README.md
+
+
+✔ Includes Next.js 13/14 app router
+✔ Includes Leaflet-based pages
+✔ Includes real API call structure
+✔ Clean separation of components/services
+
+🟧 2. /mobile-app — Real Expo Structure
+/mobile-app
+│
+├── src/
+│   ├── screens/
+│   │   ├── HomeScreen.js
+│   │   ├── MapScreen.js
+│   │   ├── ComplaintScreen.js
+│   │   ├── SOSSceen.js
+│   │   ├── GovAlertsScreen.js
+│   │   └── LoginScreen.js
+│   │
+│   ├── components/
+│   │   ├── MapView.js
+│   │   ├── AlertCard.js
+│   │   └── UploadBox.js
+│   │
+│   ├── navigation/
+│   │   ├── AppNavigator.js
+│   │   └── AuthNavigator.js
+│   │
+│   ├── services/
+│   │   ├── api.js
+│   │   ├── offlineQueue.js
+│   │   └── notifications.js
+│   │
+│   ├── storage/
+│   │   ├── offline.db (SQLite)
+│   │   └── queue.js
+│   │
+│   ├── hooks/
+│   │   ├── useNetwork.js
+│   │   └── useOfflineQueue.js
+│   │
+│   ├── utils/
+│   │   └── constants.js
+│   │
+│   └── App.js
+│
+├── assets/
+│   └── icons/
+│
+├── app.json
+├── package.json
+└── README.md
+
+
+✔ Includes offline storage
+✔ Supports SOS, complaints, alerts
+✔ Clean navigation structure
+
+🟩 3. /backend — Real Express API Structure (Vanilla JS)
+
+(You requested NO TypeScript)
+
+/backend
+│
+├── src/
+│   ├── app.js             # Express core
+│   ├── server.js          # Server start
+│   │
+│   ├── routes/
+│   │   ├── auth.routes.js
+│   │   ├── sensors.routes.js
+│   │   ├── alerts.routes.js
+│   │   ├── complaints.routes.js
+│   │   ├── govt.routes.js
+│   │   └── admin.routes.js
+│   │
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   ├── sensors.controller.js
+│   │   ├── ml.controller.js
+│   │   ├── complaints.controller.js
+│   │   └── alerts.controller.js
+│   │
+│   ├── services/
+│   │   ├── ml.service.js          # calls ML FastAPI
+│   │   ├── alerts.service.js
+│   │   ├── offlineQueue.service.js
+│   │   └── sensors.service.js
+│   │
+│   ├── middleware/
+│   │   ├── auth.js
+│   │   └── validate.js
+│   │
+│   ├── models/
+│   │   ├── db.js                  # PostgreSQL connection
+│   │   └── queries.js
+│   │
+│   ├── utils/
+│   │   ├── logger.js
+│   │   ├── response.js
+│   │   └── pagination.js
+│   │
+│   └── config/
+│       ├── env.js
+│       └── keys.js
+│
+├── package.json
+└── README.md
+
+
+✔ Clean Express structure
+✔ Aligned with your stack
+✔ ML service integration
+✔ Alert + offline queue
+✔ Manual + auto sensor data
+
+🟥 4. /ml-service — FastAPI ML Microservice
+/ml-service
+│
+├── api/
+│   ├── main.py
+│   ├── predict.py
+│   ├── detect.py
+│   └── explain.py
+│
+├── core/
+│   ├── loader.py
+│   ├── inference.py
+│   ├── preprocess.py
+│   └── postprocess.py
+│
+├── models/
+│   ├── model.onnx
+│   └── classes.json
+│
+├── requirements.txt
+└── README.md
+
+
+✔ Contains your ML model
+✔ Clean endpoint structure
+✔ Easy for backend to consume
+
+🟫 5. /database — SQL + Migrations
+/database
+│
+├── schema.sql
+├── migrations/
+│   ├── 001_init.sql
+│   ├── 002_add_sensors.sql
+│   ├── 003_add_alerts.sql
+│   └── 004_add_complaints.sql
+└── seed.sql
+
+
+✔ PostgreSQL + Timescale + PostGIS
+✔ All schemas in one place

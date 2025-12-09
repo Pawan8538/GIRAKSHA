@@ -1,0 +1,11 @@
+sensor_id,lat,lon,type,installation_m,nearest_cell
+S01,1677640.0,676880.0,displacement,2.47,cell_36_288
+S02,1677390.0,677140.0,vibration,2.36,cell_61_314
+S03,1677140.0,677410.0,piezometer,0.63,cell_86_341
+S04,1676890.0,676880.0,vibration,0.91,cell_111_288
+S05,1676630.0,677140.0,piezometer,0.6,cell_137_314
+S06,1676380.0,677410.0,piezometer,1.83,cell_162_341
+S07,1676130.0,676880.0,vibration,0.85,cell_187_288
+S08,1675870.0,677140.0,displacement,0.82,cell_213_314
+S09,1675620.0,677410.0,piezometer,1.59,cell_238_341
+S10,1675360.0,676880.0,displacement,1.45,cell_264_288

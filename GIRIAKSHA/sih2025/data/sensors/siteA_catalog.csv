@@ -1,0 +1,11 @@
+sensor_id,lat,lon,type,installation_m
+S01,1677640.0,676880.0,displacement,2.47
+S02,1677390.0,677140.0,vibration,2.36
+S03,1677140.0,677410.0,piezometer,0.63
+S04,1676890.0,676880.0,vibration,0.91
+S05,1676630.0,677140.0,piezometer,0.6
+S06,1676380.0,677410.0,piezometer,1.83
+S07,1676130.0,676880.0,vibration,0.85
+S08,1675870.0,677140.0,displacement,0.82
+S09,1675620.0,677410.0,piezometer,1.59
+S10,1675360.0,676880.0,displacement,1.45

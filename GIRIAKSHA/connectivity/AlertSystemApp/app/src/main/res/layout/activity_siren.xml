@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- Header Card -->
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvSirenTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/siren_title"
+                android:textAppearance="@style/Text.Title"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tvServer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Server: ---"
+                    android:textAppearance="@style/Text.Caption"/>
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_disconnected"
+                    android:textAppearance="@style/Text.Caption"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvZones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zones: ---"
+                android:textAppearance="@style/Text.Caption"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Audio Control Card -->
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/volume_warning"
+                android:textAppearance="@style/Text.Body"
+                android:textColor="@color/severity_2"
+                android:layout_marginBottom="16dp"/>
+
+            <Button
+                android:id="@+id/btnEnableAudio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enable_audio_button"
+                style="@style/Button.Primary"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvAudioStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/audio_not_enabled"
+                android:textAppearance="@style/Text.Caption"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/btnTestAlarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_alarm_button"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:enabled="false"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Siren Active Card (shown when siren playing) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/sirenActiveCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/background_siren"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/siren_active_title"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/tvSirenZone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zone: Unit-3"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvSirenAlertId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alert ID: S123456"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvSirenStarted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Started: --:--"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:layout_marginBottom="24dp"/>
+
+            <Button
+                android:id="@+id/btnStopSiren"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stop_button"
+                style="@style/Button.Danger"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

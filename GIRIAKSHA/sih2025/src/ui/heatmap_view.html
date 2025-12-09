@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>GeoGuard — Risk Heatmap Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #1a1b1e;
+      --panel-bg: rgba(30, 30, 35, 0.85);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a0;
+      --accent-color: #3b82f6;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --success-color: #10b981;
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      overflow: hidden;
+    }
+
+    #map {
+      height: 100vh;
+      width: 100vw;
+      z-index: 1;
+    }
+
+    /* Glassmorphism Panel Base */
+    .glass-panel {
+      background: var(--panel-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Top Bar */
+    .topbar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      border-left: 1px solid var(--border-color);
+      padding-left: 12px;
+    }
+
+    /* Controls Container */
+    .controls-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .control-btn {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(12px);
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Filter Panel */
+    .filter-panel {
+      position: absolute;
+      top: 80px;
+      right: 20px;
+      z-index: 999;
+      padding: 16px;
+      width: 200px;
+      display: none;
+      /* Hidden by default */
+    }
+
+    .filter-panel.active {
+      display: block;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    .filter-option input {
+      margin-right: 8px;
+    }
+
+    /* Legend */
+    .legend {
+      position: absolute;
+      bottom: 30px;
+      right: 20px;
+      z-index: 1000;
+      padding: 16px;
+      font-size: 0.85rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 8px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 320px;
+      background: #1e1e24;
+      z-index: 2000;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .sidebar-content {
+      padding: 24px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .risk-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent-color);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger-color);
+      color: white;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    /* Leaflet Customization */
+    .leaflet-popup-content-wrapper {
+      background: var(--panel-bg);
+      color: var(--text-primary);
+      backdrop-filter: blur(12px);
+    }
+
+    .leaflet-popup-tip {
+      background: var(--panel-bg);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="map"></div>
+
+  <!-- Top Bar -->
+  <div class="topbar glass-panel">
+    <div class="brand-logo">GeoGuard</div>
+    <div class="brand-subtitle">Site A — Real-time Risk Monitor</div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-container">
+    <button class="control-btn" onclick="toggleFilters()" title="Filter Layers">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+        </path>
+      </svg>
+    </button>
+    <button class="control-btn" onclick="map.zoomIn()" title="Zoom In">+</button>
+    <button class="control-btn" onclick="map.zoomOut()" title="Zoom Out">-</button>
+  </div>
+
+  <!-- Filter Panel -->
+  <div id="filterPanel" class="filter-panel glass-panel">
+    <div style="font-weight:600; margin-bottom:12px">Risk Filters</div>
+    <label class="filter-option">
+      <input type="checkbox" checked onchange="updateFilters()" value="imminent"> Imminent
+    </label>
+    <label class="filter-option">
+      <input type="checkbox" checked onchange="updateFilters()" value="high"> High
+    </label>
+    <label class="filter-option">
+      <input type="checkbox" checked onchange="updateFilters()" value="medium"> Medium
+    </label>
+    <label class="filter-option">
+      <input type="checkbox" checked onchange="updateFilters()" value="low"> Low
+    </label>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend glass-panel">
+    <div style="font-weight:600; margin-bottom:8px">Risk Levels</div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#7a0019"></div>Imminent (>0.75)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#d62728"></div>High (>0.60)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#ff7f0e"></div>Medium (>0.35)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#2ca02c"></div>Low (<0.35)< /div>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Cell Details</div>
+        <button class="close-btn" onclick="closeSidebar()">×</button>
+      </div>
+      <div class="sidebar-content" id="sidebarContent">
+        <!-- Content injected by JS -->
+        <div style="color: var(--text-secondary); text-align: center; margin-top: 40px;">
+          Select a map cell to view details
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+    <script>
+      // CONFIG
+      const HEATMAP_URL = "http://127.0.0.1:8001/map/heatmap?site_id=siteA&sample_rate=100&limit=1000";
+
+      // Colors
+      function scoreToColor(s) {
+        if (s >= 0.75) return '#7a0019';
+        if (s >= 0.60) return '#d62728';
+        if (s >= 0.35) return '#ff7f0e';
+        return '#2ca02c';
+      }
+
+      function getRiskLabel(s) {
+        if (s >= 0.75) return { label: 'Imminent', color: '#7a0019' };
+        if (s >= 0.60) return { label: 'High', color: '#d62728' };
+        if (s >= 0.35) return { label: 'Medium', color: '#ff7f0e' };
+        return { label: 'Low', color: '#2ca02c' };
+      }
+
+      // Map Init
+      const map = L.map('map', {
+        zoomControl: false, // Custom controls
+        attributionControl: false
+      }).setView([15.15, 76.92], 14);
+
+      // Dark Map Layer
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
+      }).addTo(map);
+
+      L.control.attribution({ position: 'bottomleft' }).addTo(map);
+
+      let geoLayer = null;
+      let allFeatures = [];
+
+      // Sidebar Logic
+      const sidebar = document.getElementById('sidebar');
+      const sidebarContent = document.getElementById('sidebarContent');
+
+      function openSidebar(props) {
+        const score = (props.risk_score || 0).toFixed(3);
+        const riskInfo = getRiskLabel(props.risk_score || 0);
+        const slope = props.slope_deg ? props.slope_deg.toFixed(2) : 'N/A';
+
+        sidebarContent.innerHTML = `
+        <div style="margin-bottom: 24px;">
+          <span class="risk-badge" style="background: ${riskInfo.color}">${riskInfo.label} Risk</span>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">Risk Score</div>
+          <div class="metric-value" style="color: ${riskInfo.color}">${score}</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">Slope Angle</div>
+          <div class="metric-value">${slope}°</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-label">Cell ID</div>
+          <div style="font-size: 1.1rem; font-family: monospace;">${props.cell_id || 'Unknown'}</div>
+        </div>
+
+        <div style="margin-top: 32px;">
+          <button class="action-btn btn-primary" onclick="explainRisk('${props.cell_id}')">
+            Analyze Factors (SHAP)
+          </button>
+          <button class="action-btn btn-danger" onclick="createAlert('${props.cell_id}', ${score})">
+            Trigger Alert
+          </button>
+          <button class="action-btn btn-outline" onclick="closeSidebar()">
+            Close
+          </button>
+        </div>
+      `;
+        sidebar.classList.add('open');
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove('open');
+      }
+
+      // Actions
+      window.explainRisk = (cellId) => {
+        const url = `http://127.0.0.1:8001/explain?cell_id=${encodeURIComponent(cellId)}`;
+        window.open(url, '_blank');
+      };
+
+      window.createAlert = (cellId, score) => {
+        if (confirm(`Are you sure you want to trigger a HIGH PRIORITY alert for cell ${cellId}?`)) {
+          fetch('http://127.0.0.1:8001/alerts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cell_id: cellId, risk_score: score })
+          }).then(resp => {
+            if (resp.ok) alert('Alert dispatched successfully.');
+            else alert('Failed to dispatch alert.');
+          }).catch(e => alert('Error: ' + e.message));
+        }
+      };
+
+      // Filtering
+      function toggleFilters() {
+        document.getElementById('filterPanel').classList.toggle('active');
+      }
+
+      window.updateFilters = () => {
+        if (!geoLayer) return;
+
+        const checked = Array.from(document.querySelectorAll('.filter-panel input:checked')).map(cb => cb.value);
+
+        geoLayer.eachLayer(layer => {
+          const rc = layer.feature.properties.risk_class;
+          if (checked.includes(rc)) {
+            layer.setStyle({ opacity: 0.8, fillOpacity: 0.7 });
+            if (!map.hasLayer(layer)) layer.addTo(map); // This logic is tricky with GeoJSON layer group
+          } else {
+            layer.setStyle({ opacity: 0, fillOpacity: 0 });
+          }
+        });
+
+        // Better approach: filter data and re-render or use style opacity
+        // For simplicity in this version, we'll just reload with filter logic if needed, 
+        // but modifying style opacity is faster for client-side.
+      };
+
+      // Data Loading
+      async function loadHeatmap() {
+        try {
+          const r = await fetch(HEATMAP_URL);
+          if (!r.ok) throw new Error('Failed to fetch data');
+          const geo = await r.json();
+          allFeatures = geo.features;
+
+          if (geoLayer) map.removeLayer(geoLayer);
+
+          geoLayer = L.geoJSON(geo, {
+            style: function (feature) {
+              const s = feature.properties.risk_score || 0.0;
+              return {
+                color: scoreToColor(s),
+                fillColor: scoreToColor(s),
+                fillOpacity: 0.7,
+                weight: 1,
+                opacity: 0.8
+              };
+            },
+            onEachFeature: function (feature, layer) {
+              layer.on('click', (e) => {
+                L.DomEvent.stopPropagation(e); // Prevent map click
+                openSidebar(feature.properties);
+              });
+            }
+          }).addTo(map);
+
+          if (geoLayer.getBounds().isValid()) {
+            map.fitBounds(geoLayer.getBounds(), { padding: [50, 50] });
+          }
+
+        } catch (err) {
+          console.error(err);
+          alert("Error loading heatmap data. Ensure backend is running.");
+        }
+      }
+
+      // Click map to close sidebar
+      map.on('click', () => closeSidebar());
+
+      loadHeatmap();
+
+    </script>
+</body>
+
+</html>

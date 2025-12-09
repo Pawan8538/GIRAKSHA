@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand colors -->
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+    <color name="primary_light">#BBDEFB</color>
+    <color name="accent">#FF9800</color>
+    
+    <!-- Alert severity colors -->
+    <color name="severity_1">#FFC107</color>
+    <color name="severity_2">#FF9800</color>
+    <color name="severity_3">#F44336</color>
+    
+    <!-- Status colors -->
+    <color name="status_connected">#4CAF50</color>
+    <color name="status_disconnected">#F44336</color>
+    <color name="status_connecting">#FFC107</color>
+    
+    <!-- Button colors -->
+    <color name="button_ack">#4CAF50</color>
+    <color name="button_ack_pressed">#388E3C</color>
+    <color name="button_danger">#F44336</color>
+    <color name="button_danger_pressed">#D32F2F</color>
+    <color name="button_primary">#2196F3</color>
+    <color name="button_primary_pressed">#1976D2</color>
+    
+    <!-- Background colors -->
+    <color name="background">#FAFAFA</color>
+    <color name="background_card">#FFFFFF</color>
+    <color name="background_alert">#FFEBEE</color>
+    <color name="background_siren">#FF5252</color>
+    
+    <!-- Text colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_hint">#9E9E9E</color>
+    
+    <!-- Common colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="divider">#BDBDBD</color>
+</resources>

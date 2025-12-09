@@ -1,0 +1,1199 @@
+INFO:     Started server process [73378]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+⚠️ TensorFlow not available. Vision model will run in MOCK mode.
+🚀 Initializing GeoGuard Fusion Engine...
+Running in MOCK mode (TensorFlow missing)
+✅ Fusion Engine Ready.
+🔗 SYSTEM STATUS: All 4 Modules Connected (Sensors, Vision, Climate, Backend)
+📍 SITE CONTEXT: siteA (Lat: 11.1053, Lon: 79.1506)
+🚀 Starting GeoGuard API Server...
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58890 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:58859 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59263 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:59566 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60242 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60240 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60243 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60241 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60244 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60243 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60242 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60240 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60244 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60243 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60242 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60243 - "GET /map/grid HTTP/1.1" 200 OK
+⚠️ Weather API Error: , using simulation
+INFO:     127.0.0.1:60241 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60311 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60312 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60333 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60335 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60334 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60332 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60331 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60334 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60332 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60331 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60333 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60335 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60332 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60331 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60332 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60389 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60392 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60392 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60389 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60400 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60402 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60401 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60389 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60392 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60425 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60426 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+⚠️ Weather API Error: , using simulation
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+⚠️ Weather API Error: , using simulation
+INFO:     127.0.0.1:60762 - "GET /map/grid HTTP/1.1" 200 OK
+⚠️ Weather API Error: , using simulation
+INFO:     127.0.0.1:60763 - "GET /risk/current HTTP/1.1" 200 OK
+⚠️ Weather API Error: , using simulation
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+⚠️ Weather API Error: , using simulation
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60423 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     127.0.0.1:60422 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61056 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61057 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61056 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61057 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61056 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61057 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61056 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61057 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61098 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61099 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61119 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61119 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61127 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61128 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61134 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61128 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61156 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61312 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61312 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61312 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61312 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61377 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61407 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     192.168.1.7:61153 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /risk/current HTTP/1.1" 200 OK
+✅ Real weather data fetched for coordinates (11.1053, 79.1506)
+INFO:     122.181.102.182:0 - "GET /map/grid HTTP/1.1" 200 OK
+🌧️ EVENT: Rain started (Intensity: 1.0)
+INFO:     122.181.102.182:0 - "POST /sim/event/rain HTTP/1.1" 200 OK
