@@ -40,3 +40,4 @@ yarn-error.log*
 
 # Render
 docs/DEPLOYMENT_GUIDE.md
+.idea/
