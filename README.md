@@ -7,7 +7,7 @@
 | **Web Dashboard** | 🟢 Live | [sih-web-app-pcgw.onrender.com](https://sih-web-app-pcgw.onrender.com) |
 | **Backend API** | 🟢 Live | [sih-backend-gwzk.onrender.com](https://sih-backend-gwzk.onrender.com) |
 | **ML Service** | 🟢 Live | [sih-ml-service.onrender.com](https://sih-ml-service.onrender.com) |
-| **Database** | 🟢 Live | `dpg-d53ssvur433s73ciqpb0-a` (Internal) |
+| **Database** | 🟢 Live | Internal Managed PostgreSQL |
 
 ### 🔑 Demo Login Credentials
 Use these credentials to explore the platform roles without signing up:
