@@ -2,7 +2,7 @@
 
 A comprehensive React Native mobile application for the GeoGuard mine safety and monitoring system. This app provides all features from the web dashboard, including ML integration, real-time alerts, sensor monitoring, and more.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -14,7 +14,7 @@ A comprehensive React Native mobile application for the GeoGuard mine safety and
 - [ML Features](#ml-features)
 - [Troubleshooting](#troubleshooting)
 
-## 🔧 Requirements
+## Requirements
 
 ### System Requirements
 
@@ -35,7 +35,7 @@ A comprehensive React Native mobile application for the GeoGuard mine safety and
 - CocoaPods
 - iOS Simulator or physical device (iOS 13.0+)
 
-## 📦 Installation
+## Installation
 
 ### 1. Install Node.js and npm
 
@@ -86,7 +86,7 @@ pod install
 cd ..
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -120,7 +120,7 @@ export const API_URL = 'http://your-backend-url:4000/api'
 
 **Note**: For physical devices, use your computer's local IP address instead of `localhost`.
 
-## 🚀 Running the App
+## Running the App
 
 ### Development Mode
 
@@ -186,7 +186,7 @@ expo build:android
 eas build --platform ios --profile production
 ```
 
-## ✨ Features
+## Features
 
 ### Core Features
 
@@ -260,7 +260,7 @@ eas build --platform ios --profile production
 - **Government Authority**: Dashboard, Advisories, Alerts
 - **Super Admin**: All features + Admin panel
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 mobile-app/
@@ -272,7 +272,7 @@ mobile-app/
 │   │   └── UploadBox.js
 │   ├── hooks/                 # Custom React hooks
 │   │   ├── useNetwork.js
-│   │   └── useOfflineQueue.js
+│   │   ├── useOfflineQueue.js
 │   ├── navigation/            # Navigation setup
 │   │   ├── AppNavigator.js
 │   │   └── AuthNavigator.js
@@ -308,7 +308,7 @@ mobile-app/
 └── README.md                  # This file
 ```
 
-## 🔌 API Integration
+## API Integration
 
 The app connects to the backend API at `http://localhost:4000/api` (configurable).
 
@@ -330,7 +330,7 @@ The app connects to the backend API at `http://localhost:4000/api` (configurable
 
 The app uses JWT tokens stored securely in AsyncStorage. Tokens are automatically attached to API requests via axios interceptors.
 
-## 🤖 ML Features
+## ML Features
 
 ### Risk Prediction
 
@@ -357,7 +357,7 @@ The app uses JWT tokens stored securely in AsyncStorage. Tokens are automaticall
 
 ML features require the Python ML service to be running. See backend README for ML service setup.
 
-## 🔄 Offline Support
+## Offline Support
 
 The app includes offline queue functionality:
 
@@ -366,7 +366,7 @@ The app includes offline queue functionality:
 - Visual indicator of queue status
 - Last sync timestamp
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -416,7 +416,7 @@ npm install
 3. Review backend API documentation
 4. Check ML service status
 
-## 📱 Platform-Specific Notes
+## Platform-Specific Notes
 
 ### Android
 
@@ -432,7 +432,7 @@ npm install
 - Camera and photo library access
 - Location services
 
-## 🔐 Permissions
+## Permissions
 
 The app requires the following permissions:
 
@@ -441,7 +441,7 @@ The app requires the following permissions:
 - **Location**: For map features and location tagging
 - **Notifications**: For push notifications (optional)
 
-## 📊 Dependencies
+## Dependencies
 
 ### Core Dependencies
 
@@ -467,7 +467,7 @@ The app requires the following permissions:
 - `expo-notifications`: ~0.28.15 - Push notifications
 - `socket.io-client`: ^4.7.5 - WebSocket client
 
-## 🚀 Deployment
+## Deployment
 
 ### Android
 
@@ -487,25 +487,25 @@ eas build --platform ios
 
 2. Submit to App Store via EAS Submit
 
-## 📝 Version Information
+## Version Information
 
 - **React Native**: 0.74.3
 - **Expo SDK**: ~51.0.17
 - **Node.js**: >= 18.0.0
 - **npm**: >= 9.0.0
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - Backend API: See `../backend/README.md`
-- ML Service: See `../backend/ml-service/README.md`
+- ML Service: See `../sih2025/README.md`
 - Web App: See `../web-app/README.md`
 - ML Integration: See `../ML_INTEGRATION_DOCS.txt`
 
-## 📄 License
+## License
 
 [Your License Here]
 
-## 👥 Contributors
+## Contributors
 
 [Your Team/Contributors]
 

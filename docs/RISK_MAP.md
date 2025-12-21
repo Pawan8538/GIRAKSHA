@@ -5,26 +5,26 @@ The Risk Map now includes manual weather control capabilities that allow you to 
 
 ## Features Added
 
-### 1. **Manual Weather Mode Toggle**
+### 1. Manual Weather Mode Toggle
 - Located at the top of the map screen
 - Switch between:
-  - **🌐 Live Mode**: Uses real weather data from API
-  - **🎮 Manual Mode**: Allows manual adjustment of weather conditions
+  - **Live Mode**: Uses real weather data from API
+  - **Manual Mode**: Allows manual adjustment of weather conditions
 
-### 2. **Weather Control Panel**
-When in Manual Mode, click "⚙️ Weather" to open the control panel with 4 adjustable parameters:
+### 2. Weather Control Panel
+When in Manual Mode, click "Weather" to open the control panel with 4 adjustable parameters:
 
-#### **💨 Wind Speed (0-60 km/h)**
+#### Wind Speed (0-60 km/h)
 - Controls wind intensity
 - Higher values increase risk for loose materials
 - Affects debris displacement potential
 
-#### **☀️ Sun Intensity (0-100%)**
+#### Sun Intensity (0-100%)
 - Controls solar exposure and evaporation
 - Low sun + high humidity = sustained soil saturation
 - High sun = faster drying and reduced pore pressure
 
-#### **🌧️ Rain (0-50 mm/h)**
+#### Rain (0-50 mm/h)
 - Controls precipitation intensity
 - Directly impacts soil saturation
 - Higher values dramatically increase landslide risk
@@ -34,22 +34,22 @@ When in Manual Mode, click "⚙️ Weather" to open the control panel with 4 adj
   - 10-20mm: Rain
   - 20+mm: Thunderstorm
 
-#### **💧 Humidity (0-100%)**
+#### Humidity (0-100%)
 - Controls atmospheric moisture
 - High humidity slows soil drying
 - Combined with rain, increases saturation duration
 
-### 3. **Weather Presets**
+### 3. Weather Presets
 Quick-apply common scenarios:
 
-- **☀️ Clear**: Wind 5 km/h, Sun 90%, Rain 0mm, Humidity 40%
-- **🌧️ Rainy**: Wind 15 km/h, Sun 30%, Rain 15mm, Humidity 75%
-- **⛈️ Storm**: Wind 45 km/h, Sun 10%, Rain 35mm, Humidity 90%
+- **Clear**: Wind 5 km/h, Sun 90%, Rain 0mm, Humidity 40%
+- **Rainy**: Wind 15 km/h, Sun 30%, Rain 15mm, Humidity 75%
+- **Storm**: Wind 45 km/h, Sun 10%, Rain 35mm, Humidity 90%
 
-### 4. **Cell Risk Explanation**
+### 4. Cell Risk Explanation
 When you tap any cell on the risk map, the detail modal now shows:
 
-**📊 Risk Analysis** section with 1-2 lines explaining:
+**Risk Analysis** section with 1-2 lines explaining:
 - Why the risk is at that level
 - Which factors are contributing most
 - Specific conditions affecting that cell
@@ -58,7 +58,7 @@ Example explanations:
 - "High risk due to proximity to active mining operations. Sensors detect significant ground movement and high pore pressure."
 - "Heavy rainfall has saturated soil, reducing slope stability. Recent rainfall increases pore water pressure."
 
-### 5. **Real-Time Risk Updates**
+### 5. Real-Time Risk Updates
 - Moving any slider triggers immediate risk recalculation (300ms debounce)
 - All cells on the map update their colors based on new conditions
 - Statistics update to reflect new risk distribution
@@ -75,7 +75,7 @@ Weather impacts all factors through a multiplier:
 ```
 Weather Multiplier = 1.1 + (Weather Impact × 0.8)
 
-Weather Impact = 
+Weather Impact =
   (24h Rain / 50) × 0.35 +
   (72h Rain / 100) × 0.25 +
   (Rain Intensity / 25) × 0.20 +
@@ -89,7 +89,7 @@ The system analyzes each cell and generates explanations based on:
 
 - **High mine proximity** (>60%): "High risk due to proximity to active mining operations"
 - **Geological factors** (>40%): "Geological formation in this area is prone to slope failure"
-- **Sensor alerts**: 
+- **Sensor alerts**:
   - >50%: "Sensors detect significant ground movement and high pore pressure"
   - >30%: "Sensor readings show elevated displacement and vibration levels"
 - **Weather impacts**:

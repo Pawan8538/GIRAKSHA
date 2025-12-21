@@ -1,6 +1,6 @@
 ## Backend Service (Node.js + Express)
 
-This folder contains the main API gateway and backend services for the landslide early warning system.  
+This folder contains the main API gateway and backend services for the landslide early warning system.
 Stack: **Node.js (vanilla JS)**, **Express**, **PostgreSQL + TimescaleDB + PostGIS**, **Redis**, **Socket.io**, **FastAPI ML integration**, **S3 / MinIO** for media.
 
 ### Folder structure (current + planned)
@@ -21,7 +21,7 @@ Stack: **Node.js (vanilla JS)**, **Express**, **PostgreSQL + TimescaleDB + PostG
 
 ### Install dependencies
 
-From the project root (`C:\\SIH` in your case):
+From the project root (`C:\SIH` in your case):
 
 ```bash
 cd backend
