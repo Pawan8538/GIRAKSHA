@@ -7,6 +7,7 @@
 | **Web Dashboard** | 🟢 Live | [sih-web-app-pcgw.onrender.com](https://sih-web-app-pcgw.onrender.com) |
 | **Backend API** | 🟢 Live | [sih-backend-gwzk.onrender.com](https://sih-backend-gwzk.onrender.com) |
 | **ML Service** | 🟢 Live | [sih-ml-service.onrender.com](https://sih-ml-service.onrender.com) |
+| **Mobile App (APK)** | 📱 Pre-built | [Download GIRAKSHA.apk](./GIRAKSHA.apk) |
 | **Database** | 🟢 Live | Internal Managed PostgreSQL |
 
 ### 🔑 Demo Login Credentials

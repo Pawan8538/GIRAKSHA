@@ -4,6 +4,7 @@ A comprehensive React Native mobile application for the GeoGuard mine safety and
 
 ## Table of Contents
 
+- [Download APK](#download-apk)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -13,6 +14,11 @@ A comprehensive React Native mobile application for the GeoGuard mine safety and
 - [API Integration](#api-integration)
 - [ML Features](#ml-features)
 - [Troubleshooting](#troubleshooting)
+
+## Download APK
+
+A pre-built APK for Android devices is available in the root directory of this repository.
+[**Download GIRAKSHA.apk**](../GIRAKSHA.apk)
 
 ## Requirements
 
