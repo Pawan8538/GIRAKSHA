@@ -37,3 +37,6 @@ yarn-error.log*
 **/ios/Pods/
 *.apk
 *.aab
+
+# Render
+docs/DEPLOYMENT_GUIDE.md

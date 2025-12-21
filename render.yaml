@@ -15,12 +15,12 @@ services:
           name: sih-db
           property: connectionString
       - key: JWT_SECRET
-        generate: true
+        sync: false
       - key: ML_SERVICE_URL
         fromService:
           type: web
           name: sih-ml-service
-          property: url
+          property: hostport
 
   # 2. Next.js Web App
   - type: web
@@ -32,10 +32,7 @@ services:
     startCommand: npm start
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          type: web
-          name: sih-backend
-          property: url
+        sync: false
 
   # 3. Python ML Service
   - type: web
