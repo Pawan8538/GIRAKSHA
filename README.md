@@ -1,5 +1,24 @@
 # GIRAKSHA: AI-Powered Mine Safety System
 
+## 🚀 Live Demo & Access
+
+| Component | Status | URL |
+| :--- | :--- | :--- |
+| **Web Dashboard** | 🟢 Live | [sih-web-app-pcgw.onrender.com](https://sih-web-app-pcgw.onrender.com) |
+| **Backend API** | 🟢 Live | [sih-backend-gwzk.onrender.com](https://sih-backend-gwzk.onrender.com) |
+| **ML Service** | 🟢 Live | [sih-ml-service.onrender.com](https://sih-ml-service.onrender.com) |
+| **Database** | 🟢 Live | `dpg-d53ssvur433s73ciqpb0-a` (Internal) |
+
+### 🔑 Demo Login Credentials
+Use these credentials to explore the platform roles without signing up:
+
+| Role | Phone | Password | Access Level |
+| :--- | :--- | :--- | :--- |
+| **Super Admin** | `1234567890` | `123456` | Full Control, Global Monitoring |
+| **Site Admin** | `2222222222` | `123456` | Mine-Specific Alerts, worker management |
+| **Govt Authority** | `3333333333` | `123456` | Compliance, Reporting, Oversight |
+| **Field Worker** | `1122334455` | `123456` | SOS, Task Updates (Mobile View) |
+
 GIRAKSHA is a comprehensive safety monitoring platform for mining operations, integrating real-time sensor data, ML-driven risk prediction, and role-based alerts.
 
 ## Project Structure

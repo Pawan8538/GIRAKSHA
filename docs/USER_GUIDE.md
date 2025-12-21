@@ -56,10 +56,10 @@ GIRAKSHA is a comprehensive mine safety management system that monitors landslid
 ### SUPER ADMIN SETUP
 
 **Step 1: Initial Login**
-- URL: http://localhost:3000/login
+- URL: https://sih-web-app-pcgw.onrender.com/login
 - Use default super admin credentials
-- Email: admin@giriaksha.com
-- Password: admin123
+- Phone: 1234567890
+- Password: 123456
 
 **Step 2: Create Mine**
 - Go to Dashboard > Mines
@@ -85,8 +85,8 @@ GIRAKSHA is a comprehensive mine safety management system that monitors landslid
 - Submit & wait for Super Admin approval
 
 **Step 2: After Approval - Login**
-- URL: http://localhost:3000/login
-- Use registered email & password
+- URL: https://sih-web-app-pcgw.onrender.com/login
+- Use registered phone(2222222222) & password(123456)
 
 **Step 3: Add Field Workers (TWO METHODS)**
 
@@ -310,7 +310,7 @@ GIRAKSHA is a comprehensive mine safety management system that monitors landslid
 
 ## 6. WEB DASHBOARD GUIDE
 
-**URL**: http://localhost:3000
+**URL**: https://sih-web-app-pcgw.onrender.com
 
 **SUPER ADMIN DASHBOARD**
 - Overview cards: Users, Mines, Alerts, Tasks
@@ -432,15 +432,20 @@ GIRAKSHA is a comprehensive mine safety management system that monitors landslid
 ## CREDENTIALS (DEFAULT)
 
 **Super Admin:**
-- Email: admin@giriaksha.com
-- Password: admin123
+- Phone: 1234567890
+- Password: 123456
 
-**Site Admin:** (After registration & approval)
-- Your registered email & password
+**Site Admin:**
+- Phone: 2222222222
+- Password: 123456
 
-**Field Worker:** (After creation by admin)
-- Username: Your phone number
-- Password: Your phone number (change after first login)
+**Govt Authority:**
+- Phone: 3333333333
+- Password: 123456
+
+**Field Worker:**
+- Phone: 1122334455
+- Password: 123456
 
 ## SUPPORT
 
