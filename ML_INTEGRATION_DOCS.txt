@@ -1,0 +1,453 @@
+================================================================================
+                    GeoGuard ML Integration Documentation
+================================================================================
+
+This document describes the ML models integrated into the GeoGuard system,
+their features, API routes, and how to use them.
+
+================================================================================
+                            ML MODELS OVERVIEW
+================================================================================
+
+1. XGBoost Risk Prediction Model
+   - Purpose: Predicts landslide/rockfall risk based on sensor data and terrain features
+   - Model File: sih2025/geo_guard/models/xgb_baseline.json
+   - Input Features:
+     * disp_last: Latest displacement reading (mm)
+     * disp_1h_mean: Mean displacement over 1 hour (mm)
+     * disp_1h_std: Standard deviation of displacement over 1 hour (mm)
+     * pore_kpa: Pore pressure (kPa)
+     * vibration_g: Vibration reading (g)
+     * slope_deg: Slope angle (degrees)
+     * aspect_deg: Aspect angle (degrees)
+     * curvature: Terrain curvature
+     * roughness: Terrain roughness
+     * precip_mm_1h: Precipitation in last hour (mm)
+     * temp_c: Temperature (Celsius)
+   - Output: Risk score (0.0 to 1.0) and risk level (low/medium/high/imminent)
+
+2. Vision Model (Crack Detection)
+   - Purpose: Detects cracks in images of slopes and structures
+   - Model File: sih2025/geo_guard/colab_final_model.h5
+   - Input: Image file (JPG, PNG, WebP)
+   - Output: Crack probability (0.0 to 1.0), detection status, risk assessment
+
+3. Fusion Engine
+   - Purpose: Combines sensor data, climate data, and visual inspections
+   - Components:
+     * Sensor Stream: Real-time sensor readings (displacement, pore pressure, vibration)
+     * Climate Risk Engine: Weather data integration (OpenWeatherMap API)
+     * Vision Model: Crack detection from images
+   - Output: Comprehensive risk assessment with alerts and recommendations
+
+================================================================================
+                          PYTHON ML SERVICE API
+================================================================================
+
+Service Location: backend/ml-service/main.py
+Default Port: 8000 (configurable via ML_SERVICE_PORT env variable)
+
+BASE URL: http://localhost:8000
+
+Endpoints:
+
+1. GET /
+   - Health check endpoint
+   - Returns: Service status and model loading status
+
+2. POST /predict
+   - Predict risk score using XGBoost model
+   - Request Body:
+     {
+       "slopeId": "slope_1",
+       "sensorData": {
+         "disp_last": 0.5,
+         "disp_1h_mean": 0.4,
+         "disp_1h_std": 0.1,
+         "pore_kpa": 15.0,
+         "vibration_g": 0.01,
+         "slope_deg": 25.0,
+         "aspect_deg": 180.0,
+         "curvature": 0.1,
+         "roughness": 0.5,
+         "precip_mm_1h": 5.0,
+         "temp_c": 28.0
+       }
+     }
+   - Response:
+     {
+       "ok": true,
+       "implemented": true,
+       "data": {
+         "slopeId": "slope_1",
+         "risk_score": 0.65,
+         "risk_level": "high",
+         "features_used": {...},
+         "explainability": {
+           "top_features": {...}
+         }
+       }
+     }
+
+3. POST /detect
+   - Detect cracks in uploaded image
+   - Request: multipart/form-data with 'file' field
+   - Response:
+     {
+       "ok": true,
+       "implemented": true,
+       "data": {
+         "detected": true,
+         "confidence": 0.85,
+         "crack_probability": 0.85,
+         "source": {
+           "filename": "image.jpg",
+           "size": 123456
+         },
+         "risk_assessment": {
+           "level": "high",
+           "action": "Schedule inspection soon",
+           "probability": 0.85
+         }
+       }
+     }
+
+4. POST /forecast
+   - Generate 72-hour risk forecast
+   - Request Body:
+     {
+       "slopeId": "slope_1"
+     }
+   - Response:
+     {
+       "ok": true,
+       "implemented": true,
+       "data": {
+         "slopeId": "slope_1",
+         "timestamps": ["+12h", "+24h", "+36h", "+48h", "+60h", "+72h"],
+         "forecast": [0.35, 0.4, 0.45, 0.5, 0.52, 0.55],
+         "base_risk": 0.5,
+         "current_assessment": {...}
+       }
+     }
+
+5. GET /explain/{prediction_id}
+   - Explain a prediction using SHAP values
+   - Query Parameters: slope_id (optional)
+   - Response:
+     {
+       "ok": true,
+       "implemented": true,
+       "data": {
+         "predictionId": "pred_123",
+         "slopeId": "slope_1",
+         "shap_values": {
+           "displacement": 0.75,
+           "pore_pressure": 0.60,
+           "vibration": 0.30,
+           "visual_crack": 0.85,
+           "weather": 0.40
+         },
+         "feature_importance": {
+           "displacement": "high",
+           "pore_pressure": "medium",
+           ...
+         },
+         "explanation": "High ground displacement detected..."
+       }
+     }
+
+6. GET /risk/current
+   - Get current comprehensive risk assessment from fusion engine
+   - Response: Full risk assessment with sensor data, weather data, and alerts
+
+7. GET /risk/grid
+   - Get risk grid for heatmap visualization
+   - Response: Grid of risk values with coordinates
+
+================================================================================
+                        NODE.JS BACKEND API ROUTES
+================================================================================
+
+All routes require authentication and appropriate role (SITE_ADMIN or SUPER_ADMIN)
+
+BASE URL: http://localhost:4000/api/ml
+
+1. POST /api/ml/predict
+   - Predict risk score
+   - Request Body: { slopeId, sensorData }
+   - Calls: Python ML Service /predict
+
+2. POST /api/ml/detect
+   - Detect cracks in image
+   - Request: multipart/form-data with 'image' field
+   - Calls: Python ML Service /detect
+
+3. POST /api/ml/forecast
+   - Generate 72-hour forecast
+   - Request Body: { slopeId }
+   - Calls: Python ML Service /forecast
+
+4. GET /api/ml/explain/:predictionId
+   - Explain prediction
+   - Query Parameters: slopeId
+   - Calls: Python ML Service /explain/{predictionId}
+
+5. GET /api/ml/predictions
+   - List all predictions (placeholder - not fully implemented)
+
+================================================================================
+                          WEB-APP UI PAGES
+================================================================================
+
+All pages require SITE_ADMIN or SUPER_ADMIN role
+
+1. /ml/predictions
+   - ML Risk Prediction page
+   - Features:
+     * Select slope from dropdown
+     * Input sensor data (optional - can use defaults)
+     * Display risk score and level
+     * Show feature importance
+     * Display alerts for high risk
+
+2. /ml/detect
+   - Crack Detection page
+   - Features:
+     * Upload image file
+     * Image preview
+     * Display detection results
+     * Show confidence and risk assessment
+     * Display recommendations based on risk level
+
+3. /ml/forecast
+   - 72-Hour Risk Forecast page
+   - Features:
+     * Select slope
+     * Display forecast chart (Chart.js)
+     * Show current assessment with weather data
+     * Display alerts
+
+4. /ml/explain
+   - ML Model Explainability page
+   - Features:
+     * Enter prediction ID
+     * Select slope
+     * Display SHAP values visualization
+     * Show feature importance levels
+     * Human-readable explanation
+
+================================================================================
+                          SETUP & CONFIGURATION
+================================================================================
+
+1. Python ML Service Setup:
+   - Navigate to: backend/ml-service/
+   - Install dependencies:
+     pip install -r requirements.txt
+   - Set environment variable (optional):
+     export ML_SERVICE_PORT=8000
+   - Run service:
+     python main.py
+   - Or use uvicorn:
+     uvicorn main:app --host 0.0.0.0 --port 8000
+
+2. Node.js Backend Configuration:
+   - Set environment variable in .env:
+     ML_SERVICE_URL=http://localhost:8000
+   - Install additional dependency:
+     npm install form-data
+   - The backend will automatically call the Python ML service
+
+3. Model Files:
+   - Ensure model files are in correct locations:
+     * XGBoost: sih2025/geo_guard/models/xgb_baseline.json
+     * Vision: sih2025/geo_guard/colab_final_model.h5
+   - The Python service will look for these files relative to the project root
+
+4. Dependencies:
+   - Python: fastapi, uvicorn, xgboost, pandas, numpy, Pillow, httpx, tensorflow
+   - Node.js: axios, form-data (already in package.json)
+
+================================================================================
+                          RISK LEVEL CLASSIFICATIONS
+================================================================================
+
+Risk scores are mapped to levels as follows:
+
+- 0.0 - 0.35: LOW
+  * No immediate action required
+  * Continue routine monitoring
+
+- 0.35 - 0.6: MEDIUM
+  * Schedule inspection within 48 hours
+  * Monitor closely
+
+- 0.6 - 0.75: HIGH
+  * Schedule inspection within 24 hours
+  * Consider suspending operations
+  * Notify safety team
+
+- 0.75 - 1.0: IMMINENT
+  * Immediate inspection required
+  * Suspend operations
+  * Prepare evacuation plan
+  * Notify all stakeholders
+
+================================================================================
+                          FEATURE IMPORTANCE
+================================================================================
+
+The ML models use the following features with approximate importance:
+
+1. Displacement (disp_last, disp_1h_mean, disp_1h_std)
+   - Weight: High
+   - Critical threshold: >10mm
+   - Indicates ground movement
+
+2. Pore Pressure (pore_kpa)
+   - Weight: High
+   - Critical threshold: >50kPa
+   - Indicates water saturation
+
+3. Vibration (vibration_g)
+   - Weight: Medium
+   - Critical threshold: >0.5g
+   - Indicates seismic activity or movement
+
+4. Terrain Features (slope_deg, aspect_deg, curvature, roughness)
+   - Weight: Medium
+   - Static features from DEM data
+
+5. Weather (precip_mm_1h, temp_c)
+   - Weight: Medium-High
+   - Dynamic features from weather API
+   - Rainfall significantly increases risk
+
+6. Visual Crack Detection
+   - Weight: High (when detected)
+   - Direct indicator of structural issues
+
+================================================================================
+                          ERROR HANDLING
+================================================================================
+
+1. ML Service Unavailable:
+   - If Python ML service is not running, backend returns:
+     {
+       "ok": false,
+       "implemented": false,
+       "message": "ML service unavailable — ensure Python ML service is running"
+     }
+
+2. Model Not Loaded:
+   - If model files are missing, service returns 503 status with error message
+   - Service will still start but endpoints will return errors
+
+3. Invalid Input:
+   - Missing required fields: 400 Bad Request
+   - Invalid file format: 400 Bad Request
+   - File too large: 400 Bad Request (max 10MB)
+
+4. Processing Errors:
+   - Internal server errors: 500 with error details
+   - Timeout: 30 seconds for ML processing
+
+================================================================================
+                          TESTING EXAMPLES
+================================================================================
+
+1. Test Prediction:
+   curl -X POST http://localhost:8000/predict \
+     -H "Content-Type: application/json" \
+     -d '{
+       "slopeId": "test_slope",
+       "sensorData": {
+         "disp_last": 0.5,
+         "disp_1h_mean": 0.4,
+         "disp_1h_std": 0.1,
+         "pore_kpa": 15.0,
+         "vibration_g": 0.01,
+         "slope_deg": 25.0,
+         "aspect_deg": 180.0,
+         "curvature": 0.1,
+         "roughness": 0.5,
+         "precip_mm_1h": 5.0,
+         "temp_c": 28.0
+       }
+     }'
+
+2. Test Detection:
+   curl -X POST http://localhost:8000/detect \
+     -F "file=@test_image.jpg"
+
+3. Test Forecast:
+   curl -X POST http://localhost:8000/forecast \
+     -H "Content-Type: application/json" \
+     -d '{"slopeId": "test_slope"}'
+
+4. Test Explain:
+   curl http://localhost:8000/explain/pred_123?slope_id=test_slope
+
+================================================================================
+                          NOTES & LIMITATIONS
+================================================================================
+
+1. Model Training:
+   - XGBoost model was trained on synthetic/simulated data
+   - For production use, retrain with real sensor data
+   - Vision model was trained on crack detection dataset
+
+2. Forecast Model:
+   - Current forecast uses simplified trend projection
+   - For production, implement time series forecasting (LSTM/ARIMA)
+
+3. Image URL Support:
+   - Currently only file upload is supported
+   - Image URL support is planned but not implemented
+
+4. Prediction Storage:
+   - Predictions are not currently stored in database
+   - Implement database storage for historical predictions
+
+5. Real-time Updates:
+   - Risk grid updates on request
+   - For real-time updates, implement WebSocket or polling
+
+6. Weather Data:
+   - Uses OpenWeatherMap API (free tier)
+   - Falls back to simulation if API unavailable
+   - API key: d35fba280190f0e95977742016f32cb4
+
+================================================================================
+                          FUTURE ENHANCEMENTS
+================================================================================
+
+1. Database Integration:
+   - Store predictions and results
+   - Historical analysis and trends
+
+2. Real-time Streaming:
+   - WebSocket support for live updates
+   - Push notifications for high-risk events
+
+3. Advanced Forecasting:
+   - Time series models (LSTM, Prophet)
+   - Multi-step ahead predictions
+
+4. Model Retraining:
+   - Automated retraining pipeline
+   - A/B testing for model versions
+
+5. Batch Processing:
+   - Process multiple images at once
+   - Bulk prediction endpoints
+
+6. Model Explainability:
+   - Full SHAP integration
+   - Interactive visualizations
+
+================================================================================
+                              END OF DOCUMENTATION
+================================================================================
+

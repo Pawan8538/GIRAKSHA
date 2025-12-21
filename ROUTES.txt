@@ -1,0 +1,617 @@
+================================================================================
+                    GeoGuard API Routes Documentation
+================================================================================
+
+Base URL: http://localhost:4000/api
+All routes require authentication unless specified otherwise.
+
+Authentication: Bearer Token in Authorization header
+Format: Authorization: Bearer <token>
+
+================================================================================
+                            AUTHENTICATION ROUTES
+================================================================================
+
+POST   /api/auth/register
+Description: Register a new user
+Auth: None (public)
+Body:
+{
+  "name": "string (required)",
+  "email": "string (required, valid email)",
+  "phone": "string (required)",
+  "password": "string (required, min 6 chars)",
+  "roleId": "integer (optional)"
+}
+Response: { success: true, data: user, token: "jwt_token" }
+
+POST   /api/auth/login
+Description: Login user
+Auth: None (public)
+Body:
+{
+  "email": "string (required, valid email)",
+  "password": "string (required)"
+}
+Response: { success: true, data: user, token: "jwt_token" }
+
+PUT    /api/auth/me
+Description: Update current user profile
+Auth: Required (any authenticated user)
+Body: { name, email, phone, etc. }
+Response: { success: true, data: updated_user }
+
+================================================================================
+                            SENSOR ROUTES
+================================================================================
+
+GET    /api/sensors
+Description: List all sensors
+Auth: Required
+Roles: FIELD_WORKER, SITE_ADMIN, SUPER_ADMIN
+Query Params: slopeId (optional)
+Response: { data: [sensor1, sensor2, ...] }
+
+GET    /api/sensors/:sensorId
+Description: Get sensor details
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Response: { data: sensor_object }
+
+POST   /api/sensors
+Description: Add new sensor
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body:
+{
+  "name": "string",
+  "type": "string",
+  "location": "object",
+  "slopeId": "integer"
+}
+Response: { data: created_sensor }
+
+POST   /api/sensors/:sensorId/readings
+Description: Add sensor reading
+Auth: Required
+Roles: FIELD_WORKER, SITE_ADMIN, SUPER_ADMIN
+Body:
+{
+  "value": "number",
+  "unit": "string",
+  "timestamp": "ISO string (optional)"
+}
+Response: { data: reading_object }
+
+GET    /api/sensors/:sensorId/readings
+Description: Get sensor readings
+Auth: Required
+Roles: FIELD_WORKER, SITE_ADMIN, SUPER_ADMIN
+Query Params: limit (optional, default: 100)
+Response: { data: [reading1, reading2, ...] }
+
+================================================================================
+                            ALERT ROUTES
+================================================================================
+
+POST   /api/alerts
+Description: Create alert
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN, GOV_AUTHORITY
+Body:
+{
+  "title": "string",
+  "message": "string",
+  "severity": "low|medium|high|critical",
+  "slopeId": "integer (optional)"
+}
+Response: { data: alert_object }
+
+POST   /api/alerts/sos
+Description: Send SOS emergency alert
+Auth: Required
+Roles: FIELD_WORKER
+Body:
+{
+  "location": "object (lat, lon)",
+  "message": "string (optional)"
+}
+Response: { data: sos_alert }
+
+POST   /api/alerts/:alertId/acknowledge
+Description: Acknowledge an alert
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN, GOV_AUTHORITY
+Response: { data: updated_alert }
+
+GET    /api/alerts/slope/:slopeId
+Description: Get alerts for a specific slope
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN, GOV_AUTHORITY
+Response: { data: [alert1, alert2, ...] }
+
+NOTE: There is no GET /api/alerts endpoint to list all alerts.
+Use GET /api/alerts/slope/:slopeId to get alerts for a specific slope.
+
+================================================================================
+                            COMPLAINT ROUTES
+================================================================================
+
+POST   /api/complaints/upload
+Description: Upload evidence file
+Auth: Required
+Roles: FIELD_WORKER, SITE_ADMIN, SUPER_ADMIN
+Content-Type: multipart/form-data
+Body: file (image file)
+Response: { data: { url: "file_url" } }
+
+POST   /api/complaints
+Description: Create complaint
+Auth: Required
+Roles: FIELD_WORKER, SITE_ADMIN, SUPER_ADMIN
+Content-Type: multipart/form-data
+Body:
+{
+  "title": "string",
+  "description": "string",
+  "location": "string (optional)",
+  "latitude": "number (optional)",
+  "longitude": "number (optional)",
+  "priority": "low|medium|high",
+  "image": "file (optional)"
+}
+Response: { data: complaint_object }
+
+GET    /api/complaints
+Description: List complaints
+Auth: Required
+Roles: FIELD_WORKER, SITE_ADMIN, SUPER_ADMIN, GOV_AUTHORITY
+Response: { data: [complaint1, complaint2, ...] }
+
+GET    /api/complaints/:complaintId
+Description: Get complaint details
+Auth: Required (any authenticated user)
+Response: { data: complaint_object }
+
+PATCH  /api/complaints/:complaintId/status
+Description: Update complaint status
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body: { "status": "pending|in_progress|resolved|rejected" }
+Response: { data: updated_complaint }
+
+POST   /api/complaints/:complaintId/feedback
+Description: Add feedback to complaint
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body: { "message": "string" }
+Response: { data: feedback_object }
+
+================================================================================
+                            ML (MACHINE LEARNING) ROUTES
+================================================================================
+
+POST   /api/ml/predict
+Description: Predict risk score using XGBoost model
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body:
+{
+  "slopeId": "string (required)",
+  "sensorData": {
+    "disp_last": "number (optional)",
+    "disp_1h_mean": "number (optional)",
+    "disp_1h_std": "number (optional)",
+    "pore_kpa": "number (optional)",
+    "vibration_g": "number (optional)",
+    "slope_deg": "number (optional)",
+    "aspect_deg": "number (optional)",
+    "curvature": "number (optional)",
+    "roughness": "number (optional)",
+    "precip_mm_1h": "number (optional)",
+    "temp_c": "number (optional)"
+  }
+}
+Response:
+{
+  "ok": true,
+  "implemented": true,
+  "data": {
+    "slopeId": "string",
+    "risk_score": "number (0.0-1.0)",
+    "risk_level": "low|medium|high|imminent",
+    "features_used": { ... },
+    "explainability": { "top_features": { ... } }
+  }
+}
+
+POST   /api/ml/detect
+Description: Detect cracks in uploaded image
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Content-Type: multipart/form-data
+Body: image (file)
+Response:
+{
+  "ok": true,
+  "implemented": true,
+  "data": {
+    "detected": "boolean",
+    "confidence": "number (0.0-1.0)",
+    "crack_probability": "number (0.0-1.0)",
+    "source": { "filename": "string", "size": "number" },
+    "risk_assessment": {
+      "level": "low|medium|high|critical",
+      "action": "string",
+      "probability": "number"
+    }
+  }
+}
+
+POST   /api/ml/forecast
+Description: Generate 72-hour risk forecast
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body: { "slopeId": "string (required)" }
+Response:
+{
+  "ok": true,
+  "implemented": true,
+  "data": {
+    "slopeId": "string",
+    "timestamps": ["+12h", "+24h", "+36h", "+48h", "+60h", "+72h"],
+    "forecast": [0.35, 0.4, 0.45, ...],
+    "base_risk": "number",
+    "current_assessment": { ... }
+  }
+}
+
+GET    /api/ml/explain/:predictionId
+Description: Explain prediction using SHAP values
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Query Params: slopeId (optional)
+Response:
+{
+  "ok": true,
+  "implemented": true,
+  "data": {
+    "predictionId": "string",
+    "slopeId": "string",
+    "shap_values": { ... },
+    "feature_importance": { ... },
+    "explanation": "string"
+  }
+}
+
+GET    /api/ml/predictions
+Description: List all predictions (placeholder)
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Response: { ok: false, implemented: false, data: { predictions: [] } }
+
+================================================================================
+                            TASK ROUTES
+================================================================================
+
+GET    /api/tasks/mine
+Description: Get current user's tasks
+Auth: Required
+Roles: FIELD_WORKER
+Query Params: status (optional)
+Response: { data: [task1, task2, ...] }
+
+GET    /api/tasks/:taskId
+Description: Get task details
+Auth: Required
+Roles: FIELD_WORKER
+Response: { data: task_object }
+
+POST   /api/tasks/:taskId/status
+Description: Update task status (worker)
+Auth: Required
+Roles: FIELD_WORKER
+Body:
+{
+  "status": "pending|in_progress|completed|blocked",
+  "notes": "string (optional)"
+}
+Response: { data: updated_task }
+
+POST   /api/tasks/:taskId/attachments
+Description: Upload task attachment
+Auth: Required
+Roles: FIELD_WORKER
+Content-Type: multipart/form-data
+Body: file (image/file)
+Response: { data: attachment_object }
+
+================================================================================
+                            ADMIN ROUTES
+================================================================================
+
+POST   /api/admin/create-super-admin
+Description: Create super admin user
+Auth: Required
+Roles: SUPER_ADMIN
+Body:
+{
+  "name": "string",
+  "email": "string",
+  "password": "string"
+}
+Response: { data: created_user }
+
+GET    /api/admin/users
+Description: List all users
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Response: { data: [user1, user2, ...] }
+
+PATCH  /api/admin/users/:userId/role
+Description: Change user role
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body: { "roleId": "integer" }
+Response: { data: updated_user }
+
+GET    /api/admin/slopes
+Description: List all slopes
+Auth: Required
+Roles: FIELD_WORKER, SITE_ADMIN, SUPER_ADMIN
+Response: { data: [slope1, slope2, ...] }
+
+POST   /api/admin/slopes
+Description: Create slope
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body:
+{
+  "name": "string",
+  "location": "object",
+  "description": "string (optional)"
+}
+Response: { data: created_slope }
+
+GET    /api/admin/slopes/:slopeId
+Description: Get slope details
+Auth: Required
+Roles: FIELD_WORKER, SITE_ADMIN, SUPER_ADMIN
+Response: { data: slope_object }
+
+PATCH  /api/admin/slopes/:slopeId
+Description: Update slope
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body: { name, location, description, etc. }
+Response: { data: updated_slope }
+
+PATCH  /api/admin/slopes/:slopeId/risk
+Description: Update slope risk level
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body: { "riskLevel": "low|medium|high|imminent" }
+Response: { data: updated_slope }
+
+DELETE /api/admin/slopes/:slopeId
+Description: Delete slope
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Response: { data: deleted_slope }
+
+GET    /api/admin/tasks
+Description: List all tasks (admin view)
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Query Params: status (optional)
+Response: { data: [task1, task2, ...] }
+
+POST   /api/admin/tasks
+Description: Create task
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body:
+{
+  "title": "string",
+  "description": "string",
+  "assignedTo": "integer (user_id)",
+  "priority": "low|medium|high",
+  "dueDate": "ISO string (optional)"
+}
+Response: { data: created_task }
+
+PATCH  /api/admin/tasks/:taskId/status
+Description: Update task status (admin)
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Body: { "status": "pending|in_progress|completed|blocked" }
+Response: { data: updated_task }
+
+================================================================================
+                            GOVERNMENT ROUTES
+================================================================================
+
+POST   /api/govt/advisories
+Description: Post government advisory
+Auth: Required
+Roles: GOV_AUTHORITY, SUPER_ADMIN
+Content-Type: multipart/form-data
+Body:
+{
+  "title": "string",
+  "message": "string",
+  "severity": "info|warning|critical",
+  "slopeId": "integer (optional)",
+  "targetSiteAdminId": "integer (optional)",
+  "attachments": "file[] (optional, max 5)"
+}
+Response: { data: advisory_object }
+
+GET    /api/govt/advisories
+Description: Get advisories
+Auth: Required
+Roles: GOV_AUTHORITY, SUPER_ADMIN, SITE_ADMIN
+Query Params: slopeId, targetSiteAdminId (optional)
+Response: { data: [advisory1, advisory2, ...] }
+
+================================================================================
+                            ROLES ROUTES
+================================================================================
+
+GET    /api/roles
+Description: List all roles
+Auth: Required
+Roles: SITE_ADMIN, SUPER_ADMIN
+Response: { data: [role1, role2, ...] }
+
+================================================================================
+                            MESSAGES ROUTES
+================================================================================
+
+GET    /api/messages/conversations
+Description: List conversations
+Auth: Required
+Roles: GOV_AUTHORITY, SITE_ADMIN, SUPER_ADMIN
+Response: { data: [conversation1, conversation2, ...] }
+
+POST   /api/messages/conversations
+Description: Start new conversation
+Auth: Required
+Roles: GOV_AUTHORITY, SITE_ADMIN, SUPER_ADMIN
+Body: { "participantIds": [id1, id2, ...], "initialMessage": "string" }
+Response: { data: conversation_object }
+
+GET    /api/messages/participants
+Description: List available participants
+Auth: Required
+Roles: GOV_AUTHORITY, SITE_ADMIN, SUPER_ADMIN
+Response: { data: [user1, user2, ...] }
+
+GET    /api/messages/conversations/:conversationId/messages
+Description: Get messages in conversation
+Auth: Required
+Roles: GOV_AUTHORITY, SITE_ADMIN, SUPER_ADMIN
+Response: { data: [message1, message2, ...] }
+
+POST   /api/messages/conversations/:conversationId/messages
+Description: Send message in conversation
+Auth: Required
+Roles: GOV_AUTHORITY, SITE_ADMIN, SUPER_ADMIN
+Body: { "content": "string" }
+Response: { data: message_object }
+
+================================================================================
+                            NOTIFICATIONS ROUTES
+================================================================================
+
+GET    /api/notifications
+Description: List notifications for current user
+Auth: Required (any authenticated user)
+Response: { data: [notification1, notification2, ...] }
+
+POST   /api/notifications/mark-all
+Description: Mark all notifications as read
+Auth: Required (any authenticated user)
+Response: { success: true }
+
+POST   /api/notifications/:notificationId/read
+Description: Mark notification as read
+Auth: Required (any authenticated user)
+Response: { success: true }
+
+================================================================================
+                            SYSTEM ROUTES
+================================================================================
+
+GET    /health
+Description: Health check
+Auth: None (public)
+Response: { status: "ok", service: "backend-api", timestamp: "ISO string" }
+
+GET    /supabase
+Description: Database connection test
+Auth: None (public)
+Response: { connected: true/false, time: "..." }
+
+================================================================================
+                            ERROR RESPONSES
+================================================================================
+
+All errors follow this format:
+{
+  "success": false,
+  "message": "Error message",
+  "error": "Detailed error (development only)"
+}
+
+Status Codes:
+- 200: Success
+- 201: Created
+- 400: Bad Request (validation errors)
+- 401: Unauthorized (missing/invalid token)
+- 403: Forbidden (insufficient role)
+- 404: Not Found
+- 500: Internal Server Error
+
+================================================================================
+                            ROLE HIERARCHY
+================================================================================
+
+1. FIELD_WORKER
+   - Can: View sensors, submit complaints, send SOS, view own tasks
+   - Cannot: Manage sensors, access ML features, admin functions
+
+2. SITE_ADMIN
+   - Can: All FIELD_WORKER permissions + Manage sensors, ML features, tasks
+   - Cannot: Super admin functions, government advisories
+
+3. GOV_AUTHORITY
+   - Can: View alerts, post advisories, view complaints
+   - Cannot: Manage sensors, ML features, admin functions
+
+4. SUPER_ADMIN
+   - Can: Everything (full access)
+
+================================================================================
+                            REQUEST EXAMPLES
+================================================================================
+
+1. Login:
+POST http://localhost:4000/api/auth/login
+Headers: { "Content-Type": "application/json" }
+Body: { "email": "user@example.com", "password": "password123" }
+
+2. Get Sensors:
+GET http://localhost:4000/api/sensors
+Headers: { "Authorization": "Bearer <token>" }
+
+3. Create Complaint:
+POST http://localhost:4000/api/complaints
+Headers: { "Authorization": "Bearer <token>", "Content-Type": "multipart/form-data" }
+Body: FormData with title, description, image file
+
+4. ML Prediction:
+POST http://localhost:4000/api/ml/predict
+Headers: { "Authorization": "Bearer <token>", "Content-Type": "application/json" }
+Body: { "slopeId": "slope_1", "sensorData": { ... } }
+
+5. Upload Image for Detection:
+POST http://localhost:4000/api/ml/detect
+Headers: { "Authorization": "Bearer <token>", "Content-Type": "multipart/form-data" }
+Body: FormData with image file
+
+================================================================================
+                            NOTES
+================================================================================
+
+- All timestamps are in ISO 8601 format
+- File uploads use multipart/form-data
+- Image files should be JPEG, PNG, or WebP
+- Maximum file size: 10MB (configurable)
+- ML service must be running on port 8000 for ML endpoints to work
+- Set ML_SERVICE_URL environment variable if ML service is on different port
+
+================================================================================
+                              END OF DOCUMENTATION
+================================================================================
+

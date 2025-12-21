@@ -1,0 +1,58 @@
+{
+  "name": "sih-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --clear",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "lint": "eslint src --ext .js"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~3.2.3",
+    "@expo/vector-icons": "^14.0.2",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-picker/picker": "2.7.5",
+    "@react-navigation/bottom-tabs": "^6.6.1",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/native-stack": "^6.10.0",
+    "axios": "^1.7.7",
+    "expo": "~51.0.17",
+    "expo-camera": "~15.0.6",
+    "expo-constants": "~16.0.0",
+    "expo-document-picker": "~12.0.2",
+    "expo-file-system": "~17.0.1",
+    "expo-font": "~12.0.10",
+    "expo-image-picker": "~15.1.0",
+    "expo-linear-gradient": "~13.0.2",
+    "expo-location": "~17.0.1",
+    "expo-network": "~6.0.1",
+    "expo-notifications": "~0.28.15",
+    "expo-sqlite": "~14.0.3",
+    "expo-status-bar": "~1.12.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-chart-kit": "^6.12.0",
+    "react-native-gesture-handler": "~2.16.1",
+    "react-native-maps": "1.14.0",
+    "react-native-paper": "^5.12.3",
+    "react-native-reanimated": "~3.10.1",
+    "react-native-safe-area-context": "4.10.5",
+    "react-native-screens": "3.31.1",
+    "react-native-svg": "15.2.0",
+    "react-native-web": "~0.19.12",
+    "react-native-webview": "13.8.6",
+    "socket.io-client": "^4.7.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.5",
+    "eslint": "^8.57.0",
+    "eslint-config-expo": "~7.1.2"
+  },
+  "eslintConfig": {
+    "extends": "expo"
+  }
+}

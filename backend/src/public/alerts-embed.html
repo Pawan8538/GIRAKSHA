@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GeoGuard SOS Alerts</title>
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+    }
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: pulse 2s infinite;
+    }
+    .status-indicator.connected { background: #22c55e; animation: none; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    h1 { font-size: 24px; font-weight: 600; flex: 1; }
+    .status-text { font-size: 12px; color: #94a3b8; }
+    
+    .alerts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .alert-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      animation: slideIn 0.3s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+    .alert-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #dc2626, #ef4444);
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .alert-icon { font-size: 32px; margin-bottom: 8px; }
+    .alert-message { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #fbbf24; }
+    .alert-user { font-size: 13px; color: #94a3b8; margin-bottom: 4px; }
+    .alert-device { font-size: 12px; color: #64748b; margin-bottom: 4px; }
+    .alert-time { font-size: 11px; color: #475569; }
+    .alert-coords { font-size: 12px; color: #64748b; margin-top: 8px; font-family: monospace; }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #94a3b8;
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .stat-number { font-size: 24px; font-weight: 700; color: #01C88D; }
+    .stat-label { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="status-indicator" id="status"></div>
+      <div style="flex: 1;">
+        <h1>GeoGuard SOS Alerts</h1>
+        <div class="status-text">Real-time LAN monitoring</div>
+      </div>
+    </header>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number" id="total-alerts">0</div>
+        <div class="stat-label">Total Alerts</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="last-alert">--</div>
+        <div class="stat-label">Last Alert</div>
+      </div>
+    </div>
+
+    <div id="alerts-container" class="alerts-grid">
+      <div class="empty-state">
+        <div class="empty-icon">📡</div>
+        <p>Waiting for SOS alerts...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const BACKEND_URL = 'http://10.0.75.150:4000';
+    let alertCount = 0;
+
+    const statusEl = document.getElementById('status');
+    const containerEl = document.getElementById('alerts-container');
+    const totalEl = document.getElementById('total-alerts');
+    const lastAlertEl = document.getElementById('last-alert');
+
+    function formatTime(isoString) {
+      const d = new Date(isoString);
+      return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}:${d.getSeconds().toString().padStart(2, '0')}`;
+    }
+
+    function addAlertCard(event) {
+      alertCount++;
+      totalEl.textContent = alertCount;
+      lastAlertEl.textContent = formatTime(event.timestamp);
+
+      if (containerEl.querySelector('.empty-state')) {
+        containerEl.innerHTML = '';
+      }
+
+      const card = document.createElement('div');
+      card.className = 'alert-card';
+      card.innerHTML = `
+        <div class="alert-icon">🚨</div>
+        <div class="alert-message">${event.message || 'SOS TRIGGERED'}</div>
+        <div class="alert-user"><strong>User:</strong> ${event.user || 'anonymous'}</div>
+        <div class="alert-device"><strong>Device:</strong> ${event.meta?.device || 'unknown'}</div>
+        <div class="alert-time">${formatTime(event.timestamp)}</div>
+        ${event.coords ? `<div class="alert-coords">📍 ${event.coords.lat.toFixed(4)}, ${event.coords.lon.toFixed(4)}</div>` : ''}
+      `;
+      containerEl.insertBefore(card, containerEl.firstChild);
+
+      if (containerEl.children.length > 20) {
+        containerEl.removeChild(containerEl.lastChild);
+      }
+    }
+
+    // Fetch recent alerts
+    fetch(`${BACKEND_URL}/api/local/sos/recent`)
+      .then(r => r.json())
+      .then(data => {
+        (data.events || []).forEach(addAlertCard);
+      })
+      .catch(err => console.warn('Failed to fetch recent alerts', err));
+
+    // Connect to Socket.io for real-time updates
+    const socket = io(BACKEND_URL);
+
+    socket.on('connect', () => {
+      statusEl.classList.add('connected');
+      console.log('Connected to SOS server');
+    });
+
+    socket.on('disconnect', () => {
+      statusEl.classList.remove('connected');
+      console.log('Disconnected from SOS server');
+    });
+
+    socket.on('sos', (event) => {
+      console.log('SOS event received:', event);
+      addAlertCard(event);
+    });
+
+    socket.on('connect_error', (err) => {
+      console.warn('Socket connection error:', err);
+    });
+  </script>
+</body>
+</html>

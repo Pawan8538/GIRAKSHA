@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOS Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #0f172a; color: #e2e8f0; }
+    header { padding: 12px 16px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 8px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #fbbf24; display: inline-block; }
+    .dot.ok { background: #22c55e; }
+    main { padding: 16px; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .meta { font-size: 12px; color: #94a3b8; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #334155; font-size: 12px; margin-right: 8px; }
+  </style>
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+</head>
+<body>
+  <header>
+    <span id="conn-dot" class="dot"></span>
+    <div>
+      <div><strong>SOS Dashboard</strong></div>
+      <div class="meta">Listens for SOS events on this LAN</div>
+    </div>
+  </header>
+  <main>
+    <div id="events"></div>
+  </main>
+
+  <script>
+    const eventsEl = document.getElementById('events');
+    const connDot = document.getElementById('conn-dot');
+    const socket = io();
+
+    const addEvent = (evt) => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <div><span class="pill">SOS</span><strong>${evt.message || 'SOS triggered'}</strong></div>
+        <div class="meta">From: ${evt.user || 'anonymous'} | Device: ${evt.meta?.device || 'unknown'} | ${evt.timestamp}</div>
+        ${evt.coords ? `<div class="meta">Coords: ${evt.coords.lat}, ${evt.coords.lon}</div>` : ''}
+      `;
+      eventsEl.prepend(div);
+    };
+
+    socket.on('connect', () => { connDot.classList.add('ok'); });
+    socket.on('disconnect', () => { connDot.classList.remove('ok'); });
+    socket.on('sos', addEvent);
+
+    fetch('/api/local/sos/recent').then(r => r.json()).then(data => {
+      (data.events || []).forEach(addEvent);
+    }).catch(() => {});
+  </script>
+</body>
+</html>
