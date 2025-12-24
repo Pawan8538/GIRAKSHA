@@ -37,6 +37,62 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 async def root():
     return {"status": "online", "system": "GeoGuard AI", "version": "2.0.0"}
 
+@app.get("/sensors/live")
+async def get_live_sensors():
+    """Get live sensor data - used by Node.js backend for sensor dashboard"""
+    try:
+        readings = fusion_engine.sensors.get_latest_readings()
+        
+        # Transform to match expected format for backend
+        sensors_data = []
+        for sensor in readings:
+            sensors_data.append({
+                "sensor_id": sensor.get("id", sensor.get("sensor_id", "UNKNOWN")),
+                "type": sensor.get("type", "unknown"),
+                "values": sensor.get("values", {}),
+                "location": sensor.get("location", {"lat": 11.1022, "lon": 79.1564}),
+                "timestamp": sensor.get("timestamp", ""),
+                "status": sensor.get("status", "active")
+            })
+        
+        return JSONResponse(content={
+            "ok": True,
+            "data": sensors_data,
+            "count": len(sensors_data)
+        })
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"ok": False, "error": str(e), "data": []}
+        )
+
+@app.post("/sensors/control/global")
+async def toggle_global_sensor_system(active: bool = True):
+    """Global sensor system control - pause or resume all sensor data generation"""
+    try:
+        # Toggle sensor system via fusion engine
+        if hasattr(fusion_engine.sensors, 'set_active'):
+            fusion_engine.sensors.set_active(active)
+            status = "resumed" if active else "paused"
+            return JSONResponse(content={
+                "ok": True,
+                "message": f"Sensor system {status}",
+                "active": active
+            })
+        else:
+            # Fallback if the method doesn't exist
+            return JSONResponse(content={
+                "ok": True,
+                "message": f"Sensor system control acknowledged (active={active})",
+                "active": active,
+                "note": "Control method not fully implemented in fusion engine"
+            })
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"ok": False, "error": str(e), "message": "Failed to control sensor system"}
+        )
+
 @app.get("/stream/sensors")
 async def get_sensor_stream():
     """Get real-time readings from all sensors"""
