@@ -12,13 +12,23 @@ const {
 
 const axios = require('axios'); // Added for Proxy
 
+const getMlServiceUrl = () => {
+  if (process.env.ML_SERVICE_URL) {
+    return process.env.ML_SERVICE_URL.startsWith('http')
+      ? process.env.ML_SERVICE_URL
+      : `http://${process.env.ML_SERVICE_URL}`;
+  }
+  return 'http://127.0.0.1:8000';
+};
+
 const listSensors = async (req, res, next) => {
   try {
     const { slopeId } = req.query;
 
     // PROXY STRATEGY: Try fetching Real-Time Data from Python ML Service first
     try {
-      const mlResponse = await axios.get('http://127.0.0.1:8000/sensors/live', { timeout: 2000 });
+      const mlUrl = getMlServiceUrl();
+      const mlResponse = await axios.get(`${mlUrl}/sensors/live`, { timeout: 2000 });
       if (mlResponse.data && mlResponse.data.ok && mlResponse.data.data) {
 
         // Transform attributes to match expected DB schema for Frontend
@@ -228,7 +238,8 @@ const toggleGlobalSystem = async (req, res, next) => {
 
     // Proxy to Python
     try {
-      const mlResponse = await axios.post(`http://127.0.0.1:8000/sensors/control/global?active=${active}`);
+      const mlUrl = getMlServiceUrl();
+      const mlResponse = await axios.post(`${mlUrl}/sensors/control/global?active=${active}`);
       return res.json({
         success: true,
         data: mlResponse.data,
