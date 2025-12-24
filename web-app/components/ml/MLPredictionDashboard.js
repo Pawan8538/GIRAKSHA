@@ -63,15 +63,15 @@ export default function MLPredictionDashboard() {
     const loadData = async () => {
         try {
             setLoading(true);
-            const riskRes = await api.get('http://localhost:8000/risk/current'); // Direct ML service call or via proxy
-            // Note: In production this should go through the main backend proxy
+            // Use backend proxy instead of direct ML service call
+            const riskRes = await api.get('/ml/risk/current');
 
             if (riskRes.data) {
                 setData(riskRes.data);
 
                 // Fetch explanation for interpretable results
                 try {
-                    const explainRes = await api.get(`http://localhost:8000/explain/current?slopeId=${riskRes.data.slopeId}`);
+                    const explainRes = await api.get(`/ml/explain/current?slopeId=${riskRes.data.slopeId}`);
                     setExplanation(explainRes.data.data);
                 } catch (e) {
                     console.warn("Could not fetch explanation", e);
