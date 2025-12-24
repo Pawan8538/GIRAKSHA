@@ -28,7 +28,8 @@ const listSensors = async (req, res, next) => {
     // PROXY STRATEGY: Try fetching Real-Time Data from Python ML Service first
     try {
       const mlUrl = getMlServiceUrl();
-      const mlResponse = await axios.get(`${mlUrl}/sensors/live`, { timeout: 2000 });
+      // Increased timeout to 15s to handle Render free-tier cold starts
+      const mlResponse = await axios.get(`${mlUrl}/sensors/live`, { timeout: 15000 });
       if (mlResponse.data && mlResponse.data.ok && mlResponse.data.data) {
 
         // Transform attributes to match expected DB schema for Frontend
