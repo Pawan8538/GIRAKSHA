@@ -3,12 +3,9 @@
  * 
  * Listens for new alerts via Socket.IO and provides real-time updates
  * Gracefully degrades if WebSocket connection fails
- * 
- * FIX: Uses useRef for the onNewAlert callback to prevent infinite
- * re-render loops when parent components pass inline arrow functions.
  */
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
@@ -17,12 +14,6 @@ let socket = null;
 
 export function useRealTimeAlerts(onNewAlert) {
     const [connected, setConnected] = useState(false);
-    const onNewAlertRef = useRef(onNewAlert);
-
-    // Keep ref current without re-running the socket effect
-    useEffect(() => {
-        onNewAlertRef.current = onNewAlert;
-    }, [onNewAlert]);
 
     useEffect(() => {
         // Only run in browser
@@ -40,12 +31,12 @@ export function useRealTimeAlerts(onNewAlert) {
                 });
 
                 socket.on('connect', () => {
-                    console.log('Real-time alerts connected');
+                    console.log('✅ Real-time alerts connected');
                     setConnected(true);
                 });
 
                 socket.on('disconnect', () => {
-                    console.log('Real-time alerts disconnected');
+                    console.log('ℹ️ Real-time alerts disconnected');
                     setConnected(false);
                 });
 
@@ -66,7 +57,7 @@ export function useRealTimeAlerts(onNewAlert) {
 
         // Listen for new alerts
         const handleNewAlert = (alert) => {
-            console.log('New alert received:', alert);
+            console.log('🔔 New alert received:', alert);
 
             // Play notification sound (optional)
             try {
@@ -88,10 +79,10 @@ export function useRealTimeAlerts(onNewAlert) {
                 }
             } catch (e) { }
 
-            // Call callback via ref (always uses latest without being a dependency)
-            if (onNewAlertRef.current) {
+            // Call callback
+            if (onNewAlert) {
                 try {
-                    onNewAlertRef.current(alert);
+                    onNewAlert(alert);
                 } catch (e) {
                     console.error('Error in alert callback:', e);
                 }
@@ -115,7 +106,7 @@ export function useRealTimeAlerts(onNewAlert) {
                 socket.off('newAlert', handleNewAlert);
             }
         };
-    }, []); // ← empty deps: runs once on mount, no re-render loop
+    }, [onNewAlert]);
 
     return { connected };
 }

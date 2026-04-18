@@ -17,15 +17,6 @@ export default function SuperAdminDashboard() {
     });
     const [pendingUsers, setPendingUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [chartData, setChartData] = useState([
-        { name: 'Mon', alerts: 0 },
-        { name: 'Tue', alerts: 0 },
-        { name: 'Wed', alerts: 0 },
-        { name: 'Thu', alerts: 0 },
-        { name: 'Fri', alerts: 0 },
-        { name: 'Sat', alerts: 0 },
-        { name: 'Sun', alerts: 0 },
-    ]);
 
     const loadData = async () => {
         try {
@@ -116,6 +107,16 @@ export default function SuperAdminDashboard() {
             alert('Failed to reject user');
         }
     };
+
+    const [chartData, setChartData] = useState([
+        { name: 'Mon', alerts: 0 },
+        { name: 'Tue', alerts: 0 },
+        { name: 'Wed', alerts: 0 },
+        { name: 'Thu', alerts: 0 },
+        { name: 'Fri', alerts: 0 },
+        { name: 'Sat', alerts: 0 },
+        { name: 'Sun', alerts: 0 },
+    ]);
 
     return (
         <div className="space-y-6">
