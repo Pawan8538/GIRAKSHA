@@ -71,8 +71,8 @@ async def toggle_global_sensor_system(active: bool = True):
     """Global sensor system control - pause or resume all sensor data generation"""
     try:
         # Toggle sensor system via fusion engine
-        if hasattr(fusion_engine.sensors, 'set_active'):
-            fusion_engine.sensors.set_active(active)
+        if hasattr(fusion_engine.sensors, 'set_global_active'):
+            fusion_engine.sensors.set_global_active(active)
             status = "resumed" if active else "paused"
             return JSONResponse(content={
                 "ok": True,
