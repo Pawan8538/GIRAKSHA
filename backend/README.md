@@ -21,8 +21,6 @@ Stack: **Node.js (vanilla JS)**, **Express**, **PostgreSQL + TimescaleDB + PostG
 
 ### Install dependencies
 
-From the project root (`C:\SIH` in your case):
-
 ```bash
 cd backend
 npm install
@@ -49,5 +47,4 @@ npm run dev
 The server will start on port **4000** (or `PORT` from your `.env`) and expose a basic healthcheck at:
 
 - `GET /health`
-
 
