@@ -3,9 +3,12 @@
  * 
  * Listens for new alerts via Socket.IO and provides real-time updates
  * Gracefully degrades if WebSocket connection fails
+ * 
+ * FIX: Uses useRef for the onNewAlert callback to prevent infinite
+ * re-render loops when parent components pass inline arrow functions.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
@@ -14,6 +17,13 @@ let socket = null;
 
 export function useRealTimeAlerts(onNewAlert) {
     const [connected, setConnected] = useState(false);
+    const onNewAlertRef = useRef(onNewAlert);
+
+    // Keep ref current without re-running the socket effect
+    useEffect(() => {
+        onNewAlertRef.current = onNewAlert;
+    }, [onNewAlert]);
+
 
     useEffect(() => {
         // Only run in browser
@@ -79,10 +89,10 @@ export function useRealTimeAlerts(onNewAlert) {
                 }
             } catch (e) { }
 
-            // Call callback
-            if (onNewAlert) {
+            // Call callback via ref (always uses latest without being a dependency)
+            if (onNewAlertRef.current) {
                 try {
-                    onNewAlert(alert);
+                    onNewAlertRef.current(alert);
                 } catch (e) {
                     console.error('Error in alert callback:', e);
                 }
@@ -106,7 +116,7 @@ export function useRealTimeAlerts(onNewAlert) {
                 socket.off('newAlert', handleNewAlert);
             }
         };
-    }, [onNewAlert]);
+    }, []); // empty deps: runs once on mount, no re-render loop
 
     return { connected };
 }
