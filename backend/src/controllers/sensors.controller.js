@@ -14,9 +14,13 @@ const axios = require('axios'); // Added for Proxy
 
 const getMlServiceUrl = () => {
   if (process.env.ML_SERVICE_URL) {
-    return process.env.ML_SERVICE_URL.startsWith('http')
-      ? process.env.ML_SERVICE_URL
-      : `http://${process.env.ML_SERVICE_URL}`;
+    if (process.env.ML_SERVICE_URL.startsWith('http')) {
+      return process.env.ML_SERVICE_URL;
+    }
+    if (process.env.ML_SERVICE_URL.includes('localhost') || process.env.ML_SERVICE_URL.includes('127.0.0.1')) {
+      return `http://${process.env.ML_SERVICE_URL}`;
+    }
+    return `https://${process.env.ML_SERVICE_URL}`;
   }
   return 'http://127.0.0.1:8000';
 };
