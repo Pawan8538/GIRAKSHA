@@ -13,14 +13,12 @@ const {
 const axios = require('axios'); // Added for Proxy
 
 const getMlServiceUrl = () => {
-  if (process.env.ML_SERVICE_URL) {
-    if (process.env.ML_SERVICE_URL.startsWith('http')) {
-      return process.env.ML_SERVICE_URL;
+  let url = process.env.ML_SERVICE_URL;
+  if (url) {
+    if (!url.startsWith('http')) {
+      url = url.includes('.onrender.com') ? `https://${url}` : `http://${url}`;
     }
-    if (process.env.ML_SERVICE_URL.includes('localhost') || process.env.ML_SERVICE_URL.includes('127.0.0.1')) {
-      return `http://${process.env.ML_SERVICE_URL}`;
-    }
-    return `https://${process.env.ML_SERVICE_URL}`;
+    return url.replace(/\/$/, '');
   }
   return 'http://127.0.0.1:8000';
 };
@@ -250,8 +248,12 @@ const toggleGlobalSystem = async (req, res, next) => {
         message: mlResponse.data.message || 'System status updated'
       });
     } catch (proxyError) {
-      console.error('Proxy Error:', proxyError.message);
-      return res.status(503).json({ success: false, message: 'ML Service Unavailable' });
+      console.error('[Proxy Error] toggleGlobalSystem failed:', proxyError.message);
+      if (proxyError.response) {
+        console.error('[Proxy Error] Response Status:', proxyError.response.status);
+        console.error('[Proxy Error] Response Data:', proxyError.response.data);
+      }
+      return res.status(503).json({ success: false, message: 'ML Service Unavailable', error: proxyError.message });
     }
   } catch (error) {
     next(error);
