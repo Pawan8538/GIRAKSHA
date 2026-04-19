@@ -23,6 +23,13 @@ const getMlServiceUrl = () => {
   return 'http://127.0.0.1:8000';
 };
 
+// Global cache to prevent 429 Too Many Requests on Render Free Tier
+let proxyCache = {
+  data: null,
+  timestamp: 0
+};
+const CACHE_TTL = 30000; // 30 seconds
+
 const listSensors = async (req, res, next) => {
   try {
     const { slopeId } = req.query;
@@ -30,6 +37,16 @@ const listSensors = async (req, res, next) => {
     // PROXY STRATEGY: Try fetching Real-Time Data from Python ML Service first
     try {
       const mlUrl = getMlServiceUrl();
+      
+      // Serve from cache if valid
+      if (proxyCache.data && (Date.now() - proxyCache.timestamp < CACHE_TTL)) {
+        return res.json({
+          success: true,
+          data: proxyCache.data,
+          source: 'python_ml_proxy_cached'
+        });
+      }
+
       const mlResponse = await axios.get(`${mlUrl}/sensors/live`, { timeout: 2000 });
       if (mlResponse.data && mlResponse.data.ok && mlResponse.data.data) {
 
@@ -62,6 +79,10 @@ const listSensors = async (req, res, next) => {
             unit: 'unit'
           };
         });
+
+        // Update Cache
+        proxyCache.data = proxyRows;
+        proxyCache.timestamp = Date.now();
 
         return res.json({
           success: true,
