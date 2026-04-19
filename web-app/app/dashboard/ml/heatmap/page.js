@@ -6,7 +6,6 @@ import HeatmapViewer from '../../../../components/ml/HeatmapViewer';
 import { Card } from '../../../../components/common/Card';
 import { mlService } from '../../../../services/mlService';
 import api from '../../../../lib/api';
-import CreateAlertModal from '../../../../components/alerts/CreateAlertModal';
 import DeviceStatus from '../../../../components/alerts/DeviceStatus';
 import AlertList from '../../../../components/alerts/AlertList';
 
@@ -14,7 +13,6 @@ export default function HeatmapPage() {
     const [points, setPoints] = useState([]);
     const [loading, setLoading] = useState(true);
     const [lastUpdate, setLastUpdate] = useState(new Date());
-    const [showAlertModal, setShowAlertModal] = useState(false);
     const [devices, setDevices] = useState({ bands: 0, sirens: 0, dashboards: 0 });
     const [activeAlerts, setActiveAlerts] = useState([]);
     const [socket, setSocket] = useState(null);
@@ -97,6 +95,24 @@ export default function HeatmapPage() {
         loadActiveAlerts();
     };
 
+    const handleTriggerSiren = async () => {
+        try {
+            await api.post('/worker/siren/trigger');
+        } catch (error) {
+            console.error('Failed to trigger siren:', error);
+            alert('Failed to trigger siren. Ensure backend is reachable.');
+        }
+    };
+
+    const handleStopSiren = async () => {
+        try {
+            await api.post('/worker/siren/reset');
+        } catch (error) {
+            console.error('Failed to stop siren:', error);
+            alert('Failed to stop siren.');
+        }
+    };
+
     // Categorize risk levels
     const imminentRisk = points.filter(p => p.risk >= 0.75).length;
     const highRisk = points.filter(p => p.risk >= 0.5 && p.risk < 0.75).length;
@@ -112,13 +128,24 @@ export default function HeatmapPage() {
                 </div>
                 <div className="flex gap-3">
                     <button
-                        onClick={() => setShowAlertModal(true)}
-                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center gap-2 font-medium"
+                        onClick={handleTriggerSiren}
+                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center gap-2 font-medium shadow-md transition-transform active:scale-95"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
-                        CREATE NEW
+                        TRIGGER SIREN
+                    </button>
+                    <button
+                        onClick={handleStopSiren}
+                        className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 flex items-center gap-2 font-medium shadow-md transition-transform active:scale-95"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                            <line x1="17" y1="15" x2="23" y2="9" />
+                            <line x1="17" y1="9" x2="23" y2="15" />
+                        </svg>
+                        STOP SIREN
                     </button>
                     <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-gray-200">
                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -198,12 +225,6 @@ export default function HeatmapPage() {
                 </div>
             </Card>
 
-            {/* Alert Creation Modal */}
-            <CreateAlertModal
-                isOpen={showAlertModal}
-                onClose={() => setShowAlertModal(false)}
-                onSuccess={handleAlertSuccess}
-            />
         </div>
     );
 }
