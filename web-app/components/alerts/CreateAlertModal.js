@@ -24,8 +24,8 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
 
     const loadSlopes = async () => {
         try {
-            const response = await api.get('/sensors/slopes');
-            setSlopes(response.data.slopes || []);
+            const response = await api.get('/admin/slopes');
+            setSlopes(response.data.data || []);
         } catch (error) {
             console.error('Failed to load slopes:', error);
         }
@@ -116,8 +116,8 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
                                 >
                                     <option value="">Select zone...</option>
                                     {slopes.map((slope) => (
-                                        <option key={slope.slope_id} value={slope.slope_name}>
-                                            {slope.slope_name}
+                                        <option key={slope.id} value={slope.name}>
+                                            {slope.name}
                                         </option>
                                     ))}
                                 </select>
@@ -169,8 +169,8 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
                                 >
                                     <option value="">Select epicenter zone...</option>
                                     {slopes.map((slope) => (
-                                        <option key={slope.slope_id} value={slope.slope_name}>
-                                            {slope.slope_name}
+                                        <option key={slope.id} value={slope.name}>
+                                            {slope.name}
                                         </option>
                                     ))}
                                 </select>
