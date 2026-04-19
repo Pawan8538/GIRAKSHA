@@ -263,6 +263,10 @@ const toggleGlobalSystem = async (req, res, next) => {
     try {
       const mlUrl = getMlServiceUrl();
       const mlResponse = await axios.post(`${mlUrl}/sensors/control/global?active=${active}`);
+      
+      // Invalidate the cache so the next poll sees the new state immediately!
+      proxyCache.timestamp = 0;
+
       return res.json({
         success: true,
         data: mlResponse.data,
