@@ -85,7 +85,7 @@ export default function SensorsPage() {
             if (document.visibilityState === 'visible') {
                 loadSensors(true);
             }
-        }, 5000); // 5 second interval
+        }, 30000); // 30 second interval to avoid rate limiting
 
         return () => clearInterval(intervalId);
     }, [loadSensors, isPolling]);
