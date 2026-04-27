@@ -6,7 +6,6 @@ import HeatmapViewer from '../../../../components/ml/HeatmapViewer';
 import { Card } from '../../../../components/common/Card';
 import { mlService } from '../../../../services/mlService';
 import api from '../../../../lib/api';
-import CreateAlertModal from '../../../../components/alerts/CreateAlertModal';
 import DeviceStatus from '../../../../components/alerts/DeviceStatus';
 import AlertList from '../../../../components/alerts/AlertList';
 
@@ -14,7 +13,6 @@ export default function HeatmapPage() {
     const [points, setPoints] = useState([]);
     const [loading, setLoading] = useState(true);
     const [lastUpdate, setLastUpdate] = useState(new Date());
-    const [showAlertModal, setShowAlertModal] = useState(false);
     const [devices, setDevices] = useState({ bands: 0, sirens: 0, dashboards: 0 });
     const [activeAlerts, setActiveAlerts] = useState([]);
     const [socket, setSocket] = useState(null);
@@ -97,6 +95,24 @@ export default function HeatmapPage() {
         loadActiveAlerts();
     };
 
+    const handleTriggerSiren = async () => {
+        try {
+            await api.post('/worker/siren/trigger');
+        } catch (error) {
+            console.error('Failed to trigger siren:', error);
+            alert('Failed to trigger siren. Ensure backend is reachable.');
+        }
+    };
+
+    const handleStopSiren = async () => {
+        try {
+            await api.post('/worker/siren/reset');
+        } catch (error) {
+            console.error('Failed to stop siren:', error);
+            alert('Failed to stop siren.');
+        }
+    };
+
     // Categorize risk levels
     const imminentRisk = points.filter(p => p.risk >= 0.75).length;
     const highRisk = points.filter(p => p.risk >= 0.5 && p.risk < 0.75).length;
@@ -111,15 +127,6 @@ export default function HeatmapPage() {
                     <p className="text-gray-500">Real-time risk visualization from fusion engine</p>
                 </div>
                 <div className="flex gap-3">
-                    <button
-                        onClick={() => setShowAlertModal(true)}
-                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center gap-2 font-medium"
-                    >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                        CREATE NEW
-                    </button>
                     <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-gray-200">
                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
                         <span className="text-xs text-gray-600">Imminent ({imminentRisk})</span>
@@ -198,12 +205,6 @@ export default function HeatmapPage() {
                 </div>
             </Card>
 
-            {/* Alert Creation Modal */}
-            <CreateAlertModal
-                isOpen={showAlertModal}
-                onClose={() => setShowAlertModal(false)}
-                onSuccess={handleAlertSuccess}
-            />
         </div>
     );
 }

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GIRAKSHA — Evacuation Map Test Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0d14;
+      --surface:  #111827;
+      --card:     #1a2235;
+      --border:   #1f2d47;
+      --accent:   #3b82f6;
+      --accent2:  #8b5cf6;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --danger:   #ef4444;
+      --warn:     #f59e0b;
+      --safe:     #22c55e;
+
+      --c-danger:   #E24B4A;
+      --c-high:     #EF9F27;
+      --c-moderate: #FAC775;
+      --c-low:      #C0DD97;
+      --c-safe:     #EAF3DE;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .logo-text h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo-text span { font-size: 12px; color: var(--muted); }
+    .badge {
+      padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600;
+      background: rgba(59,130,246,0.15); color: var(--accent);
+      border: 1px solid rgba(59,130,246,0.3);
+    }
+
+    /* ── Alert Bar ── */
+    #alertBar {
+      display: none;
+      background: linear-gradient(90deg, #7f1d1d, #991b1b);
+      border-bottom: 2px solid var(--danger);
+      padding: 12px 32px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      animation: pulse-alert 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-alert {
+      0%,100% { opacity: 1; } 50% { opacity: 0.75; }
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 28px 24px; }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+    @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ── Grid Map ── */
+    #mapContainer {
+      position: relative;
+      background: #080c14;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #evacGrid {
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      width: 100%;
+      max-width: calc(70vh - 16px);
+      aspect-ratio: 1;
+    }
+    .cell {
+      border: 1px solid rgba(0,0,0,0.3);
+      position: relative;
+      cursor: pointer;
+      transition: filter 0.15s, transform 0.1s;
+    }
+    .cell:hover { filter: brightness(1.4) saturate(1.4); transform: scale(1.1); z-index:2; }
+    .cell.worker-start { outline: 3px solid #38bdf8; outline-offset: -3px; z-index: 3; }
+    .cell.on-route {
+      background: transparent !important;
+      position: relative;
+    }
+    .cell.on-route::after {
+      content: '';
+      position: absolute; inset: 20%;
+      background: rgba(74,222,128,0.85);
+      border-radius: 50%;
+      box-shadow: 0 0 8px 2px rgba(74,222,128,0.7);
+      animation: route-pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes route-pulse {
+      0%,100% { transform: scale(0.8); opacity: 0.9; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+    .cell.exit-cell {
+      background: #1e40af !important;
+      position: relative;
+    }
+    .cell.exit-cell::after {
+      content: '🚪';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+    }
+    .cell.worker-cell {
+      position: relative;
+      z-index: 5;
+    }
+    .cell.worker-cell::after {
+      content: '👷';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      animation: none;
+    }
+
+    /* ── Map Overlay Labels ── */
+    .map-overlay-top {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 10px 14px;
+      background: rgba(10,13,20,0.8); border-bottom: 1px solid var(--border);
+    }
+    .map-label { font-size: 12px; color: var(--muted); }
+    .coord { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); }
+
+    /* ── Sensor Dots ── */
+    .sensor-overlay {
+      position: absolute;
+      pointer-events: none;
+      inset: 0;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 16px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text);
+    }
+    .legend-swatch {
+      width: 14px; height: 14px; border-radius: 3px;
+    }
+
+    /* ── Controls ── */
+    .controls { display: flex; flex-direction: column; gap: 16px; }
+
+    .control-group label {
+      display: block; font-size: 12px; color: var(--muted);
+      margin-bottom: 6px; font-weight: 500;
+    }
+    input[type=range] {
+      width: 100%; accent-color: var(--accent);
+      height: 4px; border-radius: 999px;
+    }
+    .range-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: var(--accent);
+      float: right;
+    }
+
+    .btn {
+      width: 100%; padding: 12px 16px;
+      border: none; border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #2563eb);
+      color: white;
+      box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,130,246,0.5); }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: white;
+      box-shadow: 0 4px 14px rgba(220,38,38,0.35);
+    }
+    .btn-danger:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(220,38,38,0.5); }
+    .btn-danger.active {
+      background: linear-gradient(135deg, #166534, #15803d);
+      box-shadow: 0 4px 14px rgba(34,197,94,0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(59,130,246,0.1); color: var(--accent);
+      border: 1px solid rgba(59,130,246,0.3);
+    }
+    .btn-secondary:hover { background: rgba(59,130,246,0.2); }
+
+    /* ── Stats ── */
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px;
+      text-align: center;
+    }
+    .stat-val { font-size: 22px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ── Route Info ── */
+    .route-info {
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 10px; padding: 14px;
+      font-size: 13px;
+      display: none;
+    }
+    .route-info.active { display: block; }
+    .route-info .ri-title { font-weight: 700; color: #4ade80; margin-bottom: 6px; }
+    .route-info .ri-row { display: flex; justify-content: space-between; margin-top: 6px; }
+    .ri-key { color: var(--muted); }
+    .ri-val { font-family: 'JetBrains Mono', monospace; color: var(--text); font-weight: 600; }
+
+    /* ── Sensors Panel ── */
+    .sensor-list { display: flex; flex-direction: column; gap: 8px; }
+    .sensor-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sensor-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .sensor-info { flex: 1; }
+    .sensor-name { font-size: 12px; font-weight: 600; }
+    .sensor-vals { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Tabs ── */
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+    .tab {
+      padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      cursor: pointer; color: var(--muted); background: transparent;
+      border: 1px solid transparent; transition: all 0.2s;
+    }
+    .tab.active { background: rgba(59,130,246,0.15); color: var(--accent); border-color: rgba(59,130,246,0.3); }
+
+    /* ── Click hint ── */
+    #clickHint {
+      text-align: center; font-size: 12px; color: var(--muted);
+      padding: 8px 0; display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .hint-icon { font-size: 16px; }
+
+    /* ── Weather pill ── */
+    .weather-pill {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 8px; padding: 6px 12px; font-size: 12px;
+    }
+
+    /* Glow effect for high-risk cells */
+    @keyframes danger-glow {
+      0%,100% { box-shadow: inset 0 0 4px 1px rgba(226,75,74,0.5); }
+      50% { box-shadow: inset 0 0 8px 2px rgba(226,75,74,0.9); }
+    }
+    .cell.danger-glow { animation: danger-glow 2s ease-in-out infinite; }
+
+    /* Loading */
+    .loading-overlay {
+      position: absolute; inset: 0;
+      background: rgba(10,13,20,0.9);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      font-size: 14px; color: var(--muted);
+      z-index: 20;
+      transition: opacity 0.4s;
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(59,130,246,0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">⛏️</div>
+    <div class="logo-text">
+      <h1>GIRAKSHA</h1>
+      <span>Evacuation Map — Interactive Test Demo</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <div class="weather-pill" id="weatherPill">🌧️ <span id="weatherLabel">Rain · 65% humidity</span></div>
+    <div class="badge">DEMO MODE</div>
+  </div>
+</header>
+
+<div id="alertBar">
+  🚨 &nbsp; EVACUATION ALERT ACTIVE — All workers follow the green route to the exit gate &nbsp; 🚨
+</div>
+
+<div class="container">
+  <div style="margin-bottom:20px;">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#E24B4A"></div> Danger (≥0.85)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#EF9F27"></div> High (≥0.65)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#FAC775"></div> Moderate (≥0.40)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#C0DD97"></div> Low (≥0.20)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#EAF3DE"></div> Safe (&lt;0.20)</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#38bdf8;border-radius:50%"></div> Worker</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#4ade80;border-radius:50%"></div> Safe Route</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#1e40af"></div> Exit Gate</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <!-- Left: Map -->
+    <div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="map-overlay-top">
+          <span class="map-label">20×20 Mine Grid · Click any cell to place worker</span>
+          <span class="coord" id="coordLabel">28.065°N, 75.772°E</span>
+        </div>
+        <div id="mapContainer" style="padding:8px;background:#080c14;">
+          <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <span>Computing risk grid…</span>
+          </div>
+          <div id="evacGrid"></div>
+        </div>
+        <div id="clickHint" style="padding:10px 14px;border-top:1px solid var(--border);">
+          <span class="hint-icon">💡</span>
+          Click any cell to place worker &rarr; route auto-computes via Dijkstra
+        </div>
+      </div>
+
+      <!-- Route Result -->
+      <div class="route-info" id="routeInfo" style="margin-top:16px;">
+        <div class="ri-title">✅ Safe Evacuation Route Found</div>
+        <div class="ri-row">
+          <span class="ri-key">Route length</span><span class="ri-val" id="riCells">— cells</span>
+        </div>
+        <div class="ri-row">
+          <span class="ri-key">Est. distance</span><span class="ri-val" id="riDist">— m</span>
+        </div>
+        <div class="ri-row">
+          <span class="ri-key">ETA (80 m/min)</span><span class="ri-val" id="riEta">— s</span>
+        </div>
+        <div class="ri-row">
+          <span class="ri-key">Worker position</span><span class="ri-val" id="riStart">row,col</span>
+        </div>
+        <div class="ri-row">
+          <span class="ri-key">Exit gate</span><span class="ri-val" id="riExit">row 1, col 18</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Controls -->
+    <div class="controls">
+
+      <!-- Stats -->
+      <div class="card">
+        <div class="card-title">📊 Grid Stats</div>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-val" id="statDanger" style="color:#E24B4A;">0</div>
+            <div class="stat-label">Danger cells</div>
+          </div>
+          <div class="stat">
+            <div class="stat-val" id="statHigh" style="color:#EF9F27;">0</div>
+            <div class="stat-label">High risk</div>
+          </div>
+          <div class="stat">
+            <div class="stat-val" id="statSafe" style="color:#4ade80;">0</div>
+            <div class="stat-label">Safe cells</div>
+          </div>
+          <div class="stat">
+            <div class="stat-val" id="statAvg" style="color:#8b5cf6;">0.00</div>
+            <div class="stat-label">Avg score</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weather Controls -->
+      <div class="card">
+        <div class="card-title">🌦️ Weather Parameters</div>
+        <div class="control-group">
+          <label>Rain 24h (mm) <span class="range-val" id="v-rain24">8</span></label>
+          <input type="range" id="rain24" min="0" max="100" value="8" />
+        </div>
+        <div class="control-group" style="margin-top:12px;">
+          <label>Humidity (%) <span class="range-val" id="v-humid">65</span></label>
+          <input type="range" id="humid" min="0" max="100" value="65" />
+        </div>
+        <div class="control-group" style="margin-top:12px;">
+          <label>Condition</label>
+          <select id="condition" style="width:100%;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:Inter,sans-serif;font-size:13px;">
+            <option value="clear">Clear ☀️</option>
+            <option value="clouds">Cloudy ⛅</option>
+            <option value="drizzle">Drizzle 🌦️</option>
+            <option value="rain" selected>Rain 🌧️</option>
+            <option value="thunderstorm">Thunderstorm ⛈️</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary" style="margin-top:12px;" onclick="recompute()">🔄 Recompute Grid</button>
+      </div>
+
+      <!-- Alert -->
+      <div class="card" id="alertCard">
+        <div class="card-title">🚨 Alert System</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">
+          Simulates admin triggering evacuation siren. Worker app polls every 5s.
+        </div>
+        <button class="btn btn-danger" id="alertBtn" onclick="toggleAlert()">
+          🔔 Trigger Evacuation Alert
+        </button>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center;" id="alertStatus">
+          Status: <strong style="color:#4ade80;">OFF</strong>
+        </div>
+      </div>
+
+      <!-- Sensors -->
+      <div class="card">
+        <div class="card-title">📡 ESP32 Sensors (Live Sim)</div>
+        <div class="sensor-list" id="sensorList"></div>
+      </div>
+
+      <!-- API Preview -->
+      <div class="card">
+        <div class="card-title">🔌 API Response Preview</div>
+        <div class="tabs">
+          <div class="tab active" onclick="showTab('risk-map')">risk-map</div>
+          <div class="tab" onclick="showTab('evac-route')">evac-route</div>
+          <div class="tab" onclick="showTab('alert')">alert</div>
+        </div>
+        <pre id="apiPreview" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#a5f3fc;background:rgba(0,0,0,0.4);padding:12px;border-radius:8px;overflow:auto;max-height:220px;white-space:pre-wrap;"></pre>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  PORT OF evacuation_grid.py & evacuation.js TO BROWSER JS
+// ═══════════════════════════════════════════════════════════════
+
+const GRID_ROWS = 20, GRID_COLS = 20;
+const MINE_LAT = 28.065, MINE_LNG = 75.772, CELL_SIZE = 0.0005;
+const EXIT_ROW = 1, EXIT_COL = 18;
+
+let riskGrid = null;
+let workerRow = 12, workerCol = 4;
+let routePath = [];
+let alertActive = false;
+let activeTab = 'risk-map';
+
+// ── Sensors (match evacuation_grid.py placeholder) ──────────────
+const SENSORS = [
+  { id: 'S1', row: 3,  col: 6,  displacement: 1.2, pore_pressure: 30,  vibration: 0.10 },
+  { id: 'S2', row: 7,  col: 14, displacement: 0.5, pore_pressure: 15,  vibration: 0.05 },
+  { id: 'S3', row: 13, col: 9,  displacement: 4.1, pore_pressure: 72,  vibration: 0.45 },
+  { id: 'S4', row: 17, col: 16, displacement: 0.8, pore_pressure: 20,  vibration: 0.08 },
+];
+
+// Simulate live sensor fluctuation
+function fluctuateSensors() {
+  SENSORS.forEach(s => {
+    s.displacement    = Math.max(0, s.displacement    + (Math.random()-0.5)*0.3);
+    s.pore_pressure   = Math.max(0, s.pore_pressure   + (Math.random()-0.5)*3);
+    s.vibration       = Math.max(0, Math.min(1.0, s.vibration + (Math.random()-0.5)*0.05));
+  });
+}
+
+// ── Risk computation (mirrors evacuation_grid.py exactly) ───────
+function mineProxScore(r, c) {
+  const dist = Math.sqrt((r-10)**2 + (c-10)**2);
+  return Math.min(1, Math.max(0, 1.0 - dist/14.0));
+}
+
+function geologyScore(r, c) {
+  let base = (r/GRID_ROWS)*0.4 + (c/GRID_COLS)*0.3;
+  if (r>=5 && r<=8  && c>=6  && c<=9 ) base += 0.35; // fault line A
+  if (r>=12&& r<=14 && c>=2  && c<=5 ) base += 0.30; // unstable slope B
+  if (r>=15&& r<=17 && c>=11 && c<=14) base += 0.25; // zone C
+  return Math.min(1, Math.max(0, base));
+}
+
+function sensorScore(r, c) {
+  const cellLat = MINE_LAT + (r + 0.5) * CELL_SIZE;
+  const cellLng = MINE_LNG + (c + 0.5) * CELL_SIZE;
+  let maxInf = 0;
+  for (const s of SENSORS) {
+    const sLat = MINE_LAT + (s.row + 0.5) * CELL_SIZE;
+    const sLng = MINE_LNG + (s.col + 0.5) * CELL_SIZE;
+    const dist = Math.sqrt((cellLat-sLat)**2 + (cellLng-sLng)**2);
+    if (dist > 5*CELL_SIZE) continue;
+    const falloff = 1.0 - dist/(5*CELL_SIZE);
+    const disp   = Math.min(s.displacement/10.0, 1.0);
+    const pore   = Math.min(s.pore_pressure/100.0,1.0);
+    const vib    = Math.min(s.vibration/1.0, 1.0);
+    const risk   = (disp*0.4 + pore*0.35 + vib*0.25) * falloff;
+    maxInf = Math.max(maxInf, risk);
+  }
+  return Math.min(1, Math.max(0, maxInf));
+}
+
+function weatherMultiplier() {
+  const rain24h = parseInt(document.getElementById('rain24').value);
+  const humid   = parseInt(document.getElementById('humid').value);
+  const condMap = { clear: 0, clouds: 0.1, drizzle: 0.3, rain: 0.6, thunderstorm: 1.0 };
+  const cond    = condMap[document.getElementById('condition').value] || 0;
+  const wi = (rain24h/50)*0.35 + (humid/100)*0.10 + cond*0.10;
+  return Math.min(2.0, Math.max(1.0, 1.1 + wi*0.8));
+}
+
+function computeGrid() {
+  const mult = weatherMultiplier();
+  const grid = [];
+  for (let r = 0; r < GRID_ROWS; r++) {
+    const row = [];
+    for (let c = 0; c < GRID_COLS; c++) {
+      const base = 0.45*mineProxScore(r,c) + 0.35*geologyScore(r,c) + 0.20*sensorScore(r,c);
+      row.push(Math.round(Math.min(1, Math.max(0, base * mult)) * 10000) / 10000);
+    }
+    grid.push(row);
+  }
+  return grid;
+}
+
+// ── Cell colour (matches mobile app exactly) ────────────────────
+function cellColor(score) {
+  if (score >= 0.85) return '#E24B4A';
+  if (score >= 0.65) return '#EF9F27';
+  if (score >= 0.40) return '#FAC775';
+  if (score >= 0.20) return '#C0DD97';
+  return '#EAF3DE';
+}
+
+// ── Dijkstra (matches evacuation.js exactly) ────────────────────
+function moveCost(score) {
+  if (score >= 0.85) return 9999;
+  if (score >= 0.65) return 50;
+  if (score >= 0.40) return 15;
+  if (score >= 0.20) return 5;
+  return 1;
+}
+
+function dijkstra(grid, sr, sc, er, ec) {
+  const INF = Infinity;
+  const dist = Array.from({length:GRID_ROWS}, () => Array(GRID_COLS).fill(INF));
+  const prev = Array.from({length:GRID_ROWS}, () => Array(GRID_COLS).fill(null));
+  dist[sr][sc] = 0;
+  const pq = [{r:sr,c:sc,d:0}];
+  const dirs = [[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];
+  while (pq.length) {
+    pq.sort((a,b) => a.d-b.d);
+    const {r,c,d} = pq.shift();
+    if (d > dist[r][c]) continue;
+    if (r===er && c===ec) break;
+    for (const [dr,dc] of dirs) {
+      const nr=r+dr, nc=c+dc;
+      if (nr<0||nr>=GRID_ROWS||nc<0||nc>=GRID_COLS) continue;
+      const nd = d + moveCost(grid[nr][nc]);
+      if (nd < dist[nr][nc]) {
+        dist[nr][nc] = nd;
+        prev[nr][nc] = {r,c};
+        pq.push({r:nr,c:nc,d:nd});
+      }
+    }
+  }
+  const path = [];
+  let cur = {r:er,c:ec};
+  while (cur) {
+    path.unshift({r:cur.r,c:cur.c});
+    cur = prev[cur.r][cur.c];
+  }
+  return path.length > 1 ? path : [];
+}
+
+// ── Render ───────────────────────────────────────────────────────
+function renderGrid() {
+  const container = document.getElementById('evacGrid');
+  container.innerHTML = '';
+
+  const routeSet = new Set(routePath.map(p => `${p.r},${p.c}`));
+  let nDanger=0, nHigh=0, nSafe=0, total=0;
+
+  for (let r = 0; r < GRID_ROWS; r++) {
+    for (let c = 0; c < GRID_COLS; c++) {
+      const score = riskGrid[r][c];
+      total += score;
+      if (score >= 0.85) nDanger++;
+      else if (score >= 0.65) nHigh++;
+      else if (score < 0.20) nSafe++;
+
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.style.background = cellColor(score);
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      cell.title = `[${r},${c}] score: ${score.toFixed(3)}`;
+
+      const key = `${r},${c}`;
+      if (r===EXIT_ROW && c===EXIT_COL) {
+        cell.classList.add('exit-cell');
+      } else if (r===workerRow && c===workerCol) {
+        cell.classList.add('worker-cell');
+      } else if (routeSet.has(key)) {
+        cell.classList.add('on-route');
+      }
+
+      if (score >= 0.85) cell.classList.add('danger-glow');
+
+      cell.addEventListener('click', () => {
+        workerRow = r; workerCol = c;
+        computeRoute();
+      });
+      cell.addEventListener('mousemove', (e) => {
+        const lat = (MINE_LAT + (r+0.5)*CELL_SIZE).toFixed(4);
+        const lng = (MINE_LNG + (c+0.5)*CELL_SIZE).toFixed(4);
+        document.getElementById('coordLabel').textContent = `${lat}°N, ${lng}°E · score ${score.toFixed(3)}`;
+      });
+
+      // Sensor dot
+      const sensor = SENSORS.find(s => s.row===r && s.col===c);
+      if (sensor) {
+        const dot = document.createElement('div');
+        dot.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;z-index:4;';
+        dot.textContent = '📡';
+        cell.style.position = 'relative';
+        cell.appendChild(dot);
+      }
+
+      container.appendChild(cell);
+    }
+  }
+
+  // Stats
+  document.getElementById('statDanger').textContent = nDanger;
+  document.getElementById('statHigh').textContent   = nHigh;
+  document.getElementById('statSafe').textContent   = nSafe;
+  document.getElementById('statAvg').textContent    = (total/400).toFixed(2);
+
+  updateApiPreview();
+}
+
+function computeRoute() {
+  routePath = dijkstra(riskGrid, workerRow, workerCol, EXIT_ROW, EXIT_COL);
+  // Update route info
+  const ri = document.getElementById('routeInfo');
+  if (routePath.length > 0) {
+    ri.classList.add('active');
+    document.getElementById('riCells').textContent = routePath.length + ' cells';
+    document.getElementById('riDist').textContent  = (routePath.length * 55).toLocaleString() + ' m';
+    const etaS = Math.round((routePath.length * 55) / 80 * 60);
+    document.getElementById('riEta').textContent   = etaS + ' s (~' + Math.round(etaS/60) + ' min)';
+    document.getElementById('riStart').textContent = `row ${workerRow}, col ${workerCol}`;
+    document.getElementById('riExit').textContent  = `row ${EXIT_ROW}, col ${EXIT_COL}`;
+  } else {
+    ri.classList.remove('active');
+  }
+  renderGrid();
+}
+
+function recompute() {
+  document.getElementById('loadingOverlay').style.opacity = '1';
+  document.getElementById('loadingOverlay').style.display = 'flex';
+  setTimeout(() => {
+    fluctuateSensors();
+    riskGrid = computeGrid();
+    computeRoute();
+    document.getElementById('loadingOverlay').style.opacity = '0';
+    setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 400);
+    renderSensors();
+    updateWeatherPill();
+  }, 600);
+}
+
+// ── Sensors Panel ────────────────────────────────────────────────
+function renderSensors() {
+  const list = document.getElementById('sensorList');
+  list.innerHTML = '';
+  SENSORS.forEach(s => {
+    const totalRisk = (s.displacement/10)*0.4 + (s.pore_pressure/100)*0.35 + s.vibration*0.25;
+    const risk = Math.min(1, totalRisk);
+    const color = risk>=0.6?'#E24B4A':risk>=0.4?'#EF9F27':risk>=0.2?'#FAC775':'#4ade80';
+    const card = document.createElement('div');
+    card.className = 'sensor-card';
+    card.innerHTML = `
+      <div class="sensor-dot" style="background:${color};box-shadow:0 0 6px ${color}"></div>
+      <div class="sensor-info">
+        <div class="sensor-name">${s.id} · Risk <span style="color:${color}">${(risk*100).toFixed(0)}%</span></div>
+        <div class="sensor-vals">
+          disp ${s.displacement.toFixed(1)}mm · pore ${s.pore_pressure.toFixed(0)}kPa · vib ${s.vibration.toFixed(2)}g
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+// ── Alert ────────────────────────────────────────────────────────
+function toggleAlert() {
+  alertActive = !alertActive;
+  const bar = document.getElementById('alertBar');
+  const btn = document.getElementById('alertBtn');
+  const status = document.getElementById('alertStatus');
+  if (alertActive) {
+    bar.style.display = 'block';
+    btn.textContent = '✅ Cancel Alert';
+    btn.classList.add('active');
+    status.innerHTML = 'Status: <strong style="color:#E24B4A;">ON — Siren Active</strong>';
+    // Send message to parent Next.js page to open alert modal
+    window.parent.postMessage({ type: 'TRIGGER_EVACUATION_ALERT' }, '*');
+    // Auto-add route if no worker placed
+    if (!routePath.length) computeRoute();
+  } else {
+    bar.style.display = 'none';
+    btn.textContent = '🔔 Trigger Evacuation Alert';
+    btn.classList.remove('active');
+    status.innerHTML = 'Status: <strong style="color:#4ade80;">OFF</strong>';
+    // Send message to parent to cancel alert
+    window.parent.postMessage({ type: 'CANCEL_EVACUATION_ALERT' }, '*');
+  }
+  updateApiPreview();
+}
+
+// ── API Preview ──────────────────────────────────────────────────
+function showTab(t) {
+  activeTab = t;
+  document.querySelectorAll('.tab').forEach((el,i) => {
+    el.classList.toggle('active', ['risk-map','evac-route','alert'][i] === t);
+  });
+  updateApiPreview();
+}
+
+function updateApiPreview() {
+  const pre = document.getElementById('apiPreview');
+  if (activeTab === 'risk-map') {
+    const preview = riskGrid ? riskGrid.slice(0,3).map(r => r.slice(0,5).join(', ')+',...').join('\n  ') : '…';
+    pre.textContent = JSON.stringify({
+      grid: '[[' + preview + ']]',
+      danger_zone: riskGrid ? riskGrid.flat().filter(s=>s>=0.85).length + ' cells' : '?',
+      timestamp: new Date().toISOString(),
+      grid_meta: { rows:20, cols:20, cell_size_deg:0.0005, origin:{lat:28.065,lng:75.772} }
+    }, null, 2);
+  } else if (activeTab === 'evac-route') {
+    const r = routePath;
+    pre.textContent = JSON.stringify({
+      route: r.length ? `[…${r.length} waypoints…]` : 'click a cell first',
+      distance_m: r.length * 55,
+      eta_s: Math.round(r.length*55/80*60),
+      start: { row: workerRow, col: workerCol },
+      exit:  { row: EXIT_ROW, col: EXIT_COL },
+      timestamp: new Date().toISOString()
+    }, null, 2);
+  } else {
+    pre.textContent = JSON.stringify({
+      alert: alertActive ? 'ON' : 'OFF',
+      triggeredAt: alertActive ? new Date().toISOString() : null,
+      triggeredBy: alertActive ? 'admin' : null
+    }, null, 2);
+  }
+}
+
+function updateWeatherPill() {
+  const cond = document.getElementById('condition').value;
+  const emojis = {clear:'☀️',clouds:'⛅',drizzle:'🌦️',rain:'🌧️',thunderstorm:'⛈️'};
+  const humid = document.getElementById('humid').value;
+  document.getElementById('weatherLabel').textContent = `${cond.charAt(0).toUpperCase()+cond.slice(1)} · ${humid}% humidity`;
+  document.querySelector('#weatherPill').firstChild.textContent = emojis[cond]+ ' ';
+}
+
+// ── Range inputs live update ─────────────────────────────────────
+document.getElementById('rain24').addEventListener('input', e => {
+  document.getElementById('v-rain24').textContent = e.target.value;
+});
+document.getElementById('humid').addEventListener('input', e => {
+  document.getElementById('v-humid').textContent = e.target.value;
+  updateWeatherPill();
+});
+document.getElementById('condition').addEventListener('change', updateWeatherPill);
+
+// ── Init ─────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  if (window.location.search.includes('worker=true')) {
+    const alertCard = document.getElementById('alertCard');
+    if (alertCard) alertCard.style.display = 'none';
+  }
+
+  riskGrid = computeGrid();
+  computeRoute();
+  renderSensors();
+  setTimeout(() => {
+    document.getElementById('loadingOverlay').style.opacity = '0';
+    setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 400);
+  }, 800);
+
+  // Simulate sensor fluctuation every 5s (like real ESP32 polling)
+  setInterval(() => {
+    fluctuateSensors();
+    riskGrid = computeGrid();
+    renderGrid();
+    renderSensors();
+  }, 5000);
+});
+</script>
+</body>
+</html>

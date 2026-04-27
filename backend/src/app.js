@@ -19,6 +19,7 @@ const rolesRoutes = require('./routes/roles.routes');
 const messagesRoutes = require('./routes/messages.routes');
 const notificationsRoutes = require('./routes/notifications.routes');
 const tasksRoutes = require('./routes/tasks.routes');
+const sirenRoutes = require('./routes/siren.routes');
 
 const app = express();
 
@@ -63,6 +64,7 @@ app.use('/api/roles', rolesRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/tasks', tasksRoutes);
+app.use('/api/worker/siren', sirenRoutes);
 
 // 404 + error handlers
 app.use(notFoundHandler);

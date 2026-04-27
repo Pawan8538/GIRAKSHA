@@ -36,6 +36,14 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
         setLoading(true);
 
         try {
+            // 1. Force Local Hotspot Siren Trigger
+            try {
+                await api.post('/worker/siren/trigger');
+            } catch (err) {
+                console.warn('Local siren trigger failed:', err);
+            }
+
+            // 2. Cloud/Socket Logic
             if (formData.type === 'alert') {
                 await api.post('/alerts/socket/create', {
                     zone: formData.zone,
