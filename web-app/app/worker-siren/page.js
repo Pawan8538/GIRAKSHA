@@ -7,6 +7,7 @@ import api from '../../lib/api';
 export default function WorkerSirenReceiver() {
     const [isMonitoring, setIsMonitoring] = useState(false);
     const [isAlertActive, setIsAlertActive] = useState(false);
+    const [showEvacuationMap, setShowEvacuationMap] = useState(false);
     const [error, setError] = useState(null);
     const audioCtxRef = useRef(null);
     const oscillatorRef = useRef(null);
@@ -114,8 +115,23 @@ export default function WorkerSirenReceiver() {
             startBeep();
         } else {
             stopBeep();
+            setShowEvacuationMap(false);
         }
     }, [isAlertActive]);
+
+    if (showEvacuationMap) {
+        return (
+            <div className="w-full h-screen relative bg-gray-900">
+                <iframe src="/test_demo.html?worker=true" className="w-full h-full border-none" title="Evacuation Map" />
+                <button 
+                    onClick={() => setShowEvacuationMap(false)}
+                    className="absolute top-4 left-4 z-50 bg-white/90 hover:bg-white text-gray-900 font-bold py-2 px-4 rounded shadow-lg transition-colors"
+                >
+                    Back to Siren
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className={`min-h-screen flex flex-col items-center justify-center p-6 transition-colors duration-300 ${isAlertActive ? 'bg-red-600' : 'bg-gray-100'}`}>
@@ -158,9 +174,17 @@ export default function WorkerSirenReceiver() {
                 )}
 
                 {isAlertActive && (
-                    <p className="mt-6 text-sm font-bold text-red-600 animate-bounce">
-                        SIREN IS ACTIVE!
-                    </p>
+                    <div className="mt-6 flex flex-col gap-4">
+                        <p className="text-sm font-bold text-red-600 animate-bounce">
+                            SIREN IS ACTIVE!
+                        </p>
+                        <button
+                            onClick={() => setShowEvacuationMap(true)}
+                            className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-4 px-6 rounded-xl text-xl shadow-lg transform transition active:scale-95"
+                        >
+                            EVACUATE
+                        </button>
+                    </div>
                 )}
             </div>
             
