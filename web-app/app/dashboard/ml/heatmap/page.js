@@ -22,10 +22,7 @@ export default function HeatmapPage() {
         loadDevices();
         loadActiveAlerts();
 
-        // Auto-refresh heatmap every 5 seconds
-        const heatmapInterval = setInterval(() => {
-            loadHeatmapData();
-        }, 5000);
+        // Auto-refresh removed. Data now streams via Centralized WebSocket.
 
         // Setup Socket.io connection
         const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
@@ -47,10 +44,17 @@ export default function HeatmapPage() {
             loadActiveAlerts();
         });
 
+        newSocket.on('heatmapData', (data) => {
+            if (document.visibilityState === 'visible') {
+                setPoints(data);
+                setLastUpdate(new Date());
+                setLoading(false);
+            }
+        });
+
         setSocket(newSocket);
 
         return () => {
-            clearInterval(heatmapInterval);
             if (newSocket) {
                 newSocket.disconnect();
             }

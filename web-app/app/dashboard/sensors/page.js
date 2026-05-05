@@ -7,6 +7,7 @@ import { sensorService } from '../../../services/sensorService';
 import { SensorCard } from '../../../components/sensors/SensorCard';
 import { RefreshCw, Radio, Filter, Eye, EyeOff, Power } from 'lucide-react';
 import { Button } from '../../../components/common/Button';
+import { io } from 'socket.io-client';
 
 export default function SensorsPage() {
     const { user } = useAuth();
@@ -76,19 +77,30 @@ export default function SensorsPage() {
         loadSensors();
     }, [loadSensors]);
 
-    // Polling effect
+    // Centralized Polling via WebSocket
     useEffect(() => {
         if (!isPolling) return;
 
-        const intervalId = setInterval(() => {
-            // Only poll if page is visible
-            if (document.visibilityState === 'visible') {
-                loadSensors(true);
-            }
-        }, 30000); // 30 second interval to avoid rate limiting
+        const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+        const newSocket = io(socketUrl);
 
-        return () => clearInterval(intervalId);
-    }, [loadSensors, isPolling]);
+        newSocket.on('connect', () => {
+            console.log('Connected to Centralized WebSocket for sensors');
+            newSocket.emit('register', { role: 'dashboard', zones: [] });
+        });
+
+        newSocket.on('sensorData', (data) => {
+            // Only update if page is visible to save rendering
+            if (document.visibilityState === 'visible') {
+                setSensors(data);
+                setLastUpdated(new Date());
+            }
+        });
+
+        return () => {
+            if (newSocket) newSocket.disconnect();
+        };
+    }, [isPolling]);
 
     // Filtered sensors based on showInactive toggle
     const filteredSensors = sensors.filter(s => showInactive || s.is_active);

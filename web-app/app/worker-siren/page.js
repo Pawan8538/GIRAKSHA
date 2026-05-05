@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { AlertTriangle, Volume2, VolumeX } from 'lucide-react';
+import { io } from 'socket.io-client';
 import api from '../../lib/api';
 
 export default function WorkerSirenReceiver() {
@@ -85,26 +86,46 @@ export default function WorkerSirenReceiver() {
     };
 
     useEffect(() => {
-        if (isMonitoring) {
-            // Poll every 2 seconds
-            pollingRef.current = setInterval(async () => {
-                try {
-                    const res = await api.get('/worker/siren/status');
-                    if (res.data && res.data.active) {
-                        setIsAlertActive(true);
-                    } else {
-                        setIsAlertActive(false);
-                    }
-                } catch (err) {
-                    console.error("Polling error", err);
-                }
-            }, 2000);
-        } else {
-            if (pollingRef.current) clearInterval(pollingRef.current);
+        if (!isMonitoring) {
+            if (pollingRef.current) {
+                pollingRef.current.disconnect();
+                pollingRef.current = null;
+            }
+            return;
         }
 
+        // Connect to Central WebSocket for Sirens
+        const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+        const socket = io(socketUrl);
+
+        socket.on('connect', () => {
+            console.log('Siren Worker Connected to WebSocket');
+            socket.emit('register', { role: 'siren', workerId: `W-${Date.now()}`, zones: ['all'] });
+        });
+
+        // Backend emits 'siren' when alert starts
+        socket.on('siren', (data) => {
+            setIsAlertActive(true);
+        });
+
+        // Backend emits 'sirenCancel' when alert stops
+        socket.on('sirenCancel', () => {
+            setIsAlertActive(false);
+        });
+
+        // Custom local endpoint trigger fallback via socket if implemented
+        socket.on('sirenTriggerLocal', () => {
+             setIsAlertActive(true);
+        });
+
+        socket.on('sirenResetLocal', () => {
+             setIsAlertActive(false);
+        });
+
+        pollingRef.current = socket;
+
         return () => {
-            if (pollingRef.current) clearInterval(pollingRef.current);
+            if (pollingRef.current) pollingRef.current.disconnect();
             stopBeep();
         };
     }, [isMonitoring]);

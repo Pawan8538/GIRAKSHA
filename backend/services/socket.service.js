@@ -10,6 +10,10 @@ class SocketService {
         };
         this.activeAlerts = new Map();
         this.ACK_TIMEOUT = 15000; // 15 seconds
+        
+        // Centralized Polling State
+        this.pollingInterval = null;
+        this.POLL_RATE = 5000; // 5 seconds
     }
 
     initialize(io) {
@@ -39,6 +43,7 @@ class SocketService {
                 this.clients.sirens.set(socket.id, socket);
             } else if (role === 'dashboard') {
                 this.clients.dashboards.set(socket.id, socket);
+                this.updatePollingStatus();
             }
 
             this.broadcastDeviceCount();
@@ -62,7 +67,47 @@ class SocketService {
             this.clients.sirens.delete(socket.id);
             this.clients.dashboards.delete(socket.id);
             this.broadcastDeviceCount();
+            this.updatePollingStatus();
         });
+    }
+
+    updatePollingStatus() {
+        if (this.clients.dashboards.size > 0 && !this.pollingInterval) {
+            console.log('🚀 Dashboards connected. Starting Centralized Polling...');
+            this.startPolling();
+        } else if (this.clients.dashboards.size === 0 && this.pollingInterval) {
+            console.log('💤 No dashboards connected. Stopping Centralized Polling to allow sleep.');
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+        }
+    }
+
+    async startPolling() {
+        const axios = require('axios');
+        const port = process.env.PORT || 4000;
+        const localApi = `http://127.0.0.1:${port}/api`;
+
+        this.pollingInterval = setInterval(async () => {
+            try {
+                // Fetch Sensors
+                const sensorRes = await axios.get(`${localApi}/sensors`);
+                if (sensorRes.data && sensorRes.data.success) {
+                    this.clients.dashboards.forEach(client => {
+                        client.emit('sensorData', sensorRes.data.data);
+                    });
+                }
+
+                // Fetch Heatmap
+                const heatmapRes = await axios.get(`${localApi}/ml/risk/grid`);
+                if (heatmapRes.data && heatmapRes.data.grid) {
+                    this.clients.dashboards.forEach(client => {
+                        client.emit('heatmapData', heatmapRes.data.grid);
+                    });
+                }
+            } catch (err) {
+                console.error('Centralized Polling Error:', err.message);
+            }
+        }, this.POLL_RATE);
     }
 
     createAlert(data) {
