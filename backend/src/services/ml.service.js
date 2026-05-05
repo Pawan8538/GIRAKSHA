@@ -339,7 +339,13 @@ const getCurrentRisk = async () => {
  */
 const getRiskGrid = async () => {
   try {
-    const result = await callMLService('GET', '/risk/grid');
+    let result = await callMLService('GET', '/risk/grid');
+    
+    // Fallback: If deployed ML service is running sih2025/src/api/main.py, the endpoint is /map/grid
+    if (result.detail === 'Not Found' || result.message === 'Not Found') {
+      result = await callMLService('GET', '/map/grid');
+    }
+    
     return result;
   } catch (error) {
     console.error('ML getRiskGrid error:', error);
@@ -357,7 +363,13 @@ const getRiskGrid = async () => {
  */
 const getSensorStream = async () => {
   try {
-    const result = await callMLService('GET', '/stream/sensors');
+    let result = await callMLService('GET', '/stream/sensors');
+    
+    // Fallback: If deployed ML service is running the newer backend/ml-service/main.py, the endpoint is /sensors/live
+    if (result.detail === 'Not Found' || result.message === 'Not Found') {
+      result = await callMLService('GET', '/sensors/live');
+    }
+    
     return result;
   } catch (error) {
     console.error('ML getSensorStream error:', error);
