@@ -23,8 +23,8 @@ export default function MessagesPage() {
     useEffect(() => {
         if (activeConversation) {
             loadMessages(activeConversation.id);
-            // Poll for new messages every 5 seconds
-            const interval = setInterval(() => loadMessages(activeConversation.id), 5000);
+            // Poll for new messages every 60 seconds to save Render quota
+            const interval = setInterval(() => loadMessages(activeConversation.id), 60000);
             return () => clearInterval(interval);
         }
     }, [activeConversation]);
