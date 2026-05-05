@@ -46,7 +46,15 @@ export default function HeatmapPage() {
 
         newSocket.on('heatmapData', (data) => {
             if (document.visibilityState === 'visible') {
-                setPoints(data);
+                const transformedData = data.map(cell => ({
+                    id: cell.id,
+                    lat: cell.lat,
+                    lng: cell.lon,
+                    risk: cell.risk_score,
+                    mineProximity: cell.mine_proximity,
+                    sensorInfluence: cell.sensor_influence
+                }));
+                setPoints(transformedData);
                 setLastUpdate(new Date());
                 setLoading(false);
             }

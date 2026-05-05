@@ -45,6 +45,19 @@ const normalizeRole = (role) => {
  */
 const requireAuth = async (req, res, next) => {
   try {
+    // Internal loopback bypass for socket service
+    const isLoopback = req.ip === '127.0.0.1' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1';
+    if (isLoopback && req.headers['x-internal-bypass'] === 'true') {
+        req.user = {
+            id: -1,
+            name: 'Internal System',
+            role_name: ROLE_CODE.SUPER_ADMIN,
+            role_code: ROLE_CODE.SUPER_ADMIN,
+            is_approved: true
+        };
+        return next();
+    }
+
     // Development bypass for testing
     if (config.devBypassToken) {
       const bypassHeader = req.headers['x-dev-bypass'] || req.headers['x-dev-bypass-token'];

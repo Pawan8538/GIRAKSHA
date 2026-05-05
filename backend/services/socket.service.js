@@ -89,8 +89,9 @@ class SocketService {
 
         this.pollingInterval = setInterval(async () => {
             try {
+                const reqConfig = { headers: { 'x-internal-bypass': 'true' } };
                 // Fetch Sensors
-                const sensorRes = await axios.get(`${localApi}/sensors`);
+                const sensorRes = await axios.get(`${localApi}/sensors`, reqConfig);
                 if (sensorRes.data && sensorRes.data.success) {
                     this.clients.dashboards.forEach(client => {
                         client.emit('sensorData', sensorRes.data.data);
@@ -98,7 +99,7 @@ class SocketService {
                 }
 
                 // Fetch Heatmap
-                const heatmapRes = await axios.get(`${localApi}/ml/risk/grid`);
+                const heatmapRes = await axios.get(`${localApi}/ml/risk/grid`, reqConfig);
                 if (heatmapRes.data && heatmapRes.data.grid) {
                     this.clients.dashboards.forEach(client => {
                         client.emit('heatmapData', heatmapRes.data.grid);
