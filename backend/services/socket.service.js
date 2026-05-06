@@ -13,7 +13,8 @@ class SocketService {
         
         // Centralized Polling State
         this.pollingInterval = null;
-        this.POLL_RATE = 5000; // 5 seconds
+        this.pollCount = 0;
+        this.POLL_RATE = 30000; // 30 seconds - Render free tier safe
     }
 
     initialize(io) {
@@ -86,24 +87,37 @@ class SocketService {
         const axios = require('axios');
         const port = process.env.PORT || 4000;
         const localApi = `http://127.0.0.1:${port}/api`;
+        this.pollCount = 0;
 
         this.pollingInterval = setInterval(async () => {
+            this.pollCount++;
             try {
-                const reqConfig = { headers: { 'x-internal-bypass': 'true' } };
-                // Fetch Sensors
-                const sensorRes = await axios.get(`${localApi}/sensors`, reqConfig);
-                if (sensorRes.data && sensorRes.data.success) {
-                    this.clients.dashboards.forEach(client => {
-                        client.emit('sensorData', sensorRes.data.data);
-                    });
+                const reqConfig = { headers: { 'x-internal-bypass': 'true' }, timeout: 8000 };
+
+                // --- Sensors: Every 30s ---
+                try {
+                    const sensorRes = await axios.get(`${localApi}/sensors`, reqConfig);
+                    if (sensorRes.data && sensorRes.data.success && sensorRes.data.data.length > 0) {
+                        this.clients.dashboards.forEach(client => {
+                            client.emit('sensorData', sensorRes.data.data);
+                        });
+                    }
+                } catch (sErr) {
+                    console.warn('Sensor poll failed (non-fatal):', sErr.message);
                 }
 
-                // Fetch Heatmap
-                const heatmapRes = await axios.get(`${localApi}/ml/risk/grid`, reqConfig);
-                if (heatmapRes.data && heatmapRes.data.grid) {
-                    this.clients.dashboards.forEach(client => {
-                        client.emit('heatmapData', heatmapRes.data.grid);
-                    });
+                // --- Heatmap: Every 3rd poll (~90s) to avoid ML service rate limits ---
+                if (this.pollCount % 3 === 0) {
+                    try {
+                        const heatmapRes = await axios.get(`${localApi}/ml/risk/grid`, reqConfig);
+                        if (heatmapRes.data && heatmapRes.data.grid) {
+                            this.clients.dashboards.forEach(client => {
+                                client.emit('heatmapData', heatmapRes.data.grid);
+                            });
+                        }
+                    } catch (hErr) {
+                        console.warn('Heatmap poll failed (non-fatal):', hErr.message);
+                    }
                 }
             } catch (err) {
                 console.error('Centralized Polling Error:', err.message);

@@ -20,24 +20,21 @@ export default function SensorsPage() {
     const [isPolling, setIsPolling] = useState(true);
     const [systemPaused, setSystemPaused] = useState(false);
 
-    // Sync system paused state with data
-    useEffect(() => {
-        if (!loading && sensors.length === 0) {
-            setSystemPaused(true);
-        } else if (sensors.length > 0) {
-            setSystemPaused(false);
-        }
-    }, [sensors, loading]);
+    // systemPaused is now purely controlled by the user toggle, not inferred from data
+    // (sensors being empty on first load does not mean the system is paused)
 
     const handleGlobalToggle = async () => {
         try {
             setRefreshing(true);
             // Toggle: If currently paused, we want to Activate (true).
-            await sensorService.toggleGlobalSystem(systemPaused);
+            const result = await sensorService.toggleGlobalSystem(systemPaused);
+            if (result && result.success) {
+                setSystemPaused(!systemPaused); // Flip state only on success
+            }
             await loadSensors();
         } catch (e) {
-            console.error(e);
-            alert('Failed to toggle system');
+            console.error('Toggle system error:', e);
+            // Don't alert — just log. The backend now handles this gracefully.
         } finally {
             setRefreshing(false);
         }
