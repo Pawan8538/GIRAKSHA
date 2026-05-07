@@ -55,7 +55,7 @@ export default function MLPredictionDashboard() {
             if (isPolling && document.visibilityState === 'visible') {
                 loadData();
             }
-        }, 10000);
+        }, 60000); // 60s - Render free tier safe
 
         return () => clearInterval(interval);
     }, [isPolling]);
@@ -86,8 +86,8 @@ export default function MLPredictionDashboard() {
                 enhanced_risk: 0.65,
                 risk_level: "high",
                 sources: {
-                    xgboost: { risk_score: 0.62, risk_level: "high" },
-                    vision: { risk_score: 0.75, risk_level: "imminent" },
+                    xgboost: { risk_score: 0.62, risk_level: "high", confidence: 0.85 },
+                    visual: { risk_score: 0.75, risk_level: "imminent", confidence: 0.80 }, // key must match component read: sources.visual
                     sensors: {
                         max_disp_mm: 12.5,
                         max_pore_kpa: 45.2,
@@ -147,7 +147,7 @@ export default function MLPredictionDashboard() {
                         <div className="p-4 bg-gray-50 rounded-lg">
                             <h4 className="font-semibold text-sm text-gray-500 uppercase">Primary Model (XGBoost)</h4>
                             <div className="mt-2 flex items-baseline gap-2">
-                                <span className="text-2xl font-bold text-blue-600">{(xgb.risk_score * 100).toFixed(1)}%</span>
+                                <span className="text-2xl font-bold text-blue-600">{((xgb.risk_score || 0) * 100).toFixed(1)}%</span>
                                 <span className="text-sm text-gray-500">Confidence</span>
                             </div>
                             <p className="text-xs text-gray-500 mt-2">Analyzes geotechnical sensor arrays</p>
@@ -155,7 +155,7 @@ export default function MLPredictionDashboard() {
                         <div className="p-4 bg-gray-50 rounded-lg">
                             <h4 className="font-semibold text-sm text-gray-500 uppercase">Vision Model (CNN)</h4>
                             <div className="mt-2 flex items-baseline gap-2">
-                                <span className="text-2xl font-bold text-purple-600">{(vision.risk_score * 100).toFixed(1)}%</span>
+                                <span className="text-2xl font-bold text-purple-600">{((vision.risk_score || 0) * 100).toFixed(1)}%</span>
                                 <span className="text-sm text-gray-500">Confidence</span>
                             </div>
                             <p className="text-xs text-gray-500 mt-2">Detects surface cracks from feeds</p>
@@ -174,10 +174,10 @@ export default function MLPredictionDashboard() {
                 <Card className="p-6">
                     <h3 className="text-lg font-bold text-gray-900 mb-4">Model Contribution Factors</h3>
                     <div className="space-y-4">
-                        <FactorBar label="Displacement (Ground Movement)" value={sens.max_disp_mm / 20} color="bg-red-500" />
-                        <FactorBar label="Pore Water Pressure" value={sens.max_pore_kpa / 100} color="bg-blue-500" />
-                        <FactorBar label="Seismic Vibration" value={sens.max_vib_g * 10} color="bg-yellow-500" />
-                        <FactorBar label="Visual Anomalies (Crack Logic)" value={vision.risk_score} color="bg-purple-500" />
+                        <FactorBar label="Displacement (Ground Movement)" value={(sens.max_disp_mm || 0) / 20} color="bg-red-500" />
+                        <FactorBar label="Pore Water Pressure" value={(sens.max_pore_kpa || 0) / 100} color="bg-blue-500" />
+                        <FactorBar label="Seismic Vibration" value={(sens.max_vib_g || 0) * 10} color="bg-yellow-500" />
+                        <FactorBar label="Visual Anomalies (Crack Logic)" value={vision.risk_score || 0} color="bg-purple-500" />
                     </div>
                 </Card>
 
@@ -202,14 +202,14 @@ export default function MLPredictionDashboard() {
                             <Activity className="text-indigo-500" />
                             <div>
                                 <p className="text-xs text-gray-500">Seismic Activity</p>
-                                <p className="font-bold">{sens.max_vib_g} g</p>
+                                <p className="font-bold">{sens.max_vib_g ?? 0} g</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded">
                             <Wind className="text-teal-500" />
                             <div>
                                 <p className="text-xs text-gray-500">Weather Impact</p>
-                                <p className="font-bold">+{(data?.weather_impact * 100).toFixed(0)}% Risk</p>
+                                <p className="font-bold">+{((data?.weather_impact || 0) * 100).toFixed(0)}% Risk</p>
                             </div>
                         </div>
                     </div>
@@ -257,7 +257,7 @@ export default function MLPredictionDashboard() {
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-blue-900">Weather Impact</span>
-                                <span className="font-mono font-medium text-blue-800">{(data?.weather_impact * 100).toFixed(0)}%</span>
+                                <span className="font-mono font-medium text-blue-800">{((data?.weather_impact || 0) * 100).toFixed(0)}%</span>
                             </div>
                         </div>
                     </div>
