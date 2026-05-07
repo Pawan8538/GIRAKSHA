@@ -1,0 +1,54 @@
+# Root gitignore - Consolidated & Final
+.idea/
+.vscode/
+*.log
+.DS_Store
+
+# Environments
+.env
+.env.local
+.env.*
+
+# Documentation
+docs/DEPLOYMENT_GUIDE.md
+
+# Dependencies
+node_modules/
+dist/
+build/
+bin/
+obj/
+
+# Python
+**/__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+.venv/
+.pytest_cache/
+
+# Next.js
+.next/
+out/
+.vercel/
+next-env.d.ts
+
+# Mobile App / Android / iOS
+.expo/
+**/android/build/
+**/android/app/build/
+**/android/.gradle/
+**/android/app/debug.keystore
+**/ios/build/
+**/ios/Pods/
+**/.gradle/
+
+# Misc
+.pnp
+.pnp.js
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
