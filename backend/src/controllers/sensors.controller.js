@@ -22,7 +22,6 @@ const listSensors = async (req, res, next) => {
       data: sensors
     });
   } catch (error) {
-  } catch (error) {
     next(error);
   }
 };
@@ -175,33 +174,14 @@ const getStats = async (req, res, next) => {
 
 const toggleGlobalSystem = async (req, res, next) => {
   try {
-    const { active } = req.body; // Expect { active: false } to pause
-
-    // Proxy to Python ML Service
-    try {
-      const mlUrl = getMlServiceUrl();
-      const mlResponse = await axios.post(`${mlUrl}/sensors/control/global?active=${active}`, null, { timeout: 5000 });
-      
-      // Invalidate the cache so the next poll sees the new state immediately!
-      proxyCache.timestamp = 0;
-
-      return res.json({
-        success: true,
-        data: mlResponse.data,
-        message: mlResponse.data.message || 'System status updated'
-      });
-    } catch (proxyError) {
-      console.warn('[toggleGlobalSystem] ML proxy failed, responding with local success:', proxyError.message);
-      
-      // RESILIENT FALLBACK: If ML service is sleeping/unavailable (common on Render free tier),
-      // return success locally. The toggle is a UI state — the simulation continues anyway.
-      proxyCache.timestamp = 0; // Still invalidate cache
-      return res.json({
-        success: true,
-        message: `System ${active ? 'resumed' : 'paused'} (ML service offline — state may not persist)`,
-        data: { ok: true, active }
-      });
-    }
+    const { active } = req.body;
+    const result = await sensorService.toggleGlobalSystem(active);
+    
+    return res.json({
+      success: true,
+      data: result,
+      message: result.message || 'System status updated'
+    });
   } catch (error) {
     next(error);
   }

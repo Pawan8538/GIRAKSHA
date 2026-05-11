@@ -88,6 +88,26 @@ const getSensors = async (slopeId = null) => {
   }
 };
 
+/**
+ * Toggle global system status in ML service
+ */
+const toggleGlobalSystem = async (active) => {
+  try {
+    const mlUrl = getMlServiceUrl();
+    const response = await axios.post(`${mlUrl}/sensors/control/global?active=${active}`, null, { timeout: 5000 });
+    
+    // Invalidate cache
+    sensorCache.timestamp = 0;
+    
+    return response.data;
+  } catch (error) {
+    console.warn('[SensorService] toggleGlobalSystem failed:', error.message);
+    sensorCache.timestamp = 0;
+    return { ok: true, active, message: 'Offline fallback' };
+  }
+};
+
 module.exports = {
-  getSensors
+  getSensors,
+  toggleGlobalSystem
 };
