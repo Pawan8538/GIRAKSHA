@@ -153,10 +153,6 @@ class SocketService {
                 console.error('Centralized Polling Error:', err.message);
             }
         }, this.POLL_RATE);
-            } catch (err) {
-                console.error('Centralized Polling Error:', err.message);
-            }
-        }, this.POLL_RATE);
     }
 
     createAlert(data) {
