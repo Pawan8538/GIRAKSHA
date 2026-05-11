@@ -20,7 +20,7 @@ const RiskGauge = ({ level, score }) => {
 
     return (
         <div className={`flex flex-col items-center justify-center p-6 rounded-full border-4 w-48 h-48 ${colorClass}`}>
-            <span className="text-3xl font-bold">{Math.round(score * 100)}%</span>
+            <span className="text-3xl font-bold">{Math.round((score || 0) * 100)}%</span>
             <span className="text-sm font-medium uppercase mt-2">{level || 'SAFE'}</span>
         </div>
     );
@@ -30,7 +30,7 @@ const FactorBar = ({ label, value, color = "bg-blue-500" }) => (
     <div className="mb-3">
         <div className="flex justify-between text-sm mb-1">
             <span className="font-medium text-gray-700">{label}</span>
-            <span className="text-gray-500">{Math.round(value * 100)}%</span>
+            <span className="text-gray-500">{Math.round((value || 0) * 100)}%</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
             <div
@@ -50,8 +50,8 @@ export default function MLPredictionDashboard() {
     const [isPolling, setIsPolling] = useState(true);
 
     useEffect(() => {
-        loadData(true); // Initial load (with loader)
-
+        // We no longer call loadData() on mount.
+        // Instead, the SocketService pushes initial data immediately on 'register'.
         if (!isPolling) return;
 
         const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
@@ -123,10 +123,11 @@ export default function MLPredictionDashboard() {
         }
     };
 
-    if (loading) {
+    if (loading && !data) {
         return (
-            <div className="flex items-center justify-center h-96">
+            <div className="flex flex-col items-center justify-center h-96 space-y-4">
                 <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                <p className="text-gray-500 font-medium animate-pulse">Connecting to Live ML Stream...</p>
             </div>
         );
     }

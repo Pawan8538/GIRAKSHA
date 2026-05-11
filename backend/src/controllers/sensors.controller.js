@@ -10,124 +10,18 @@ const {
   getSensorReadingStats
 } = require('../models/queries');
 
-const axios = require('axios'); // Added for Proxy
-
-const getMlServiceUrl = () => {
-  let url = process.env.ML_SERVICE_URL;
-  if (url) {
-    if (!url.startsWith('http')) {
-      url = url.includes('.onrender.com') ? `https://${url}` : `http://${url}`;
-    }
-    return url.replace(/\/$/, '');
-  }
-  return 'http://127.0.0.1:8000';
-};
-
-// Global cache to prevent 429 Too Many Requests on Render Free Tier
-let proxyCache = {
-  data: null,
-  timestamp: 0
-};
-const CACHE_TTL = 60000; // 60 seconds
-const CACHE_TTL_429 = 120000; // 2 minutes backoff after a 429
+const sensorService = require('../services/sensor.service');
 
 const listSensors = async (req, res, next) => {
   try {
     const { slopeId } = req.query;
-
-    // PROXY STRATEGY: Try fetching Real-Time Data from Python ML Service first
-    try {
-      const mlUrl = getMlServiceUrl();
-      
-      // Serve from cache if valid
-      if (proxyCache.data && (Date.now() - proxyCache.timestamp < CACHE_TTL)) {
-        return res.json({
-          success: true,
-          data: proxyCache.data,
-          source: 'python_ml_proxy_cached'
-        });
-      }
-
-      const mlResponse = await axios.get(`${mlUrl}/sensors/live`, { timeout: 2000 });
-      if (mlResponse.data && mlResponse.data.ok && mlResponse.data.data) {
-
-        // Transform attributes to match expected DB schema for Frontend
-        const proxyRows = mlResponse.data.data.map(s => {
-          // Identify primary value
-          let val = 0;
-          const vals = s.values;
-          if (s.type === 'displacement') val = vals.disp_mm;
-          else if (s.type === 'pore_pressure' || s.type === 'piezometer') val = vals.pore_kpa;
-          else if (s.type === 'vibration' || s.type === 'seismic') val = vals.vibration_g;
-          else if (s.type === 'tilt') val = vals.tilt_deg;
-          else if (s.type === 'rain_gauge') val = vals.rain_mm || 0; // if available
-
-          const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-
-          return {
-            id: s.sensor_id,
-            slope_id: 1,
-            name: `${capitalize(s.type)} ${s.sensor_id}`,
-            sensor_type: s.type,
-            current_value: val,
-            status: 'active',
-            is_active: true, // Frontend uses this for filtering
-            lat: s.location.lat,
-            lon: s.location.lon,
-            updated_at: s.timestamp,
-            last_reading_at: s.timestamp,
-            last_reading_time: s.timestamp, // Correct field for SensorCard
-            unit: 'unit'
-          };
-        });
-
-        // Update Cache
-        proxyCache.data = proxyRows;
-        proxyCache.timestamp = Date.now();
-
-        return res.json({
-          success: true,
-          data: proxyRows,
-          source: 'python_ml_proxy' // Debug flag
-        });
-      }
-    } catch (proxyError) {
-      // On 429, extend cache TTL aggressively to back off from the ML service
-      if (proxyError.response && proxyError.response.status === 429 && proxyCache.data) {
-        proxyCache.timestamp = Date.now() - CACHE_TTL + CACHE_TTL_429; // Extend cache for 2 min
-        console.warn('⚠️ ML Service rate-limited (429). Serving stale cache for 2 minutes.');
-        return res.json({ success: true, data: proxyCache.data, source: 'python_ml_proxy_stale' });
-      }
-      console.error('❌ Proxy Failed:', proxyError.message, proxyError.code ? `Code: ${proxyError.code}` : '');
-      // Fallthrough to DB logic
-    }
-
-    const sensors = slopeId
-      ? await getSensorsBySlope(slopeId)
-      : await getAllSensors();
-
-    // FALLBACK: If DB is empty and proxy failed (e.g., due to Render rate limit 429s), 
-    // provide mock sensor data to keep the dashboard functioning and prevent the 'System Paused' UI trap.
-    if (sensors.rows.length === 0) {
-      const mockSensors = [
-        { id: 'S01', slope_id: slopeId || 1, name: 'Displacement S01', sensor_type: 'displacement', current_value: 0.5, status: 'active', is_active: true, lat: 11.1022, lon: 79.1564, updated_at: new Date().toISOString(), last_reading_time: new Date().toISOString(), unit: 'mm' },
-        { id: 'S02', slope_id: slopeId || 1, name: 'Pore Pressure S02', sensor_type: 'pore_pressure', current_value: 15.2, status: 'active', is_active: true, lat: 11.1032, lon: 79.1574, updated_at: new Date().toISOString(), last_reading_time: new Date().toISOString(), unit: 'kPa' },
-        { id: 'S03', slope_id: slopeId || 1, name: 'Vibration S03', sensor_type: 'vibration', current_value: 0.02, status: 'active', is_active: true, lat: 11.1042, lon: 79.1584, updated_at: new Date().toISOString(), last_reading_time: new Date().toISOString(), unit: 'g' },
-        { id: 'S04', slope_id: slopeId || 1, name: 'Rain Gauge S04', sensor_type: 'rain_gauge', current_value: 0.0, status: 'active', is_active: true, lat: 11.1052, lon: 79.1594, updated_at: new Date().toISOString(), last_reading_time: new Date().toISOString(), unit: 'mm' }
-      ];
-      
-      return res.json({
-        success: true,
-        data: mockSensors,
-        source: 'mock_fallback'
-      });
-    }
-
+    const sensors = await sensorService.getSensors(slopeId);
+    
     return res.json({
       success: true,
-      data: sensors.rows,
-      source: 'database'
+      data: sensors
     });
+  } catch (error) {
   } catch (error) {
     next(error);
   }
