@@ -1,4 +1,6 @@
 const { Server } = require('socket.io');
+const mlService = require('../src/services/ml.service');
+const sensorService = require('../src/services/sensor.service');
 
 class SocketService {
     constructor() {
@@ -44,6 +46,7 @@ class SocketService {
                 this.clients.sirens.set(socket.id, socket);
             } else if (role === 'dashboard') {
                 this.clients.dashboards.set(socket.id, socket);
+                this.pushInitialData(socket); // Immediate push on connect
                 this.updatePollingStatus();
             }
 
@@ -83,70 +86,73 @@ class SocketService {
         }
     }
 
+    async pushInitialData(socket) {
+        try {
+            const [sensors, risk, grid] = await Promise.all([
+                sensorService.getSensors(),
+                mlService.getCurrentRisk(),
+                mlService.getRiskGrid()
+            ]);
+
+            socket.emit('sensorData', sensors);
+            socket.emit('mlRiskUpdate', { risk, explanation: null });
+            socket.emit('heatmapData', grid.grid || grid);
+        } catch (err) {
+            console.error('[SocketService] Initial push failed:', err.message);
+        }
+    }
+
     async startPolling() {
-        const axios = require('axios');
-        const port = process.env.PORT || 4000;
-        const localApi = `http://127.0.0.1:${port}/api`;
         this.pollCount = 0;
 
         this.pollingInterval = setInterval(async () => {
             this.pollCount++;
             try {
-                const reqConfig = { headers: { 'x-internal-bypass': 'true' }, timeout: 8000 };
-
                 // --- Sensors: Every 30s ---
                 try {
-                    const sensorRes = await axios.get(`${localApi}/sensors`, reqConfig);
-                    if (sensorRes.data && sensorRes.data.success && sensorRes.data.data.length > 0) {
-                        this.clients.dashboards.forEach(client => {
-                            client.emit('sensorData', sensorRes.data.data);
-                        });
-                    }
+                    const sensors = await sensorService.getSensors();
+                    this.clients.dashboards.forEach(client => {
+                        client.emit('sensorData', sensors);
+                    });
                 } catch (sErr) {
-                    console.warn('Sensor poll failed (non-fatal):', sErr.message);
+                    console.warn('Sensor poll failed:', sErr.message);
                 }
 
-                // --- ML Risk: Every 2nd poll (~60s) to reduce request volume ---
+                // --- ML Risk: Every 2nd poll (~60s) ---
                 if (this.pollCount % 2 === 0) {
                     try {
-                        const riskRes = await axios.get(`${localApi}/ml/risk/current`, reqConfig);
-                        if (riskRes.data) {
-                            // Also fetch explanation for the current risk
-                            let explainData = null;
-                            try {
-                                const slopeId = riskRes.data.slopeId || 'default';
-                                const explainRes = await axios.get(`${localApi}/ml/explain/current?slopeId=${slopeId}`, reqConfig);
-                                explainData = explainRes.data.data || explainRes.data;
-                            } catch (e) {
-                                console.warn('ML Explain poll failed (non-fatal):', e.message);
-                            }
+                        const risk = await mlService.getCurrentRisk();
+                        if (risk) {
+                            // Extract slopeId for explanation if possible
+                            const slopeId = risk.slopeId || 'default';
+                            const explanation = await mlService.explain({ predictionId: 'current', slopeId });
 
                             this.clients.dashboards.forEach(client => {
-                                client.emit('mlRiskUpdate', {
-                                    risk: riskRes.data,
-                                    explanation: explainData
-                                });
+                                client.emit('mlRiskUpdate', { risk, explanation });
                             });
                         }
                     } catch (rErr) {
-                        console.warn('ML Risk poll failed (non-fatal):', rErr.message);
+                        console.warn('ML Risk poll failed:', rErr.message);
                     }
                 }
 
-                // --- Heatmap: Every 3rd poll (~90s) to avoid ML service rate limits ---
+                // --- Heatmap: Every 3rd poll (~90s) ---
                 if (this.pollCount % 3 === 0) {
-
                     try {
-                        const heatmapRes = await axios.get(`${localApi}/ml/risk/grid`, reqConfig);
-                        if (heatmapRes.data && heatmapRes.data.grid) {
+                        const grid = await mlService.getRiskGrid();
+                        if (grid && (grid.grid || grid)) {
                             this.clients.dashboards.forEach(client => {
-                                client.emit('heatmapData', heatmapRes.data.grid);
+                                client.emit('heatmapData', grid.grid || grid);
                             });
                         }
                     } catch (hErr) {
-                        console.warn('Heatmap poll failed (non-fatal):', hErr.message);
+                        console.warn('Heatmap poll failed:', hErr.message);
                     }
                 }
+            } catch (err) {
+                console.error('Centralized Polling Error:', err.message);
+            }
+        }, this.POLL_RATE);
             } catch (err) {
                 console.error('Centralized Polling Error:', err.message);
             }
