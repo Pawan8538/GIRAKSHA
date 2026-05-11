@@ -4,6 +4,15 @@ const config = require('../config/env');
 
 const ML_SERVICE_URL = config.mlServiceUrl;
 
+// Simple in-memory cache to prevent 429 errors on Render free tier
+const mlCache = {
+  risk: { data: null, timestamp: 0 },
+  grid: { data: null, timestamp: 0 },
+  explain: new Map(), // Stores by predictionId key
+  TTL: 45000 // 45 seconds
+};
+
+
 /**
  * Call ML service endpoint
  */
@@ -286,8 +295,22 @@ function interpretWeatherCode(code) {
  */
 const explain = async ({ predictionId, slopeId }) => {
   try {
+    const cacheKey = `${predictionId}_${slopeId || 'default'}`;
+    const now = Date.now();
+    const cached = mlCache.explain.get(cacheKey);
+
+    if (cached && (now - cached.timestamp < mlCache.TTL)) {
+      return cached.data;
+    }
+
     const endpoint = `/explain/${predictionId}${slopeId ? `?slopeId=${slopeId}` : ''}`;
     const result = await callMLService('GET', endpoint);
+
+    // Cache successful responses
+    if (result && result.ok !== false) {
+      mlCache.explain.set(cacheKey, { data: result, timestamp: now });
+    }
+
     return result;
   } catch (error) {
     console.error('ML explain error:', error);
@@ -321,7 +344,18 @@ const listPredictions = async () => {
  */
 const getCurrentRisk = async () => {
   try {
+    const now = Date.now();
+    if (mlCache.risk.data && (now - mlCache.risk.timestamp < mlCache.TTL)) {
+      return mlCache.risk.data;
+    }
+
     const result = await callMLService('GET', '/risk/current');
+
+    if (result && result.ok !== false) {
+      mlCache.risk.data = result;
+      mlCache.risk.timestamp = now;
+    }
+
     return result;
   } catch (error) {
     console.error('ML getCurrentRisk error:', error);
@@ -339,6 +373,11 @@ const getCurrentRisk = async () => {
  */
 const getRiskGrid = async () => {
   try {
+    const now = Date.now();
+    if (mlCache.grid.data && (now - mlCache.grid.timestamp < mlCache.TTL)) {
+      return mlCache.grid.data;
+    }
+
     let result = await callMLService('GET', '/risk/grid');
     
     // Fallback: If deployed ML service is running sih2025/src/api/main.py, the endpoint is /map/grid
@@ -346,6 +385,11 @@ const getRiskGrid = async () => {
       result = await callMLService('GET', '/map/grid');
     }
     
+    if (result && result.ok !== false) {
+      mlCache.grid.data = result;
+      mlCache.grid.timestamp = now;
+    }
+
     return result;
   } catch (error) {
     console.error('ML getRiskGrid error:', error);

@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Card } from '../common/Card';
-import { Loader2, AlertTriangle, CheckCircle, Wind, Droplets, Activity, Thermometer } from 'lucide-react';
+import { Loader2, AlertTriangle, CheckCircle, Wind, Droplets, Activity, Thermometer, RefreshCw } from 'lucide-react';
 import api from '../../lib/api';
+import { io } from 'socket.io-client';
 
 const RiskGauge = ({ level, score }) => {
     const getColor = (l) => {
@@ -49,20 +50,35 @@ export default function MLPredictionDashboard() {
     const [isPolling, setIsPolling] = useState(true);
 
     useEffect(() => {
-        loadData(); // Initial load
+        loadData(true); // Initial load (with loader)
 
-        const interval = setInterval(() => {
-            if (isPolling && document.visibilityState === 'visible') {
-                loadData();
+        if (!isPolling) return;
+
+        const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+        const newSocket = io(socketUrl);
+
+        newSocket.on('connect', () => {
+            console.log('Connected to Centralized WebSocket for ML updates');
+            newSocket.emit('register', { role: 'dashboard', zones: [] });
+        });
+
+        newSocket.on('mlRiskUpdate', (update) => {
+            // Only update if page is visible to save rendering resources
+            if (document.visibilityState === 'visible') {
+                setData(update.risk);
+                setExplanation(update.explanation);
+                setError(null);
             }
-        }, 60000); // 60s - Render free tier safe
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            if (newSocket) newSocket.disconnect();
+        };
     }, [isPolling]);
 
-    const loadData = async () => {
+    const loadData = async (showLoader = false) => {
         try {
-            setLoading(true);
+            if (showLoader) setLoading(true);
             // Use backend proxy instead of direct ML service call
             const riskRes = await api.get('/ml/risk/current');
 
@@ -122,6 +138,27 @@ export default function MLPredictionDashboard() {
 
     return (
         <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                    {isPolling && (
+                        <span className="flex items-center px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold animate-pulse">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 mr-1" />
+                            LIVE UPDATES
+                        </span>
+                    )}
+                    <span className="text-xs text-gray-400">
+                        Last sync: {data?.timestamp ? new Date(data.timestamp).toLocaleTimeString() : 'Waiting...'}
+                    </span>
+                </div>
+                <button 
+                    onClick={() => loadData(false)} 
+                    className="p-1.5 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-blue-500"
+                    title="Manual Refresh"
+                >
+                    <RefreshCw className="w-4 h-4" />
+                </button>
+            </div>
+
             {error && (
                 <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
                     <div className="flex">

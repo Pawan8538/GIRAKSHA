@@ -106,8 +106,36 @@ class SocketService {
                     console.warn('Sensor poll failed (non-fatal):', sErr.message);
                 }
 
+                // --- ML Risk: Every 2nd poll (~60s) to reduce request volume ---
+                if (this.pollCount % 2 === 0) {
+                    try {
+                        const riskRes = await axios.get(`${localApi}/ml/risk/current`, reqConfig);
+                        if (riskRes.data) {
+                            // Also fetch explanation for the current risk
+                            let explainData = null;
+                            try {
+                                const slopeId = riskRes.data.slopeId || 'default';
+                                const explainRes = await axios.get(`${localApi}/ml/explain/current?slopeId=${slopeId}`, reqConfig);
+                                explainData = explainRes.data.data || explainRes.data;
+                            } catch (e) {
+                                console.warn('ML Explain poll failed (non-fatal):', e.message);
+                            }
+
+                            this.clients.dashboards.forEach(client => {
+                                client.emit('mlRiskUpdate', {
+                                    risk: riskRes.data,
+                                    explanation: explainData
+                                });
+                            });
+                        }
+                    } catch (rErr) {
+                        console.warn('ML Risk poll failed (non-fatal):', rErr.message);
+                    }
+                }
+
                 // --- Heatmap: Every 3rd poll (~90s) to avoid ML service rate limits ---
                 if (this.pollCount % 3 === 0) {
+
                     try {
                         const heatmapRes = await axios.get(`${localApi}/ml/risk/grid`, reqConfig);
                         if (heatmapRes.data && heatmapRes.data.grid) {
