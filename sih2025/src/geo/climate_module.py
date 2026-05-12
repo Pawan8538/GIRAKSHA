@@ -35,13 +35,13 @@ class ClimateRiskEngine:
             if response.status_code == 200:
                 data = response.json()
                 result = self._parse_api_response(data)
-                print(f"✅ Real weather data fetched for coordinates ({self.lat}, {self.lon})")
+                print(f"Real weather data fetched for coordinates ({self.lat}, {self.lon})")
                 return result
             else:
-                print(f"⚠️ Weather API returned status {response.status_code}, using simulation")
+                print(f"Warning: Weather API returned status {response.status_code}, using simulation")
                 return self._get_simulated_weather()
         except Exception as e:
-            print(f"⚠️ Weather API Error: {e}, switching to robust simulation")
+            print(f"Warning: Weather API Error: {e}, switching to robust simulation")
             return self._get_simulated_weather()
 
     def _parse_api_response(self, data):
@@ -127,14 +127,14 @@ class ClimateRiskEngine:
     def _generate_alerts(self, risk, weather):
         alerts = []
         if risk >= 0.8:
-            alerts.append("🔴 CRITICAL: Weather exacerbating high risk - EVACUATE")
+            alerts.append("CRITICAL: Weather exacerbating high risk - EVACUATE")
         elif risk >= 0.6:
-            alerts.append("🟠 HIGH: Suspend operations due to weather/ground conditions")
+            alerts.append("HIGH: Suspend operations due to weather/ground conditions")
             
         if weather['rainfall_24h'] > 30:
-            alerts.append(f"🌧️ Heavy Rain ({weather['rainfall_24h']}mm) - Check drainage")
+            alerts.append(f"Heavy Rain ({weather['rainfall_24h']}mm) - Check drainage")
         if weather['max_rain_intensity'] > 20:
-            alerts.append(f"⛈️ Critical Rain Intensity ({weather['max_rain_intensity']}mm/h)")
+            alerts.append(f"Critical Rain Intensity ({weather['max_rain_intensity']}mm/h)")
             
         return alerts
 

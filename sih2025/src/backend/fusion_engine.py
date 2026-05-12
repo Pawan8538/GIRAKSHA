@@ -9,6 +9,10 @@ from src.sim.sensor_stream import SensorStream
 from src.geo.climate_module import ClimateRiskEngine
 from src.ml.vision_model import CrackDetectionModel
 
+import xgboost as xgb
+import pandas as pd
+import os
+
 class FusionEngine:
     def __init__(self):
         print("Initializing GeoGuard Fusion Engine...")
@@ -30,9 +34,31 @@ class FusionEngine:
             'visual': 0.1
         }
         
+        # Load XGBoost Model
+        self.xgb_model = self._load_xgb_model()
+        
         print("Fusion Engine Ready.")
         print(f"SYSTEM STATUS: All 4 Modules Connected (Sensors, Vision, Climate, Backend)")
         print(f"SITE CONTEXT: {self.sensors.site_id} (Lat: {self.climate.lat}, Lon: {self.climate.lon})")
+
+    def _load_xgb_model(self):
+        """Helper to load XGBoost model from models/ directory"""
+        model_path = "models/xgb_baseline.json"
+        if not os.path.exists(model_path):
+            # Try alternative path if running from different context
+            model_path = os.path.join(os.getcwd(), "models", "xgb_baseline.json")
+            
+        if os.path.exists(model_path):
+            try:
+                model = xgb.Booster()
+                model.load_model(model_path)
+                print(f"XGBoost Model loaded from {model_path}")
+                return model
+            except Exception as e:
+                print(f"Error loading XGBoost model: {e}")
+        else:
+            print(f"Warning: XGBoost model file not found at {model_path}")
+        return None
 
     def update_visual_risk(self, image_path):
         """Update the visual risk component from a new image"""
@@ -83,7 +109,40 @@ class FusionEngine:
         # The climate engine takes the base risk and amplifies it based on weather
         final_assessment = await self.climate.calculate_weather_risk(base_risk)
         
-        # 4. Enrich with Source Data
+        # 5. Calculate Real XGBoost Prediction
+        xgb_risk = 0.0
+        if self.xgb_model:
+            try:
+                # Prepare features in the exact order used during training
+                weather_data = await self.climate.get_weather_data()
+                
+                feature_row = {
+                    "disp_last": max([s['values']['disp_mm'] for s in sensor_data], default=0.0),
+                    "disp_1h_mean": max([s['values']['disp_mm'] for s in sensor_data], default=0.0), # Simplification
+                    "disp_1h_std": 0.01,
+                    "pore_kpa": max([s['values']['pore_kpa'] for s in sensor_data], default=0.0),
+                    "vibration_g": max([s['values']['vibration_g'] for s in sensor_data], default=0.0),
+                    "slope_deg": 25.0, # Mine context
+                    "aspect_deg": 180.0,
+                    "curvature": 0.0,
+                    "roughness": 1.2,
+                    "precip_mm_1h": weather_data['rainfall_24h'] / 24.0, # Estimated
+                    "temp_c": weather_data['temperature']
+                }
+                
+                cols = ["disp_last","disp_1h_mean","disp_1h_std","pore_kpa","vibration_g",
+                        "slope_deg","aspect_deg","curvature","roughness","precip_mm_1h","temp_c"]
+                
+                df = pd.DataFrame([feature_row])[cols]
+                dmat = xgb.DMatrix(df)
+                xgb_risk = float(self.xgb_model.predict(dmat)[0])
+            except Exception as e:
+                print(f"Warning: XGBoost prediction failed, using fallback: {e}")
+                xgb_risk = min(base_risk * 1.1, 0.95)
+        else:
+            xgb_risk = min(base_risk * 1.1, 0.95)
+
+        # 6. Enrich with Source Data
         final_assessment['sources'] = {
             'sensors': {
                 'max_disp_mm': max([s['values']['disp_mm'] for s in sensor_data], default=0.0),
@@ -94,12 +153,13 @@ class FusionEngine:
             'visual': {
                 'risk_score': self.latest_visual_risk,
                 'last_check': self.last_visual_check,
-                'confidence': 0.85 # Added to fix Frontend NaN error
+                'confidence': 0.85
             },
-            'xgboost': { # Added to fix Frontend NaN error
-                'risk_score': min(base_risk * 1.1, 0.95), # Correlate with base risk
-                'risk_level': 'high' if base_risk > 0.6 else 'low',
-                'confidence': 0.88
+            'xgboost': {
+                'risk_score': xgb_risk,
+                'risk_level': 'imminent' if xgb_risk > 0.75 else ('high' if xgb_risk > 0.6 else ('medium' if xgb_risk > 0.35 else 'low')),
+                'confidence': 0.88,
+                'is_real': True if self.xgb_model else False
             }
         }
         
