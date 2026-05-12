@@ -8,7 +8,7 @@ try:
     TF_AVAILABLE = True
 except ImportError:
     TF_AVAILABLE = False
-    print("⚠️ TensorFlow not available. Vision model will run in MOCK mode.")
+    print("Warning: TensorFlow not available. Vision model will run in MOCK mode.")
 
 class CrackDetectionModel:
     def __init__(self, model_path="geo_guard/colab_final_model.h5"):
@@ -24,13 +24,13 @@ class CrackDetectionModel:
             return
 
         if not os.path.exists(self.model_path):
-            print(f"⚠️ Warning: Model file not found at {self.model_path}")
+            print(f"Warning: Model file not found at {self.model_path}")
             print("Running in MOCK mode (returning random predictions)")
             return
 
         try:
             self.model = tf.keras.models.load_model(self.model_path)
-            print(f"✅ Vision Model loaded from {self.model_path}")
+            print(f"Vision Model loaded from {self.model_path}")
             
             # Try to infer input shape from model
             if hasattr(self.model, 'input_shape'):
@@ -38,10 +38,10 @@ class CrackDetectionModel:
                 # shape might be (None, 224, 224, 3)
                 if shape and len(shape) == 4:
                     self.input_shape = (shape[1], shape[2])
-                    print(f"ℹ️ Inferred input shape: {self.input_shape}")
+                    print(f"Inferred input shape: {self.input_shape}")
                     
         except Exception as e:
-            print(f"❌ Error loading model: {e}")
+            print(f"Error loading model: {e}")
             print("Running in MOCK mode")
 
     def predict_crack(self, image_path):
@@ -80,7 +80,7 @@ class CrackDetectionModel:
             return score
 
         except Exception as e:
-            print(f"❌ Prediction error: {e}")
+            print(f"Prediction error: {e}")
             return 0.0
 
     def _mock_prediction(self):
