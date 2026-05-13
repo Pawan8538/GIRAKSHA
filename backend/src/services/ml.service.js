@@ -9,7 +9,7 @@ const mlCache = {
   risk: { data: null, timestamp: 0 },
   grid: { data: null, timestamp: 0 },
   explain: new Map(), // Stores by predictionId key
-  TTL: 10000 // 10 seconds (reduced from 45s for live updates)
+  TTL: 15000 // 15 seconds (Safe for Render rate limits)
 };
 
 
@@ -18,8 +18,7 @@ const mlCache = {
  */
 const callMLService = async (method, endpoint, data = null, isFormData = false) => {
   try {
-    // Add a random timestamp to bypass internal Render/Cloudflare caching
-    const url = `${ML_SERVICE_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}_cb=${Date.now()}`;
+    const url = `${ML_SERVICE_URL}${endpoint}`;
     let response;
 
     if (isFormData && data) {
