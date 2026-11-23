@@ -1,0 +1,16 @@
+sensor,detector,n_test,alarms,alarm_rate_per_100
+1750L-54XC,Robust z (|z|>3.5),138,1,0.7246376811594203
+1750L-54XC,"CUSUM (k=0.5,h=5)",138,0,0.0
+1750L-54XC,Isolation Forest,138,0,0.0
+1750L-54XC,"CIMFR ratio (>=2, real rule)",138,0,0.0
+1750L-54XC,"CIMFR ratio (>=1, sensitivity)",138,0,0.0
+1750L-58XC,Robust z (|z|>3.5),64,0,0.0
+1750L-58XC,"CUSUM (k=0.5,h=5)",64,0,0.0
+1750L-58XC,Isolation Forest,64,0,0.0
+1750L-58XC,"CIMFR ratio (>=2, real rule)",64,1,1.5625
+1750L-58XC,"CIMFR ratio (>=1, sensitivity)",64,3,4.6875
+1750L-72XC,Robust z (|z|>3.5),64,2,3.125
+1750L-72XC,"CUSUM (k=0.5,h=5)",64,2,3.125
+1750L-72XC,Isolation Forest,64,1,1.5625
+1750L-72XC,"CIMFR ratio (>=2, real rule)",64,2,3.125
+1750L-72XC,"CIMFR ratio (>=1, sensitivity)",64,5,7.8125
