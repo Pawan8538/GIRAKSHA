@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }) {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <Sidebar role={user.role_name} user={user} />
+            <Sidebar role={user.role_name || user.role} user={user} />
             <Navbar user={user} />
 
             <main className="lg:ml-64 p-8 pt-6 mt-16 lg:mt-0">

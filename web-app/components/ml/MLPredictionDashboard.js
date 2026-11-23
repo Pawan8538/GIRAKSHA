@@ -50,12 +50,14 @@ export default function MLPredictionDashboard() {
     const [isPolling, setIsPolling] = useState(true);
 
     useEffect(() => {
-        // We no longer call loadData() on mount.
-        // Instead, the SocketService pushes initial data immediately on 'register'.
         if (!isPolling) return;
 
+        // Immediately load fallback data so the page never shows a permanent spinner
+        // when the backend WebSocket (port 4000) is offline.
+        loadData(true);
+
         const socketUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-        const newSocket = io(socketUrl);
+        const newSocket = io(socketUrl, { timeout: 5000, reconnectionAttempts: 2 });
 
         newSocket.on('connect', () => {
             console.log('Connected to Centralized WebSocket for ML updates');
@@ -63,7 +65,7 @@ export default function MLPredictionDashboard() {
         });
 
         newSocket.on('mlRiskUpdate', (update) => {
-            // Only update if page is visible to save rendering resources
+            // Live update overrides fallback data once backend connects
             if (document.visibilityState === 'visible') {
                 setData(update.risk);
                 setExplanation(update.explanation);
@@ -71,9 +73,14 @@ export default function MLPredictionDashboard() {
             }
         });
 
+        newSocket.on('connect_error', () => {
+            console.warn('ML WebSocket offline — using fallback data');
+        });
+
         return () => {
             if (newSocket) newSocket.disconnect();
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPolling]);
 
     const loadData = async (showLoader = false) => {

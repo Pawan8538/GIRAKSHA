@@ -125,35 +125,43 @@ export default function HeatmapPage() {
         }
     };
 
-    // Categorize risk levels
-    const imminentRisk = points.filter(p => p.risk >= 0.75).length;
-    const highRisk = points.filter(p => p.risk >= 0.5 && p.risk < 0.75).length;
-    const mediumRisk = points.filter(p => p.risk >= 0.25 && p.risk < 0.5).length;
-    const lowRisk = points.filter(p => p.risk < 0.25).length;
+    // Categorize risk levels - Aligned with Research Paper Table 3
+    const imminentRisk = points.filter(p => (p.risk ?? p.risk_score) >= 0.75).length;
+    const highRisk = points.filter(p => (p.risk ?? p.risk_score) >= 0.60 && (p.risk ?? p.risk_score) < 0.75).length;
+    const mediumRisk = points.filter(p => (p.risk ?? p.risk_score) >= 0.35 && (p.risk ?? p.risk_score) < 0.60).length;
+    const lowRisk = points.filter(p => (p.risk ?? p.risk_score) < 0.35).length;
+    const impassableCells = imminentRisk + highRisk;
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Risk Heatmap</h1>
-                    <p className="text-gray-500">Real-time risk visualization from fusion engine</p>
+                    <div className="flex items-center gap-2">
+                        <h1 className="text-2xl font-bold text-gray-900">20×20 IDW Spatial Risk Heatmap</h1>
+                        <span className="text-xs font-mono font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                            TAMIL NADU LIMESTONE MINE
+                        </span>
+                    </div>
+                    <p className="text-gray-500 text-sm mt-0.5">
+                        Continuous Inverse Distance Weighting (IDW) geotechnical interpolation • Research Paper Section 4.2 & Table 3
+                    </p>
                 </div>
-                <div className="flex gap-3">
-                    <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-gray-200">
+                <div className="flex flex-wrap gap-2">
+                    <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-red-200 shadow-sm">
                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                        <span className="text-xs text-gray-600">Imminent ({imminentRisk})</span>
+                        <span className="text-xs font-medium text-gray-700">Imminent: {imminentRisk}</span>
                     </div>
-                    <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-gray-200">
+                    <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-orange-200 shadow-sm">
                         <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                        <span className="text-xs text-gray-600">High ({highRisk})</span>
+                        <span className="text-xs font-medium text-gray-700">High: {highRisk}</span>
                     </div>
-                    <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-gray-200">
+                    <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-yellow-200 shadow-sm">
                         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <span className="text-xs text-gray-600">Medium ({mediumRisk})</span>
+                        <span className="text-xs font-medium text-gray-700">Medium: {mediumRisk}</span>
                     </div>
-                    <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border border-gray-200">
+                    <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-green-200 shadow-sm">
                         <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span className="text-xs text-gray-600">Low ({lowRisk})</span>
+                        <span className="text-xs font-medium text-gray-700">Low: {lowRisk}</span>
                     </div>
                 </div>
             </div>
@@ -205,17 +213,37 @@ export default function HeatmapPage() {
                 </Card>
             </div>
 
-            <Card className="p-4 bg-blue-50 border-blue-100">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                        <span className="text-sm text-blue-900">Live Data</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="p-4 bg-slate-900 text-white border-slate-800">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <span className="text-xs text-slate-400 uppercase font-mono">Spatial Grid Dimensions</span>
+                            <p className="text-lg font-bold text-white mt-1">20 × 20 Matrix (400 Cells)</p>
+                            <p className="text-xs text-slate-400">Cell resolution: ~28–30m per cell • IDW geotechnical surface</p>
+                        </div>
+                        <div className="text-right">
+                            <span className="text-xs text-red-400 uppercase font-mono font-bold">Impassable Barrier Cells</span>
+                            <p className="text-2xl font-bold text-red-500 mt-0.5">{impassableCells} / 400</p>
+                            <p className="text-[11px] text-slate-400">Risk &ge; 0.60 blocks A* pathfinding</p>
+                        </div>
                     </div>
-                    <span className="text-sm text-blue-700">
-                        Last updated: {lastUpdate.toLocaleTimeString()}
+                </Card>
+
+                <Card className="p-4 bg-blue-50 border-blue-100 flex items-center justify-between">
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <span className="text-sm font-bold text-blue-950">Central WebSocket Live Stream</span>
+                        </div>
+                        <p className="text-xs text-blue-700 mt-1">
+                            Geotechnical telemetry ingested every 5s • BRIN indexed
+                        </p>
+                    </div>
+                    <span className="text-xs font-mono font-semibold text-blue-800 bg-blue-100/80 px-2.5 py-1.5 rounded-lg border border-blue-200">
+                        {lastUpdate.toLocaleTimeString()}
                     </span>
-                </div>
-            </Card>
+                </Card>
+            </div>
 
         </div>
     );

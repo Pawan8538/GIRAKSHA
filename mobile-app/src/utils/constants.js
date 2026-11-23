@@ -42,12 +42,12 @@ export const PALETTE = {
     disabled: '#B6BCC2',
     border: '#C9CED4',
   },
-  // Alerts / Risk
+  // Alerts / Risk - Aligned with Research Paper Table 3
   risk: {
-    critical: '#D32F2F',
-    high: '#FF5722',
-    moderate: '#FFC107',
-    low: '#4CAF50',
+    critical: '#EF4444', // Imminent (0.75 - 1.00)
+    high: '#F97316',     // High (0.60 - 0.75)
+    moderate: '#EAB308', // Medium (0.35 - 0.60)
+    low: '#22C55E',      // Low (0.00 - 0.35)
   },
   // Map / Geotech
   map: {
@@ -79,10 +79,10 @@ export const COLORS = {
 }
 
 export const RISK_LEVELS = {
-  low: { label: 'Low', color: PALETTE.risk.low, threshold: 0.35 },
-  medium: { label: 'Medium', color: PALETTE.risk.moderate, threshold: 0.6 },
-  high: { label: 'High', color: PALETTE.risk.high, threshold: 0.75 },
-  imminent: { label: 'Critical', color: PALETTE.risk.critical, threshold: 0.9 },
+  low: { label: 'Low', color: PALETTE.risk.low, min: 0.0, max: 0.35, threshold: 0.0 },
+  medium: { label: 'Medium', color: PALETTE.risk.moderate, min: 0.35, max: 0.60, threshold: 0.35 },
+  high: { label: 'High', color: PALETTE.risk.high, min: 0.60, max: 0.75, threshold: 0.60 },
+  imminent: { label: 'Imminent', color: PALETTE.risk.critical, min: 0.75, max: 1.00, threshold: 0.75 },
 }
 
 export const ROLES = {
@@ -93,9 +93,9 @@ export const ROLES = {
 }
 
 export const getRiskLevel = (score) => {
-  if (score >= RISK_LEVELS.imminent.threshold) return RISK_LEVELS.imminent
-  if (score >= RISK_LEVELS.high.threshold) return RISK_LEVELS.high
-  if (score >= RISK_LEVELS.medium.threshold) return RISK_LEVELS.medium
+  if (score >= 0.75) return RISK_LEVELS.imminent
+  if (score >= 0.60) return RISK_LEVELS.high
+  if (score >= 0.35) return RISK_LEVELS.medium
   return RISK_LEVELS.low
 }
 

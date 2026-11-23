@@ -2,29 +2,30 @@ import { twMerge } from 'tailwind-merge';
 
 const riskConfig = {
     low: {
-        color: '#10b981',
+        color: '#22c55e',
         label: 'Low Risk',
-        bgColor: 'rgba(16, 185, 129, 0.1)'
+        bgColor: 'rgba(34, 197, 94, 0.1)'
     },
     medium: {
-        color: '#f59e0b',
+        color: '#eab308',
         label: 'Medium Risk',
-        bgColor: 'rgba(245, 158, 11, 0.1)'
+        bgColor: 'rgba(234, 179, 8, 0.1)'
     },
     high: {
-        color: '#ef4444',
+        color: '#f97316',
         label: 'High Risk',
-        bgColor: 'rgba(239, 68, 68, 0.1)'
+        bgColor: 'rgba(249, 115, 22, 0.1)'
     },
     imminent: {
-        color: '#7f1d1d',
+        color: '#ef4444',
         label: 'Imminent',
-        bgColor: 'rgba(127, 29, 29, 0.1)'
+        bgColor: 'rgba(239, 68, 68, 0.1)'
     },
+    // Backwards compatibility alias for critical
     critical: {
-        color: '#000000',
-        label: 'Critical',
-        bgColor: 'rgba(0, 0, 0, 0.1)'
+        color: '#ef4444',
+        label: 'Imminent',
+        bgColor: 'rgba(239, 68, 68, 0.1)'
     }
 };
 
