@@ -1,86 +1,100 @@
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const path = require('path');
+const io = require('socket.io')(http, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
 
-const PORT = 3000;
+const PORT = process.env.CONNECTIVITY_PORT || 3000;
 
-// Store connected clients
+// Store connected devices by category (Paper Section 4.3)
 const clients = {
   bands: new Map(),
   sirens: new Map(),
   dashboards: new Map()
 };
 
-// Store active alerts
+// Store active alerts and 15-second timer handles
 const activeAlerts = new Map();
+const ACK_TIMEOUT = 15000; // 15 seconds strict window
 
-// Alert timeout (15 seconds)
-const ACK_TIMEOUT = 15000;
-
-// Serve static files (if you have a dashboard HTML)
+app.use(express.json());
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.send(`
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
-      <title>Alert System Dashboard</title>
+      <meta charset="UTF-8">
+      <title>GIRAKSHA — Mine Emergency Connectivity Server</title>
       <style>
-        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }
-        h1 { color: #333; }
-        .section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 4px; }
-        button { padding: 12px 24px; margin: 5px; font-size: 16px; cursor: pointer; border: none; border-radius: 4px; }
-        .primary { background: #2196F3; color: white; }
-        .danger { background: #F44336; color: white; }
-        input, select { padding: 10px; margin: 5px; font-size: 14px; }
-        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
-        .connected { background: #4CAF50; color: white; }
-        .log { background: #f9f9f9; padding: 10px; margin: 5px 0; border-left: 3px solid #2196F3; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; background: #0f172a; color: #f8fafc; }
+        .container { max-width: 900px; margin: 0 auto; background: #1e293b; padding: 32px; border-radius: 12px; border: 1px solid #334155; }
+        h1 { color: #38bdf8; margin-top: 0; display: flex; align-items: center; gap: 10px; font-size: 24px; }
+        .subtitle { color: #94a3b8; margin-bottom: 24px; font-size: 14px; }
+        .section { margin: 20px 0; padding: 20px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; }
+        button { padding: 10px 20px; margin: 4px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; border-radius: 6px; transition: 0.2s; }
+        .primary { background: #0284c7; color: white; }
+        .primary:hover { background: #0369a1; }
+        .danger { background: #dc2626; color: white; }
+        .danger:hover { background: #b91c1c; }
+        input, select { padding: 10px 14px; margin: 4px; background: #1e293b; border: 1px solid #475569; color: white; border-radius: 6px; font-size: 14px; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 9999px; font-weight: 700; font-size: 12px; }
+        .badge-bands { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+        .badge-sirens { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .badge-dashboards { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .log-container { background: #090d16; border: 1px solid #334155; border-radius: 8px; max-height: 280px; overflow-y: auto; padding: 12px; font-family: monospace; font-size: 12px; }
+        .log-item { padding: 6px 8px; margin: 4px 0; border-left: 3px solid #38bdf8; background: rgba(255,255,255,0.02); }
       </style>
     </head>
     <body>
       <div class="container">
-        <h1>🚨 Earthquake Alert System Dashboard</h1>
-        
+        <h1>⛏️ GIRAKSHA Mine Safety Connectivity Server</h1>
+        <div class="subtitle">Real-Time Rockfall Alerting, Smart Band Route Dispatch & Acoustic Siren Escalation</div>
+
         <div class="section">
-          <h2>Connected Devices</h2>
-          <div id="devices">
-            <p>Bands: <span id="bandCount">0</span></p>
-            <p>Sirens: <span id="sirenCount">0</span></p>
-            <p>Dashboards: <span id="dashboardCount">0</span></p>
-          </div>
+          <h3>Connected Hardware & Interfaces</h3>
+          <p>Worker Smart Bands: <span class="badge badge-bands" id="bandCount">0</span> &nbsp;|&nbsp;
+             Zone Acoustic Sirens: <span class="badge badge-sirens" id="sirenCount">0</span> &nbsp;|&nbsp;
+             Authority Dashboards: <span class="badge badge-dashboards" id="dashboardCount">0</span></p>
         </div>
 
         <div class="section">
-          <h2>Create Alert</h2>
-          <input type="text" id="alertZone" placeholder="Zone (e.g., Unit-3)" value="Unit-3">
-          <input type="number" id="alertSeverity" placeholder="Severity (1-3)" value="3" min="1" max="3">
-          <button class="primary" onclick="createAlert()">Create Alert</button>
+          <h3>Trigger Emergency Rockfall Alert</h3>
+          <input type="text" id="alertZone" placeholder="Zone (e.g. Zone-3 North Wall)" value="Zone-3 (North Highwall)">
+          <select id="alertSeverity">
+            <option value="3">Imminent Risk (Severity 3 - Red)</option>
+            <option value="2">High Risk (Severity 2 - Orange)</option>
+            <option value="1">Medium Risk (Severity 1 - Yellow)</option>
+          </select>
+          <button class="danger" onclick="triggerAlert()">Dispatch Alert (Start 15s Timer)</button>
         </div>
 
         <div class="section">
-          <h2>Create Earthquake Scenario</h2>
-          <input type="text" id="epicenterZone" placeholder="Epicenter Zone" value="Unit-3">
-          <input type="number" id="magnitude" placeholder="Magnitude" value="3.0" step="0.1">
-          <button class="primary" onclick="createScenario()">Start Earthquake</button>
+          <h3>Trigger Rockfall Instability Scenario</h3>
+          <select id="scenarioSelect">
+            <option value="RAPID_CREEP_ACCELERATION">Rapid Accelerating Creep (Fukuzono Precursor)</option>
+            <option value="HEAVY_MONSOON_INUNDATION">Heavy Monsoon Inundation (r24 > 50mm)</option>
+            <option value="BLAST_TREMOR_SHOCK">Blast Induced Dynamic Shock (PPV > 2.5g)</option>
+          </select>
+          <button class="primary" onclick="triggerScenario()">Start Scenario Simulation</button>
         </div>
 
         <div class="section">
-          <h2>Server Logs</h2>
-          <div id="logs"></div>
+          <h3>Live Communication Logs</h3>
+          <div class="log-container" id="logs"></div>
         </div>
       </div>
 
       <script src="/socket.io/socket.io.js"></script>
       <script>
         const socket = io();
-        
+
         socket.on('connect', () => {
-          console.log('Connected to server');
           socket.emit('register', { role: 'dashboard', zones: [] });
         });
 
@@ -92,25 +106,22 @@ app.get('/', (req, res) => {
 
         socket.on('log', (log) => {
           const logsDiv = document.getElementById('logs');
-          const logEntry = document.createElement('div');
-          logEntry.className = 'log';
-          logEntry.textContent = new Date().toLocaleTimeString() + ' - ' + JSON.stringify(log);
-          logsDiv.insertBefore(logEntry, logsDiv.firstChild);
-          if (logsDiv.children.length > 10) {
-            logsDiv.removeChild(logsDiv.lastChild);
-          }
+          const entry = document.createElement('div');
+          entry.className = 'log-item';
+          entry.textContent = new Date().toLocaleTimeString() + ' - ' + JSON.stringify(log);
+          logsDiv.insertBefore(entry, logsDiv.firstChild);
+          if (logsDiv.children.length > 50) logsDiv.removeChild(logsDiv.lastChild);
         });
 
-        function createAlert() {
+        function triggerAlert() {
           const zone = document.getElementById('alertZone').value;
-          const severity = parseInt(document.getElementById('alertSeverity').value);
-          socket.emit('createAlert', { zone, severity });
+          const severity = parseInt(document.getElementById('alertSeverity').value, 10);
+          socket.emit('createAlert', { zone, severity, riskScore: severity === 3 ? 0.88 : 0.68 });
         }
 
-        function createScenario() {
-          const epicenterZone = document.getElementById('epicenterZone').value;
-          const magnitude = parseFloat(document.getElementById('magnitude').value);
-          socket.emit('createScenario', { epicenterZone, magnitude });
+        function triggerScenario() {
+          const scenarioType = document.getElementById('scenarioSelect').value;
+          socket.emit('createScenario', { scenarioType, zone: 'Zone-3 (North Highwall)' });
         }
       </script>
     </body>
@@ -119,106 +130,99 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id);
+  console.log('[GIRAKSHA Standalone Server] Client connected:', socket.id);
 
-  socket.on('register', (data) => {
-    const { role, zones, workerId } = data;
-    console.log(`Registered ${role}:`, workerId || socket.id, 'Zones:', zones);
-
+  socket.on('register', (data = {}) => {
+    const { role = 'dashboard', zones = [], workerId } = data;
     socket.role = role;
-    socket.zones = zones || [];
+    socket.zones = zones;
     socket.workerId = workerId;
 
-    // Store socket based on role
-    if (role === 'band') {
-      clients.bands.set(socket.id, socket);
-    } else if (role === 'siren') {
-      clients.sirens.set(socket.id, socket);
-    } else if (role === 'dashboard') {
-      clients.dashboards.set(socket.id, socket);
-    }
+    if (role === 'band') clients.bands.set(socket.id, socket);
+    else if (role === 'siren') clients.sirens.set(socket.id, socket);
+    else clients.dashboards.set(socket.id, socket);
 
     broadcastDeviceCount();
   });
 
   socket.on('createAlert', (data) => {
-    const { zone, severity = 3 } = data;
-    const alertId = `S${Date.now()}-${zone}`;
+    const { zone = 'Zone-3', severity = 3, riskScore = 0.82 } = data;
+    const alertId = `ALT-${Date.now()}-${zone.replace(/\s+/g, '_')}`;
 
-    console.log(`Creating alert: ${alertId} for zone ${zone}`);
+    console.log(`🚨 [GIRAKSHA Alert] ${alertId} for ${zone}`);
 
     const alert = {
       alertId,
       zone,
       severity,
-      timestamp: Date.now()
+      riskScore,
+      timestamp: Date.now(),
+      recommendedExit: "North Bench Main Exit 1",
+      ackTimeoutMs: ACK_TIMEOUT
     };
 
-    // Send to all bands subscribed to this zone
     clients.bands.forEach((client) => {
-      if (client.zones.includes(zone)) {
-        console.log(`Sending alert to band ${client.workerId}`);
+      if (client.zones.length === 0 || client.zones.includes(zone)) {
         client.emit('alert', alert);
       }
     });
 
-    // Store alert for ACK tracking
     activeAlerts.set(alertId, {
       ...alert,
       ackedBy: new Set(),
-      timeout: setTimeout(() => {
-        handleAlertTimeout(alertId);
-      }, ACK_TIMEOUT)
+      timeout: setTimeout(() => handleAlertTimeout(alertId), ACK_TIMEOUT),
+      status: 'PENDING_ACK'
     });
 
-    // Broadcast log
-    broadcastLog({ type: 'created', alertId, zone, severity });
+    broadcastLog({ type: 'ALERT_DISPATCHED', alertId, zone, severity, window: '15 seconds' });
   });
 
   socket.on('createScenario', (data) => {
-    const { epicenterZone, magnitude } = data;
-    console.log(`Creating scenario: epicenter=${epicenterZone}, magnitude=${magnitude}`);
-
-    // Create alerts for epicenter and nearby zones
-    const severity = Math.ceil(magnitude);
-    const zones = [epicenterZone]; // Simplified - just epicenter for now
-
-    zones.forEach(zone => {
-      socket.emit('createAlert', { zone, severity });
-    });
-
-    broadcastLog({ type: 'scenario', epicenterZone, magnitude });
+    const { scenarioType = 'RAPID_CREEP_ACCELERATION', zone = 'Zone-3' } = data;
+    const severity = scenarioType === 'RAPID_CREEP_ACCELERATION' ? 3 : 2;
+    socket.emit('createAlert', { zone, severity, riskScore: severity === 3 ? 0.88 : 0.68 });
+    broadcastLog({ type: 'SCENARIO_STARTED', scenarioType, zone });
   });
 
   socket.on('ack', (data) => {
-    const { alertId, workerId } = data;
-    console.log(`ACK received from ${workerId} for alert ${alertId}`);
-
+    const { alertId, workerId = 'worker' } = data;
     const alert = activeAlerts.get(alertId);
     if (alert) {
       alert.ackedBy.add(workerId);
+      alert.status = 'ACKNOWLEDGED';
 
-      // Cancel timeout for this worker's alert
       if (alert.timeout) {
-        // In a real system, we'd track per-worker timeouts
-        // For demo, we'll cancel siren if ANY worker ACKs
         clearTimeout(alert.timeout);
-        activeAlerts.delete(alertId);
-
-        // Cancel siren
-        clients.sirens.forEach((client) => {
-          if (client.zones.includes(alert.zone)) {
-            client.emit('sirenCancel', { alertId });
-          }
-        });
+        alert.timeout = null;
       }
 
-      broadcastLog({ type: 'ack', alertId, workerId });
+      clients.sirens.forEach((client) => {
+        if (client.zones.includes(alert.zone)) client.emit('sirenCancel', { alertId });
+      });
+
+      clients.dashboards.forEach((client) => {
+        client.emit('alertAcknowledged', { alertId, workerId, status: 'ACKNOWLEDGED' });
+      });
+
+      broadcastLog({ type: 'ACK_RECEIVED', alertId, workerId });
     }
   });
 
+  socket.on('sos', (data = {}) => {
+    const { workerId = socket.workerId || 'Worker', zone = 'Zone-3' } = data;
+    const sosPayload = {
+      sosId: `SOS-${Date.now()}-${workerId}`,
+      workerId,
+      zone,
+      timestamp: Date.now(),
+      priority: 'MAXIMUM_CRITICAL'
+    };
+
+    io.emit('workerSOS', sosPayload);
+    broadcastLog({ type: 'SOS_TRIGGERED', workerId, zone });
+  });
+
   socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
     clients.bands.delete(socket.id);
     clients.sirens.delete(socket.id);
     clients.dashboards.delete(socket.id);
@@ -228,24 +232,31 @@ io.on('connection', (socket) => {
 
 function handleAlertTimeout(alertId) {
   const alert = activeAlerts.get(alertId);
-  if (!alert) return;
+  if (!alert || alert.status === 'ACKNOWLEDGED') return;
 
-  console.log(`Alert timeout: ${alertId} - Triggering siren`);
+  console.warn(`⚡ [GIRAKSHA ESCALATION] 15s timeout reached for ${alertId} without worker ACK! Triggering acoustic sirens...`);
+  alert.status = 'ESCALATED_UNACKNOWLEDGED';
 
-  // Send siren to all sirens subscribed to this zone
   clients.sirens.forEach((client) => {
-    if (client.zones.includes(alert.zone)) {
-      console.log(`Triggering siren for zone ${alert.zone}`);
-      client.emit('siren', {
-        alertId: alert.alertId,
-        zone: alert.zone,
-        severity: alert.severity
-      });
+    if (client.zones.length === 0 || client.zones.includes(alert.zone)) {
+      client.emit('siren', { alertId: alert.alertId, zone: alert.zone, severity: alert.severity });
     }
   });
 
-  broadcastLog({ type: 'escalated', alertId: alert.alertId, zone: alert.zone });
-  activeAlerts.delete(alertId);
+  const escalationPayload = {
+    alertId: alert.alertId,
+    zone: alert.zone,
+    severity: alert.severity,
+    status: 'ESCALATED_UNACKNOWLEDGED',
+    thermalStreamUrl: '/static/thermal/north_wall_stream.m3u8',
+    message: 'INDEPENDENT VERIFICATION REQUIRED: Review LWIR thermal stream to verify zone evacuation.'
+  };
+
+  clients.dashboards.forEach((client) => {
+    client.emit('escalateToAuthority', escalationPayload);
+  });
+
+  broadcastLog({ type: 'ESCALATED_TO_AUTHORITY', alertId: alert.alertId, zone: alert.zone, sirensActive: true });
 }
 
 function broadcastDeviceCount() {
@@ -254,20 +265,16 @@ function broadcastDeviceCount() {
     sirens: clients.sirens.size,
     dashboards: clients.dashboards.size
   };
-
-  clients.dashboards.forEach((client) => {
-    client.emit('deviceUpdate', deviceCount);
-  });
+  clients.dashboards.forEach(client => client.emit('deviceUpdate', deviceCount));
+  io.emit('deviceUpdate', deviceCount);
 }
 
 function broadcastLog(logData) {
-  clients.dashboards.forEach((client) => {
-    client.emit('log', logData);
-  });
+  const entry = { ...logData, timestamp: new Date().toLocaleTimeString() };
+  clients.dashboards.forEach(client => client.emit('log', entry));
+  io.emit('log', entry);
 }
 
 http.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n🚨 Alert System Server Running`);
-  console.log(`Server: http://10.0.75.150:${PORT}`);
-  console.log(`\n📱 Share this IP with Android phones: 10.0.75.150:${PORT}\n`);
+  console.log(`\n⛏️ GIRAKSHA Mine Connectivity & Emergency Alert Server running on port ${PORT}`);
 });
