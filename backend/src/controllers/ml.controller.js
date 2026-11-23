@@ -1,6 +1,6 @@
 const multer = require('multer');
-
 const mlService = require('../services/ml.service');
+const { createAlert } = require('../models/queries');
 
 const upload = multer({
     storage: multer.memoryStorage(),
@@ -9,10 +9,20 @@ const upload = multer({
 
 const respond = (res, payload) => res.status(200).json(payload);
 
-//In-memory storage for manual predictions (for heatmap visualization)
-// Default mine location: Tamil Nadu Limestone Mine (Aligned with HeatmapMap)
-const MINE_CENTER = { lat: 11.1053, lon: 79.1506 };
+// In-memory storage for manual simulation predictions (for heatmap visualization)
 const manualPredictions = [];
+
+/**
+ * Standardize risk classification matching Paper Table 3
+ * Low: [0.00, 0.35), Medium: [0.35, 0.60), High: [0.60, 0.75), Imminent: [0.75, 1.00]
+ */
+const classifyRiskScore = (score) => {
+    const s = Math.min(Math.max(parseFloat(score) || 0, 0), 1.0);
+    if (s >= 0.75) return { score: s, level: 'imminent', severity: 'critical' };
+    if (s >= 0.60) return { score: s, level: 'high', severity: 'high' };
+    if (s >= 0.35) return { score: s, level: 'medium', severity: 'medium' };
+    return { score: s, level: 'low', severity: 'low' };
+};
 
 const predict = async (req, res, next) => {
     try {
@@ -81,48 +91,22 @@ const getRiskGrid = async (req, res, next) => {
     try {
         let result = await mlService.getRiskGrid();
 
-        // If Python service is down or returns error, provide mock grid
-        if (!result || !result.grid) {
-            console.log("Using Mock Grid Fallback (Node.js)");
-            // Align with HeatmapMap default center
-            const center_lat = 11.1053;
-            const center_lon = 79.1506;
-            const grid = [];
-
-            // Generate 5x5 mock grid
-            for (let i = -2; i <= 2; i++) {
-                for (let j = -2; j <= 2; j++) {
-                    grid.push({
-                        id: `mock_${i}_${j}`,
-                        lat: center_lat + (i * 0.001),
-                        lon: center_lon + (j * 0.001),
-                        risk_score: 0.2 + (Math.abs(i) + Math.abs(j)) * 0.1, // Gradient
-                        mine_proximity: 1.0,
-                        sensor_influence: 0.5
-                    });
-                }
-            }
-            result = { grid };
-        }
-
-        // Include manual predictions in the grid
-        if (result && result.grid) {
-            // Filter stale manual predictions (> 1 hour old if needed, or keep all session based)
-            // Here we just append all active ones
+        // Include manual testing predictions in the grid if present
+        if (result && result.grid && manualPredictions.length > 0) {
             const manuals = manualPredictions.map(mp => ({
                 id: mp.id,
                 lat: mp.lat,
                 lon: mp.lon,
                 risk_score: mp.risk_score,
-                risk_level: mp.risk_level, // Pass this through if frontend needs it
+                risk_level: mp.risk_level,
                 mine_proximity: 1.0,
-                sensor_influence: 1.0, // High influence for manual test
-                manual: true // Flag to identify manual predictions
+                sensor_influence: 1.0,
+                manual: true
             }));
-
-            // Merge manuals: replace nearby grid points or append? 
-            // Appending is safer for visualization
-            result.grid = [...result.grid, ...manuals];
+            result = {
+                ...result,
+                grid: [...result.grid, ...manuals]
+            };
         }
 
         return respond(res, result);
@@ -140,162 +124,121 @@ const getSensorStream = async (req, res, next) => {
     }
 };
 
-// Helper to calculate heuristic risk if ML service is mocking
-const calculateHeuristicRisk = (sensorData) => {
-    // 1. Displacement Risk (0-10mm range)
-    const disp_val = (parseFloat(sensorData.disp_last) || 0) + (parseFloat(sensorData.disp_1h_mean) || 0);
-    const risk_disp = Math.min(Math.abs(disp_val) / 5.0, 1.0) * 0.35;
-
-    // 2. Pore Pressure Risk (0-50 kPa)
-    const pore_val = parseFloat(sensorData.pore_kpa) || 0;
-    const risk_pore = Math.min(Math.abs(pore_val) / 40.0, 1.0) * 0.25;
-
-    // 3. Rainfall Risk (0-50 mm/h)
-    const rain_val = parseFloat(sensorData.precip_mm_1h) || 0;
-    const risk_rain = Math.min(Math.abs(rain_val) / 30.0, 1.0) * 0.25;
-
-    // 4. Vibration Risk (0-1 g)
-    const vib_val = parseFloat(sensorData.vibration_g) || 0;
-    const risk_vib = Math.min(Math.abs(vib_val) / 0.2, 1.0) * 0.15;
-
-    // Total Score
-    let score = risk_disp + risk_pore + risk_rain + risk_vib;
-    score = parseFloat(Math.min(Math.max(score, 0.05), 0.99).toFixed(4));
-
-    let risk_level = "low";
-    if (score > 0.75) risk_level = "imminent";
-    else if (score > 0.6) risk_level = "high";
-    else if (score > 0.35) risk_level = "medium";
-    else if (score > 0.2) risk_level = "low";
-    else risk_level = "safe"; // Extremely low risk
-
-    return { score, risk_level };
+/**
+ * A* Pathfinding Evacuation Route Endpoint (Paper Section 4.2 & TC08)
+ */
+const getEvacuationRoute = async (req, res, next) => {
+    try {
+        const { workerId = 'worker_default', currentLocation, gridRow, gridCol } = req.body;
+        const route = await mlService.getEvacuationRoute({
+            workerId,
+            currentLocation,
+            gridRow: parseInt(gridRow ?? 12, 10),
+            gridCol: parseInt(gridCol ?? 4, 10)
+        });
+        return respond(res, route);
+    } catch (error) {
+        next(error);
+    }
 };
 
+/**
+ * Anomaly Detection Endpoint (Paper Section 5.2: Robust Z-Score, CUSUM, Isolation Forest)
+ */
+const detectAnomalies = async (req, res, next) => {
+    try {
+        const { sensorId, readings = [] } = req.body;
+        if (!sensorId) {
+            return res.status(400).json({ ok: false, message: 'sensorId is required' });
+        }
+        const result = await mlService.detectAnomalies({ sensorId, readings });
+        return respond(res, result);
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Thermal Camera Surveillance & Human Detection Status (Paper Section 4.1 & TC09)
+ */
+const getThermalStatus = async (req, res, next) => {
+    try {
+        const { cameraId } = req.query;
+        const result = await mlService.getThermalStatus({ cameraId });
+        return respond(res, result);
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Manual Rockfall Simulation / What-If Testing (Paper Table 3 thresholds)
+ */
 const manualPredict = async (req, res, next) => {
     try {
-        const { slopeId, sensorData, lat, lon } = req.body;
+        const { slopeId = 'slope_1', sensorData = {}, lat, lon } = req.body;
 
-        // Validate required sensor parameters
-        const requiredParams = [
-            'disp_last', 'disp_1h_mean', 'disp_1h_std',
-            'pore_kpa', 'vibration_g',
-            'slope_deg', 'aspect_deg', 'curvature', 'roughness',
-            'precip_mm_1h', 'temp_c'
-        ];
+        const prediction = await mlService.predict({ slopeId, sensorData });
+        const risk_score = prediction.data?.risk_score ?? 0.35;
+        const { level: risk_level, severity } = classifyRiskScore(risk_score);
 
-        const missingParams = requiredParams.filter(param =>
-            sensorData[param] === undefined || sensorData[param] === null
-        );
-
-        if (missingParams.length > 0) {
-            return res.status(400).json({
-                success: false,
-                message: `Missing required sensor parameters: ${missingParams.join(', ')}`
-            });
-        }
-
-        // Call ML service for prediction
-        let prediction = await mlService.predict({ slopeId, sensorData });
-
-        // Check if ML service returned a mock/default response or failed
-        // Usually mock response has data.note or just specific static values
-        // We will OVERRIDE with heuristic if it looks like a mock to ensure dynamic behavior
-        const isMock = prediction.data?.note && prediction.data.note.includes('MOCK');
-
-        let risk_score, risk_level;
-
-        if (isMock || !prediction.ok) {
-            // Apply heuristic locally to guarantee dynamic response
-            const heuristic = calculateHeuristicRisk(sensorData);
-            risk_score = heuristic.score;
-            risk_level = heuristic.risk_level;
-
-            // Patch the prediction object
-            prediction = {
-                ok: true,
-                data: {
-                    ...prediction.data,
-                    risk_score,
-                    risk_level,
-                    note: "MOCK PREDICTION (Node.js Heuristic Override)"
-                }
-            };
-        } else {
-            risk_score = prediction.data.risk_score;
-            risk_level = prediction.data.risk_level;
-        }
-
-        if (!prediction.ok || !prediction.data) {
-            // Fallback if even heuristic failed somehow (unlikely)
-            return res.status(500).json({
-                success: false,
-                message: 'ML prediction failed',
-                error: prediction
-            });
-        }
-
-        // Auto-generate alert if risk is high or critical
+        // Auto-generate emergency alert if risk reaches High or Imminent (Paper Section 4.3: score >= 0.60)
         let alert = null;
-        if (risk_level === 'high' || risk_level === 'imminent') {
-            const { createAlert } = require('../models/queries');
-
-            const severityMap = {
-                'imminent': 'critical',
-                'high': 'high',
-                'medium': 'medium',
-                'low': 'low',
-                'safe': 'low'
-            };
-
+        if (risk_score >= 0.60) {
             const messageMap = {
-                'imminent': `CRITICAL: Imminent slope failure predicted (Risk Score: ${(risk_score * 100).toFixed(1)}%). Immediate evacuation recommended.`,
-                'high': `HIGH RISK: Elevated slope instability detected (Risk Score: ${(risk_score * 100).toFixed(1)}%). Enhanced monitoring required.`,
-                'medium': `MEDIUM RISK: Moderate slope instability (Risk Score: ${(risk_score * 100).toFixed(1)}%). Continue monitoring.`,
-                'low': `LOW RISK: Minimal slope instability (Risk Score: ${(risk_score * 100).toFixed(1)}%). Normal operations.`,
-                'safe': `SAFE: Conditions acceptable (Risk Score: ${(risk_score * 100).toFixed(1)}%).`
+                'imminent': `EMERGENCY (Score: ${(risk_score * 100).toFixed(1)}%): Imminent slope failure predicted. 15s evacuation order active.`,
+                'high': `WARNING (Score: ${(risk_score * 100).toFixed(1)}%): High slope instability detected. Evacuation route dispatched.`
             };
 
             const alertData = await createAlert(
-                null, // Use null for manual predictions since slopeId is a test string
+                null,
                 'ml_prediction',
-                messageMap[risk_level] || messageMap['low'],
-                severityMap[risk_level] || 'low'
+                messageMap[risk_level] || `High risk condition (${(risk_score * 100).toFixed(1)}%)`,
+                severity
             );
 
             alert = alertData.rows[0];
+
+            // If centralized socketService is active, trigger 15-second ACK protocol
+            const socketService = req.app.get('socketService');
+            if (socketService) {
+                socketService.createAlert({
+                    zone: 'Tamil Nadu Limestone Pit-Wall 1',
+                    severity: risk_level === 'imminent' ? 3 : 2,
+                    riskScore: risk_score,
+                    source: 'MANUAL_SIMULATION'
+                });
+            }
         }
 
-        // Store manual prediction for heatmap visualization at exact location
         const manualPrediction = {
             id: `manual_${Date.now()}`,
-            lat: lat || MINE_CENTER.lat,
-            lon: lon || MINE_CENTER.lon,
-            risk_score: risk_score,
-            risk_level: risk_level,
+            lat: lat || mlService.MINE_CONTEXT.lat,
+            lon: lon || mlService.MINE_CONTEXT.lon,
+            risk_score,
+            risk_level,
             timestamp: new Date().toISOString(),
-            sensorData: sensorData
+            sensorData
         };
 
         manualPredictions.push(manualPrediction);
-
-        // Keep only last 10 manual predictions
-        if (manualPredictions.length > 10) {
-            manualPredictions.shift();
-        }
+        if (manualPredictions.length > 10) manualPredictions.shift();
 
         return res.status(200).json({
             success: true,
             data: {
-                prediction: prediction.data,
-                alert: alert,
+                prediction: {
+                    ...prediction.data,
+                    risk_score,
+                    risk_level
+                },
+                alert,
                 coordinates: { lat: manualPrediction.lat, lon: manualPrediction.lon },
                 message: alert
-                    ? 'Prediction completed and alert generated'
-                    : 'Prediction completed - no alert required'
+                    ? 'Prediction executed: High/Imminent risk triggered 15-second emergency escalation window'
+                    : 'Prediction executed: Normal stability monitored'
             }
         });
-
     } catch (error) {
         next(error);
     }
@@ -310,5 +253,8 @@ module.exports = {
     getCurrentRisk,
     getRiskGrid,
     getSensorStream,
+    getEvacuationRoute,
+    detectAnomalies,
+    getThermalStatus,
     manualPredict
 };
