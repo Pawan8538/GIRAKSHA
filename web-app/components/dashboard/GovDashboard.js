@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { Card } from '../common/Card';
+import ThermalVerificationPanel from './ThermalVerificationPanel';
 import {
     MapPin, AlertTriangle, MessageSquare,
     FileText, Activity, TrendingUp, Shield
@@ -108,6 +109,9 @@ export default function GovDashboard({ user }) {
                     </div>
                 </div>
             </Card>
+
+            {/* Independent Thermal Verification Panel (Research Paper Section 4.1 & TC09) */}
+            <ThermalVerificationPanel onDispatchAdvisory={() => loadDashboard()} />
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

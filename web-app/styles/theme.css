@@ -18,11 +18,11 @@
   --color-text-secondary: #64748b;  /* Secondary text */
   --color-text-tertiary: #94a3b8;   /* Tertiary text */
   
-  /* Risk Level Colors */
-  --color-risk-low: #10b981;        /* Green */
-  --color-risk-medium: #f59e0b;     /* Amber */
-  --color-risk-high: #ef4444;       /* Red */
-  --color-risk-imminent: #7f1d1d;   /* Dark Red */
+  /* Risk Level Colors - Research Paper Table 3 */
+  --color-risk-low: #22c55e;        /* Green: 0.00 - 0.35 */
+  --color-risk-medium: #eab308;     /* Yellow: 0.35 - 0.60 */
+  --color-risk-high: #f97316;       /* Orange: 0.60 - 0.75 */
+  --color-risk-imminent: #ef4444;   /* Red: 0.75 - 1.00 */
   
   /* Status Colors */
   --color-success: #10b981;

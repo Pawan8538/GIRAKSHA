@@ -1,6 +1,6 @@
-# GeoGuard Web Dashboard
+# GIRAKSHA Web Dashboard
 
-Next.js web dashboard for mining authorities to monitor slope stability, manage alerts, and track field workers.
+Next.js web dashboard for mining authorities to monitor slope stability, manage alerts, verify thermal surveillance, and track field workers.
 
 ## Tech Stack
 - **Framework**: Next.js 14

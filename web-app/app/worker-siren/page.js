@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { AlertTriangle, Volume2, VolumeX } from 'lucide-react';
 import { io } from 'socket.io-client';
 import api from '../../lib/api';
+import EvacuationMap from '../../components/ml/EvacuationMap';
 
 export default function WorkerSirenReceiver() {
     const [isMonitoring, setIsMonitoring] = useState(false);
@@ -142,14 +143,14 @@ export default function WorkerSirenReceiver() {
 
     if (showEvacuationMap) {
         return (
-            <div className="w-full h-screen relative bg-gray-900">
-                <iframe src="/test_demo.html?worker=true" className="w-full h-full border-none" title="Evacuation Map" />
+            <div className="w-full min-h-screen bg-gray-50 p-6 relative">
                 <button 
                     onClick={() => setShowEvacuationMap(false)}
-                    className="absolute top-4 left-4 z-50 bg-white/90 hover:bg-white text-gray-900 font-bold py-2 px-4 rounded shadow-lg transition-colors"
+                    className="mb-4 bg-gray-900 hover:bg-black text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors"
                 >
-                    Back to Siren
+                    ← Back to Siren Monitor
                 </button>
+                <EvacuationMap />
             </div>
         );
     }

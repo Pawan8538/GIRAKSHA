@@ -31,18 +31,18 @@ const Typography = {
   small: { fontSize: 10, color: Colors.textSecondary },
 };
 
-// Helper functions for risk assessment
+// Helper functions for risk assessment - Research Paper Table 3
 const getRiskColor = (score) => {
-  if (score >= 0.9) return Colors.riskImminent; // Critical
-  if (score >= 0.75) return Colors.riskHigh;    // High
-  if (score >= 0.60) return Colors.riskMedium;  // Medium
-  return Colors.riskLow;                        // Low
+  if (score >= 0.75) return Colors.riskImminent; // Imminent [0.75, 1.00]
+  if (score >= 0.60) return Colors.riskHigh;    // High [0.60, 0.75)
+  if (score >= 0.35) return Colors.riskMedium;  // Medium [0.35, 0.60)
+  return Colors.riskLow;                        // Low [0.00, 0.35)
 };
 
 const getRiskLevel = (score) => {
-  if (score >= 0.9) return 'Critical';
-  if (score >= 0.75) return 'High';
-  if (score >= 0.60) return 'Medium';
+  if (score >= 0.75) return 'Imminent';
+  if (score >= 0.60) return 'High';
+  if (score >= 0.35) return 'Medium';
   return 'Low';
 };
 

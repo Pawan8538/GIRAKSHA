@@ -104,7 +104,7 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
                                     }`}
                                 onClick={() => setFormData({ ...formData, type: 'scenario' })}
                             >
-                                Earthquake Scenario
+                                Rockfall / Slope Failure Scenario
                             </button>
                         </div>
                     </div>
@@ -162,10 +162,10 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
                         </>
                     ) : (
                         <>
-                            {/* Epicenter Zone */}
+                            {/* Failure Origin Zone */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Epicenter Zone
+                                    Failure Origin / Slope Zone
                                 </label>
                                 <select
                                     value={scenarioData.epicenterZone}
@@ -175,7 +175,7 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required
                                 >
-                                    <option value="">Select epicenter zone...</option>
+                                    <option value="">Select failure zone...</option>
                                     {slopes.map((slope) => (
                                         <option key={slope.id} value={slope.name}>
                                             {slope.name}
@@ -187,7 +187,7 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
                             {/* Magnitude */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Magnitude
+                                    Simulated Failure / Vibration Intensity
                                 </label>
                                 <input
                                     type="number"
@@ -205,7 +205,7 @@ export default function CreateAlertModal({ isOpen, onClose, onSuccess }) {
                                     required
                                 />
                                 <p className="text-xs text-gray-500 mt-1">
-                                    Richter scale magnitude (1.0 - 9.0)
+                                    Simulated seismic / blast vibration intensity scale (1.0 - 9.0)
                                 </p>
                             </div>
                         </>

@@ -389,7 +389,7 @@
         </div>
         <div id="clickHint" style="padding:10px 14px;border-top:1px solid var(--border);">
           <span class="hint-icon">💡</span>
-          Click any cell to place worker &rarr; route auto-computes via Dijkstra
+          Click any cell to place worker &rarr; route auto-computes via A* Pathfinding
         </div>
       </div>
 
@@ -587,52 +587,62 @@ function computeGrid() {
   return grid;
 }
 
-// ── Cell colour (matches mobile app exactly) ────────────────────
+// ── Cell colour (Aligned with Research Paper Table 3) ────────────────────
 function cellColor(score) {
-  if (score >= 0.85) return '#E24B4A';
-  if (score >= 0.65) return '#EF9F27';
-  if (score >= 0.40) return '#FAC775';
-  if (score >= 0.20) return '#C0DD97';
-  return '#EAF3DE';
+  if (score >= 0.75) return '#ef4444'; // Imminent
+  if (score >= 0.60) return '#f97316'; // High
+  if (score >= 0.35) return '#eab308'; // Medium
+  return '#22c55e';                   // Low
 }
 
-// ── Dijkstra (matches evacuation.js exactly) ────────────────────
-function moveCost(score) {
-  if (score >= 0.85) return 9999;
-  if (score >= 0.65) return 50;
-  if (score >= 0.40) return 15;
-  if (score >= 0.20) return 5;
-  return 1;
-}
-
-function dijkstra(grid, sr, sc, er, ec) {
+// ── True A* Pathfinding (Research Paper Section 4.2) ───────────
+// Cells with risk >= 0.60 (High/Imminent) are strictly impassable.
+function astar(grid, sr, sc, er, ec) {
   const INF = Infinity;
-  const dist = Array.from({length:GRID_ROWS}, () => Array(GRID_COLS).fill(INF));
-  const prev = Array.from({length:GRID_ROWS}, () => Array(GRID_COLS).fill(null));
-  dist[sr][sc] = 0;
-  const pq = [{r:sr,c:sc,d:0}];
-  const dirs = [[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];
-  while (pq.length) {
-    pq.sort((a,b) => a.d-b.d);
-    const {r,c,d} = pq.shift();
-    if (d > dist[r][c]) continue;
-    if (r===er && c===ec) break;
-    for (const [dr,dc] of dirs) {
-      const nr=r+dr, nc=c+dc;
-      if (nr<0||nr>=GRID_ROWS||nc<0||nc>=GRID_COLS) continue;
-      const nd = d + moveCost(grid[nr][nc]);
-      if (nd < dist[nr][nc]) {
-        dist[nr][nc] = nd;
-        prev[nr][nc] = {r,c};
-        pq.push({r:nr,c:nc,d:nd});
+  const gScore = Array.from({length:GRID_ROWS}, () => Array(GRID_COLS).fill(INF));
+  const cameFrom = Array.from({length:GRID_ROWS}, () => Array(GRID_COLS).fill(null));
+
+  // Euclidean distance heuristic (consistent & admissible)
+  const heuristic = (r, c) => Math.sqrt(Math.pow(r - er, 2) + Math.pow(c - ec, 2)) * 30;
+
+  gScore[sr][sc] = 0;
+  const openSet = [{ r: sr, c: sc, f: heuristic(sr, sc) }];
+  const dirs = [
+    [-1, 0, 30], [1, 0, 30], [0, -1, 30], [0, 1, 30],
+    [-1, -1, 42.4], [-1, 1, 42.4], [1, -1, 42.4], [1, 1, 42.4]
+  ];
+
+  while (openSet.length > 0) {
+    openSet.sort((a, b) => a.f - b.f);
+    const { r, c } = openSet.shift();
+
+    if (r === er && c === ec) break;
+
+    for (const [dr, dc, baseDist] of dirs) {
+      const nr = r + dr, nc = c + dc;
+      if (nr < 0 || nr >= GRID_ROWS || nc < 0 || nc >= GRID_COLS) continue;
+
+      const risk = grid[nr][nc];
+      // STRICT IMPASSABLE BARRIER for risk >= 0.60
+      if (risk >= 0.60 && !(nr === er && nc === ec)) continue;
+
+      const penalty = risk >= 0.35 ? (risk * 30) : 0;
+      const tentativeG = gScore[r][c] + baseDist + penalty;
+
+      if (tentativeG < gScore[nr][nc]) {
+        cameFrom[nr][nc] = { r, c };
+        gScore[nr][nc] = tentativeG;
+        const f = tentativeG + heuristic(nr, nc);
+        openSet.push({ r: nr, c: nc, f });
       }
     }
   }
+
   const path = [];
-  let cur = {r:er,c:ec};
+  let cur = { r: er, c: ec };
   while (cur) {
-    path.unshift({r:cur.r,c:cur.c});
-    cur = prev[cur.r][cur.c];
+    path.unshift({ r: cur.r, c: cur.c });
+    cur = cameFrom[cur.r][cur.c];
   }
   return path.length > 1 ? path : [];
 }
@@ -705,7 +715,7 @@ function renderGrid() {
 }
 
 function computeRoute() {
-  routePath = dijkstra(riskGrid, workerRow, workerCol, EXIT_ROW, EXIT_COL);
+  routePath = astar(riskGrid, workerRow, workerCol, EXIT_ROW, EXIT_COL);
   // Update route info
   const ri = document.getElementById('routeInfo');
   if (routePath.length > 0) {

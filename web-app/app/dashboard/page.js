@@ -12,7 +12,8 @@ export default function DashboardPage() {
     if (!user) return null;
 
     const renderDashboard = () => {
-        switch (user.role_name) {
+        const role = user.role_name || user.role;
+        switch (role) {
             case 'super_admin':
                 return <SuperAdminDashboard user={user} />;
             case 'site_admin':

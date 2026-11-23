@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide explains how the **GeoGuard Web Application** integrates with the backend API and how it can work alongside the mobile application.
+This guide explains how the **GIRAKSHA Web Application** integrates with the backend API and how it can work alongside the mobile application.
 
 ---
 
