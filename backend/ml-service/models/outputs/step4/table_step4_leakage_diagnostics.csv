@@ -1,0 +1,9 @@
+setting,ROC_AUC,PR_AUC,ROC_AUC_sd
+all 23 features,0.8360550553103929,0.3255387051462041,
+drop curvature+roughness (keep slope),0.8434881344114822,0.2807923475506648,
+drop all 3 terrain features,0.8513344982101709,0.2918057617775047,
+terrain features only,0.5735586094601604,0.00785198192500143,
+displacement-channel features only,0.8618900084177232,0.2588440515126367,
+"weather/pore/vibration only (no displacement, no terrain)",0.6441045285649908,0.07216339742376882,
+CONTROL row-shuffled labels (mean of 5 seeds),0.30927196813169056,0.0045712733486091605,0.028210548924247472
+CONTROL episode-level label-sequence swap (mean of 5 seeds),0.6987825770136639,0.1814357844780447,0.043251301640700325

@@ -1,0 +1,41 @@
+kind,magnitude,detector,recall,median_delay_readings,median_delay_days,n_trials
+jump,0.25,"CIMFR ratio (>=1, sensitivity)",0.5333333333333333,0.0,0.0,120
+jump,0.25,"CIMFR ratio (>=2, real rule)",0.18333333333333332,0.0,0.0,120
+jump,0.25,"CUSUM (k=0.5,h=5)",0.4,0.0,0.0,120
+jump,0.25,Isolation Forest,0.025,0.0,0.0,120
+jump,0.25,Robust z (|z|>3.5),0.675,0.0,0.0,120
+jump,0.5,"CIMFR ratio (>=1, sensitivity)",0.6666666666666666,0.0,0.0,120
+jump,0.5,"CIMFR ratio (>=2, real rule)",0.5333333333333333,0.0,0.0,120
+jump,0.5,"CUSUM (k=0.5,h=5)",0.7166666666666667,0.0,0.0,120
+jump,0.5,Isolation Forest,0.6083333333333333,0.0,0.0,120
+jump,0.5,Robust z (|z|>3.5),0.9833333333333333,0.0,0.0,120
+jump,1.0,"CIMFR ratio (>=1, sensitivity)",0.6666666666666666,0.0,0.0,120
+jump,1.0,"CIMFR ratio (>=2, real rule)",0.6666666666666666,0.0,0.0,120
+jump,1.0,"CUSUM (k=0.5,h=5)",1.0,0.0,0.0,120
+jump,1.0,Isolation Forest,1.0,0.0,0.0,120
+jump,1.0,Robust z (|z|>3.5),1.0,0.0,0.0,120
+jump,2.0,"CIMFR ratio (>=1, sensitivity)",0.6666666666666666,0.0,0.0,120
+jump,2.0,"CIMFR ratio (>=2, real rule)",0.6666666666666666,0.0,0.0,120
+jump,2.0,"CUSUM (k=0.5,h=5)",1.0,0.0,0.0,120
+jump,2.0,Isolation Forest,1.0,0.0,0.0,120
+jump,2.0,Robust z (|z|>3.5),1.0,0.0,0.0,120
+ramp,0.05,"CIMFR ratio (>=1, sensitivity)",0.6333333333333333,1.0,7.0,120
+ramp,0.05,"CIMFR ratio (>=2, real rule)",0.325,1.0,7.0,120
+ramp,0.05,"CUSUM (k=0.5,h=5)",0.75,1.0,7.0,120
+ramp,0.05,Isolation Forest,0.7,2.0,14.0,120
+ramp,0.05,Robust z (|z|>3.5),0.8916666666666667,1.0,7.0,120
+ramp,0.1,"CIMFR ratio (>=1, sensitivity)",0.6666666666666666,1.0,6.0,120
+ramp,0.1,"CIMFR ratio (>=2, real rule)",0.625,1.0,7.0,120
+ramp,0.1,"CUSUM (k=0.5,h=5)",1.0,1.0,7.0,120
+ramp,0.1,Isolation Forest,1.0,1.0,7.0,120
+ramp,0.1,Robust z (|z|>3.5),1.0,1.0,6.0,120
+ramp,0.25,"CIMFR ratio (>=1, sensitivity)",0.6666666666666666,1.0,6.0,120
+ramp,0.25,"CIMFR ratio (>=2, real rule)",0.6666666666666666,1.0,7.0,120
+ramp,0.25,"CUSUM (k=0.5,h=5)",1.0,1.0,6.0,120
+ramp,0.25,Isolation Forest,1.0,1.0,6.0,120
+ramp,0.25,Robust z (|z|>3.5),1.0,1.0,6.0,120
+ramp,0.5,"CIMFR ratio (>=1, sensitivity)",0.675,1.0,6.0,120
+ramp,0.5,"CIMFR ratio (>=2, real rule)",0.6666666666666666,1.0,7.0,120
+ramp,0.5,"CUSUM (k=0.5,h=5)",1.0,1.0,6.0,120
+ramp,0.5,Isolation Forest,1.0,1.0,6.0,120
+ramp,0.5,Robust z (|z|>3.5),1.0,1.0,6.0,120

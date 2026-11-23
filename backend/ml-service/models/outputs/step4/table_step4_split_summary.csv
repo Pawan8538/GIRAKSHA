@@ -1,0 +1,4 @@
+split,episodes,rows,positive_rows,prevalence_pct,failure_episodes,silent,progressive,nearmiss,stable
+train,270,458524,2396,0.5225462571206742,103,45,58,56,111
+val,90,146879,800,0.544666017606329,34,15,19,19,37
+test,90,148546,796,0.5358609454310449,34,15,19,19,37

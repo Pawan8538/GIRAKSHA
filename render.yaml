@@ -34,17 +34,17 @@ services:
       - key: NEXT_PUBLIC_API_URL
         sync: false
 
-  # 3. Python ML Service
+  # 3. Python ML Service (GIRAKSHA Research Paper 23-Feature & A* Routing Service)
   - type: web
     name: sih-ml-service
     env: python
-    rootDir: sih2025
+    rootDir: backend/ml-service
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.9.18
+        value: 3.10.12
 
 databases:
   - name: sih-db

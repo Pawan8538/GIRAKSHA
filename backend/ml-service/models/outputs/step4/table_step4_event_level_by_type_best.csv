@@ -1,0 +1,5 @@
+etype,n,detected,episodes_with_false_alarm,mean_false_onsets,median_lead_h
+nearmiss,19,0,18,6.894736842105263,
+progressive,19,18,19,7.947368421052632,23.0
+silent,15,12,12,6.666666666666667,11.0
+stable,37,0,35,6.864864864864865,

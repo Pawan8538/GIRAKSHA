@@ -1,0 +1,4 @@
+control,ROC_AUC,ROC_sd,PR_AUC
+"XGB, positive window moved to a RANDOM hour in each failing train episode (5 seeds)",0.44433992551590434,0.10303696037601044,0.006263419645169713
+"Logistic Regression, row-shuffled labels (5 seeds)",0.4216658793119574,0.14268836618715122,0.015303522733502698
+XGB row-shuffled: median score of test positives vs negatives; mean extremeness percentile of positives vs negatives,0.4159778952598572,0.48053181171417236,0.2399393215371839

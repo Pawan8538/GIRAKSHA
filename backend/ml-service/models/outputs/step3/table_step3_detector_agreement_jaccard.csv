@@ -1,0 +1,6 @@
+,Robust z (|z|>3.5),"CUSUM (k=0.5,h=5)",Isolation Forest,"CIMFR ratio (>=2, real rule)","CIMFR ratio (>=1, sensitivity)"
+Robust z (|z|>3.5),1.0,0.667,0.333,0.2,0.222
+"CUSUM (k=0.5,h=5)",0.667,1.0,0.5,0.25,0.25
+Isolation Forest,0.333,0.5,1.0,0.0,0.125
+"CIMFR ratio (>=2, real rule)",0.2,0.25,0.0,1.0,0.375
+"CIMFR ratio (>=1, sensitivity)",0.222,0.25,0.125,0.375,1.0
